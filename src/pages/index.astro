@@ -1,0 +1,201 @@
+---
+import '../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content={Astro.generator} />
+  <title>Jake — Software Engineer</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<nav aria-label="Primary navigation">
+  <a href="#hero-section" class="nav-logo">jw.dev</a>
+  <ul class="nav-links" role="list">
+    <li><a href="#about">about</a></li>
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#education">education</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero-section" aria-label="Introduction">
+  <h1 id="hero-name">Jacob Webster</h1>
+  <p id="hero-tagline">Software Engineer &middot; USC &rsquo;27</p>
+</section>
+
+<section class="page-section" id="about" aria-label="About">
+  <div class="section-inner">
+    <div class="section-head"><p class="section-eyebrow">About</p></div>
+    <div class="section-body">
+      <p class="about-text">
+        CS student at USC (May 2027), building across the stack — from <strong>LiDAR pipelines for GPS-denied autonomous drones</strong> to delivering full-stack hackathon apps in 24 hours.<br><br>
+        At <strong>C4IS</strong>, I lead a software team processing 21,600 LiDAR measurements/second for onboard SLAM visualization on an NVIDIA Jetson. On the hackathon side, I've won at <strong>CUHackit 2025</strong> and <strong>NASA Space Apps</strong> and competed at HackGT and Energy Hack @ Georgia Tech — building everything from transit policy simulators to medical intake automation.<br><br>
+        Currently interning at <strong>Michelin's North American HQ</strong> in Greenville, SC. Seeking full-time SWE roles starting May 2027.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="page-section" id="experience" aria-label="Experience">
+  <div class="section-inner">
+    <div class="section-head"><p class="section-eyebrow">Experience</p></div>
+    <div class="section-body">
+      <article class="entry">
+        <img class="entry-logo" src="/michelin_logo.svg" alt="Michelin" />
+        <div class="entry-main">
+          <div class="entry-header">
+            <span class="entry-title">Software Engineering Intern</span>
+            <span class="entry-date">May 2026 – Aug 2026</span>
+          </div>
+          <span class="entry-org">Michelin — Greenville, SC</span>
+          <p class="entry-body">Filler — deliverables, stack, impact. Fill once internship wraps in August.</p>
+        </div>
+      </article>
+      <article class="entry">
+        <img class="entry-logo" src="/c4is_logo.svg" alt="C4IS" />
+        <div class="entry-main">
+          <div class="entry-header">
+            <span class="entry-title">Software Engineering Lead, Caelus</span>
+            <span class="entry-date">Sep 2025 – Present</span>
+          </div>
+          <span class="entry-org">Center for Industry Solutions — Columbia, SC</span>
+          <p class="entry-body">Filler — LiDAR pipeline work, ROS, embedded systems depth. Pull from C4IS resume bullets.</p>
+        </div>
+      </article>
+      <article class="entry">
+        <img class="entry-logo" src="/cuhackit_logo.svg" alt="CUhackit" />
+        <div class="entry-main">
+          <div class="entry-header">
+            <span class="entry-title">Campus Ambassador</span>
+            <span class="entry-date">Nov 2025 – Mar 2026</span>
+          </div>
+          <span class="entry-org">CUhackit — University of South Carolina</span>
+          <p class="entry-body">Filler — community building, hackathon org, visibility into strong builders at USC.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="page-section" id="education" aria-label="Education">
+  <div class="section-inner">
+    <div class="section-head"><p class="section-eyebrow">Education</p></div>
+    <div class="section-body">
+      <article class="entry">
+        <img class="entry-logo" src="/USC_text_logo.svg" alt="University of South Carolina" />
+        <div class="entry-main">
+          <div class="entry-header">
+            <span class="entry-title">B.S. Computer Science</span>
+            <span class="entry-date">Expected May 2027</span>
+          </div>
+          <span class="entry-org">University of South Carolina — Columbia, SC</span>
+          <p class="entry-body">Filler — GPA if strong, relevant coursework, CUhackit involvement, honors or awards.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="page-section" id="projects" aria-label="Projects">
+  <div class="section-inner">
+    <div class="section-head"><p class="section-eyebrow">Projects</p></div>
+    <div class="section-body">
+      <div class="projects-grid" role="list">
+        <article class="project-card" role="listitem">
+          <div class="project-index">01 / SMARTA</div>
+          <div class="project-body">
+            <p class="project-name">SMARTA</p>
+            <div class="project-stack">
+              <span class="project-tag">Filler</span>
+              <span class="project-tag">Stack</span>
+              <span class="project-tag">Tags</span>
+            </div>
+            <p class="project-desc">Filler — what it does, the problem it solves, why it was built.</p>
+            <div class="project-links">
+              <a href="#" class="project-link">GitHub →</a>
+              <a href="#" class="project-link">Demo →</a>
+            </div>
+          </div>
+        </article>
+        <article class="project-card" role="listitem">
+          <div class="project-index">02 / AstroAegis</div>
+          <div class="project-body">
+            <p class="project-name">AstroAegis</p>
+            <div class="project-stack">
+              <span class="project-tag">Filler</span>
+              <span class="project-tag">Stack</span>
+              <span class="project-tag">Tags</span>
+            </div>
+            <p class="project-desc">Filler — what it does, the problem it solves, why it was built.</p>
+            <div class="project-links">
+              <a href="#" class="project-link">GitHub →</a>
+              <a href="#" class="project-link">Demo →</a>
+            </div>
+          </div>
+        </article>
+        <article class="project-card" role="listitem">
+          <div class="project-index">03 / QuickCharts</div>
+          <div class="project-body">
+            <p class="project-name">QuickCharts</p>
+            <div class="project-stack">
+              <span class="project-tag">Filler</span>
+              <span class="project-tag">Stack</span>
+              <span class="project-tag">Tags</span>
+            </div>
+            <p class="project-desc">Filler — what it does, the problem it solves, why it was built.</p>
+            <div class="project-links">
+              <a href="#" class="project-link">GitHub →</a>
+              <a href="#" class="project-link">Demo →</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="page-section" id="contact" aria-label="Contact">
+  <div class="section-inner">
+    <div class="section-head"><p class="section-eyebrow">Contact</p></div>
+    <div class="section-body">
+      <nav class="contact-row" aria-label="Contact links">
+        <a href="#" class="contact-item">
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a href="#" class="contact-item">
+          <span class="contact-label">GitHub</span>
+          <span class="contact-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a href="#" class="contact-item">
+          <span class="contact-label">Email</span>
+          <span class="contact-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a href="#" class="contact-item">
+          <span class="contact-label">Resume</span>
+          <span class="contact-arrow" aria-hidden="true">↗</span>
+        </a>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">Jacob Webster &middot; 2026</span>
+  <span class="footer-copy">USC Computer Science &middot; May 2027</span>
+</footer>
+
+<script src="../scripts/nav.js"></script>
+
+</body>
+</html>
