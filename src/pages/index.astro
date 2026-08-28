@@ -8,7 +8,7 @@ import '../styles/global.css';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="generator" content={Astro.generator} />
-  <title>Jake — Software Engineer</title>
+  <title>Jacob Webster</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" href="/favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,7 +17,8 @@ import '../styles/global.css';
 </head>
 <body>
 
-<nav aria-label="Primary navigation">
+<div class="viewport-hero">
+<nav class="site-nav" aria-label="Primary navigation">
   <a href="#hero-section" class="nav-logo">jw.dev</a>
   <ul class="nav-links" role="list">
     <li><a href="#about">about</a></li>
@@ -29,9 +30,13 @@ import '../styles/global.css';
 </nav>
 
 <section id="hero-section" aria-label="Introduction">
-  <h1 id="hero-name">Jacob Webster</h1>
-  <p id="hero-tagline">Software Engineer &middot; USC &rsquo;27</p>
+  <img class="hero-photo" src="/DSC06603.JPG" alt="Jacob Webster looking out over the coastline at sunset" />
+  <div class="hero-overlay">
+    <h1 id="hero-name">Jacob Webster</h1>
+    <p id="hero-tagline">Software Engineer &middot; USC &rsquo;27</p>
+  </div>
 </section>
+</div>
 
 <section class="page-section" id="about" aria-label="About">
   <div class="section-inner">
@@ -55,33 +60,45 @@ import '../styles/global.css';
         <div class="entry-main">
           <div class="entry-header">
             <span class="entry-title">Software Engineering Intern</span>
-            <span class="entry-date">May 2026 – Aug 2026</span>
+            <span class="entry-date">May 2026 – Present</span>
           </div>
           <span class="entry-org">Michelin — Greenville, SC</span>
-          <p class="entry-body">Filler — deliverables, stack, impact. Fill once internship wraps in August.</p>
+          <ul class="entry-body">
+            <li>Developed automated frontend tests using Playwright for Michelin's inventory management application, decreasing minor release testing time from 150 minutes to 3.5 minutes.</li>
+            <li>Optimized data pipelines by reducing steps to transmit parcel data by 75% using Kafka and Java microservices.</li>
+          </ul>
         </div>
+        <img class="entry-media" src="/michelin.jpg" alt="Jacob Webster with the Michelin intern cohort at Michelin's North American HQ" />
       </article>
       <article class="entry">
         <img class="entry-logo" src="/c4is_logo.svg" alt="C4IS" />
         <div class="entry-main">
           <div class="entry-header">
             <span class="entry-title">Software Engineering Lead, Caelus</span>
-            <span class="entry-date">Sep 2025 – Present</span>
+            <span class="entry-date">Aug 2025 – Present</span>
           </div>
           <span class="entry-org">Center for Industry Solutions — Columbia, SC</span>
-          <p class="entry-body">Filler — LiDAR pipeline work, ROS, embedded systems depth. Pull from C4IS resume bullets.</p>
+          <ul class="entry-body">
+            <li>Engineered a ROS2 3D perception pipeline for an autonomous drone, converting 21,600 LiDAR measurements/sec into a real-time 50,000-point 3D point cloud at 10cm resolution for autonomous navigation.</li>
+            <li>Led a 3-person software engineering team across perception, flight control, and comms. Established Git workflow, branch protection, and code review standards supporting reliable collaboration.</li>
+          </ul>
         </div>
+        <img class="entry-media" src="/videoframe_2529.png" alt="Rendered frame of the Caelus autonomous drone" />
       </article>
       <article class="entry">
         <img class="entry-logo" src="/cuhackit_logo.svg" alt="CUhackit" />
         <div class="entry-main">
           <div class="entry-header">
             <span class="entry-title">Campus Ambassador</span>
-            <span class="entry-date">Nov 2025 – Mar 2026</span>
+            <span class="entry-date">Nov 2025 – Feb 2026</span>
           </div>
           <span class="entry-org">CUhackit — University of South Carolina</span>
-          <p class="entry-body">Filler — community building, hackathon org, visibility into strong builders at USC.</p>
+          <ul class="entry-body">
+            <li>Drove a 2x increase in University of South Carolina registrations through targeted outreach campaigns, including in-class presentations, social media promotion, and campus poster distribution.</li>
+            <li>Coordinated logistics and provided on-site support during the hackathon to ensure smooth operations and participant experience.</li>
+          </ul>
         </div>
+        <img class="entry-media" src="/Organizer_Photo_2.JPG" alt="CUhackit organizer team at the hackathon" />
       </article>
     </div>
   </div>
@@ -95,11 +112,15 @@ import '../styles/global.css';
         <img class="entry-logo" src="/USC_text_logo.svg" alt="University of South Carolina" />
         <div class="entry-main">
           <div class="entry-header">
-            <span class="entry-title">B.S. Computer Science</span>
+            <span class="entry-title">B.S. Computer Science<span class="entry-title-sub">, Artificial Intelligence Concentration</span></span>
             <span class="entry-date">Expected May 2027</span>
           </div>
           <span class="entry-org">University of South Carolina — Columbia, SC</span>
-          <p class="entry-body">Filler — GPA if strong, relevant coursework, CUhackit involvement, honors or awards.</p>
+          <p class="entry-body">
+            <strong>GPA:</strong> 3.6<br>
+            <strong>Courses:</strong> Java Programming, C++ Programming, Operating Systems, Computer Networks, Software Engineering, Digital Logic Design, Computer Architecture, UNIX/Linux<br>
+            <strong>Honors:</strong> Dean's Scholars, Palmetto Fellows
+          </p>
         </div>
       </article>
     </div>
@@ -110,49 +131,70 @@ import '../styles/global.css';
   <div class="section-inner">
     <div class="section-head"><p class="section-eyebrow">Projects</p></div>
     <div class="section-body">
-      <div class="projects-grid" role="list">
-        <article class="project-card" role="listitem">
-          <div class="project-index">01 / SMARTA</div>
+      <div class="projects-list" role="list">
+        <article class="project-row" role="listitem">
+          <div class="project-media" aria-hidden="true"><span>image</span></div>
           <div class="project-body">
-            <p class="project-name">SMARTA</p>
-            <div class="project-stack">
-              <span class="project-tag">Filler</span>
-              <span class="project-tag">Stack</span>
-              <span class="project-tag">Tags</span>
+            <div class="project-head">
+              <p class="project-name"><span class="project-num">01</span>SMARTA</p>
+              <p class="project-meta">Transit Fleet Policy Simulator &middot; EnergyHack@GT &middot; Jan 2026</p>
             </div>
-            <p class="project-desc">Filler — what it does, the problem it solves, why it was built.</p>
+            <ul class="project-desc">
+              <li>Led a team of 4 to build a full-stack transit simulator modeling cost and emissions for MARTA's gas, hybrid, and electric bus fleets.</li>
+              <li>Processed 1.5M+ MARTA GPS records into real-time visualizations of fleet routes, operational costs, and CO₂ projections.</li>
+              <li>Built an interactive UI enabling users to adjust policy parameters and instantly see budget and sustainability impacts.</li>
+            </ul>
+            <div class="project-stack">
+              <span class="project-tag">React</span>
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">Vercel</span>
+            </div>
             <div class="project-links">
               <a href="#" class="project-link">GitHub →</a>
               <a href="#" class="project-link">Demo →</a>
             </div>
           </div>
         </article>
-        <article class="project-card" role="listitem">
-          <div class="project-index">02 / AstroAegis</div>
+        <article class="project-row" role="listitem">
+          <div class="project-media" aria-hidden="true"><span>image</span></div>
           <div class="project-body">
-            <p class="project-name">AstroAegis</p>
-            <div class="project-stack">
-              <span class="project-tag">Filler</span>
-              <span class="project-tag">Stack</span>
-              <span class="project-tag">Tags</span>
+            <div class="project-head">
+              <p class="project-name"><span class="project-num">02</span>AstroAegis</p>
+              <p class="project-meta">NASA Space Apps &middot; Most Inspirational Award &middot; Oct 2025</p>
             </div>
-            <p class="project-desc">Filler — what it does, the problem it solves, why it was built.</p>
+            <ul class="project-desc">
+              <li>Built a meteor/asteroid visualization tool with a team of 6 using the Godot engine for physics simulation.</li>
+              <li>Implemented gravity-based trajectory calculations and collision detection against NASA datasets to model realistic near-Earth object behavior.</li>
+              <li>Added internationalization (6 UN languages) and accessibility features like colorblind modes and high-contrast text.</li>
+            </ul>
+            <div class="project-stack">
+              <span class="project-tag">Godot</span>
+              <span class="project-tag">Vue.js</span>
+              <span class="project-tag">Tailwind</span>
+            </div>
             <div class="project-links">
               <a href="#" class="project-link">GitHub →</a>
               <a href="#" class="project-link">Demo →</a>
             </div>
           </div>
         </article>
-        <article class="project-card" role="listitem">
-          <div class="project-index">03 / QuickCharts</div>
+        <article class="project-row" role="listitem">
+          <div class="project-media" aria-hidden="true"><span>image</span></div>
           <div class="project-body">
-            <p class="project-name">QuickCharts</p>
-            <div class="project-stack">
-              <span class="project-tag">Filler</span>
-              <span class="project-tag">Stack</span>
-              <span class="project-tag">Tags</span>
+            <div class="project-head">
+              <p class="project-name"><span class="project-num">03</span>QuickCharts</p>
+              <p class="project-meta">Medical Intake Automation &middot; HackGT12 &middot; Sep 2025</p>
             </div>
-            <p class="project-desc">Filler — what it does, the problem it solves, why it was built.</p>
+            <ul class="project-desc">
+              <li>Led a team of 4 to build a medical intake tool designed to save physicians 2–5 minutes per patient visit by pre-screening symptoms before appointments.</li>
+              <li>Integrated the GPT-4 API to generate contextual follow-up questions based on patient responses, creating dynamic conversation flows rather than static questionnaires.</li>
+              <li>Built a Spring Boot backend to manage user sessions and coordinate between the frontend, database, and GPT-4 API.</li>
+            </ul>
+            <div class="project-stack">
+              <span class="project-tag">Vue.js</span>
+              <span class="project-tag">Spring Boot</span>
+              <span class="project-tag">GPT-4</span>
+            </div>
             <div class="project-links">
               <a href="#" class="project-link">GitHub →</a>
               <a href="#" class="project-link">Demo →</a>
@@ -169,19 +211,19 @@ import '../styles/global.css';
     <div class="section-head"><p class="section-eyebrow">Contact</p></div>
     <div class="section-body">
       <nav class="contact-row" aria-label="Contact links">
-        <a href="#" class="contact-item">
+        <a href="https://linkedin.com/in/Jacob-Webster2" class="contact-item" target="_blank" rel="noopener">
           <span class="contact-label">LinkedIn</span>
           <span class="contact-arrow" aria-hidden="true">↗</span>
         </a>
-        <a href="#" class="contact-item">
+        <a href="https://github.com/Jacob-M-Webster" class="contact-item" target="_blank" rel="noopener">
           <span class="contact-label">GitHub</span>
           <span class="contact-arrow" aria-hidden="true">↗</span>
         </a>
-        <a href="#" class="contact-item">
+        <a href="mailto:JakeWebster5619@gmail.com" class="contact-item">
           <span class="contact-label">Email</span>
           <span class="contact-arrow" aria-hidden="true">↗</span>
         </a>
-        <a href="#" class="contact-item">
+        <a href="/Jacob_Webster_Resume.pdf" class="contact-item" target="_blank" rel="noopener">
           <span class="contact-label">Resume</span>
           <span class="contact-arrow" aria-hidden="true">↗</span>
         </a>
