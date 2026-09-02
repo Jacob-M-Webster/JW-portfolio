@@ -429,7 +429,19 @@ footer {
 
 @media (max-width: 860px) {
   :root { --pad: 16px; }
-  .nav-links { gap: 0; }
+  .site-nav { flex-wrap: nowrap; }
+  .nav-logo { flex-shrink: 0; }
+  .nav-links {
+    flex-wrap: nowrap;
+    gap: 0;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links li { flex-shrink: 0; }
   .hero-overlay { padding: 24px var(--pad) 28px; }
   .section-inner { padding: 28px var(--pad); gap: 16px; }
   .entry { flex-wrap: wrap; }
