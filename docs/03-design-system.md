@@ -91,8 +91,8 @@ Fallback stacks:
 | Token | Size | Line height | Weight | Use |
 |---|---|---|---|---|
 | `--text-display` | `clamp(2.5rem, 1.5rem + 3vw, 4rem)` | 1.02 | 800 (`--weight-display`) | The H1 only |
-| `--text-h2` | `clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem)` | 1.1 | 700 | Section headings |
-| `--text-h3` | `clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem)` | 1.2 | 700 | Project titles, role titles |
+| `--text-h2` | `clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem)` | 1.1 | 700 | Section headings; project titles in the home Projects rows |
+| `--text-h3` | `clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem)` | 1.2 | 700 | Role titles and other third-level headings |
 | `--text-body` | `1.125rem` | 1.65 (serif gets extra leading) | 400 | Prose |
 | `--text-ui` | `1rem` | 1.4 | 600 | Links in nav, buttons, labels |
 | `--text-small` | `0.875rem` | 1.5 | 400/600 | Captions, facts blocks |
@@ -110,7 +110,7 @@ Fallback stacks:
 ### 3.3 Spacing, radius, borders, shadow
 
 - Spacing scale, 4 px base: `4, 8, 12, 16, 24, 32, 48, 64, 96, 144`. No other values.
-- Section vertical padding: `64` on desktop, `48` on mobile (the hero keeps its own top padding). Between a heading and its content: `24`. Between rows: `32`.
+- Section vertical padding: `64` on desktop, `48` on mobile (the hero keeps its own top padding). Between a heading and its content: `24`. Between rows: `32` (project rows: `48`).
 - **One radius:** `--radius: 3px`, used only on buttons, the viewport panel, and figure frames. Everything else is square.
 - Borders: 1 px `--concrete` for rules; 2 px `--asphalt` for button strokes and the focus ring.
 - **No box shadows. No blurs. No glows.**
@@ -215,7 +215,7 @@ Each component lists default, hover, focus, active, and disabled states where th
 - H1 in `--text-display` with `text-wrap: balance`, left aligned, wrapping naturally within the 6-column content area. No line may hold only "I build", and no line other than the last may be a single word, at 1024, 1280, 1440 and 1920 px. Lead paragraph in serif body size. Two buttons. No badges, no stat bar, no gradient, no scroll-down arrow.
 
 **Project rows (the Projects list)**
-- Not cards. Each project is a full-width ruled row: title (`--text-h3`) on the left with the status text beside it; the one-line description in serif below; the stack as a plain comma-separated sentence in `--text-small`.
+- Not cards. Each project is a full-width ruled row: title (set at `--text-h2` size, still an `h3`) on the left with the status text beside it; the one-line description in serif below; the stack as a plain comma-separated sentence in `--text-small`.
 - The title is the only link; its click area stretches over the row (the stretched-link technique), with a visible focus ring around the row.
 - Status is plain text with a small filled square (8 px) in a state color: in progress (`--lane`), paused (`--concrete`), prototype and placed (`--asphalt`). The square is decorative and has `aria-hidden`; the word carries the meaning.
 - Hover and focus: the title gets the highlighter treatment; on desktop the matching scene state also becomes active (see `05`).

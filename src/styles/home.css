@@ -28,7 +28,13 @@
 
 .project-row {
   position: relative;
-  padding-block: var(--space-6);
+  padding-block: var(--space-7);
+}
+
+/* Titles at section-heading size, so a project reads as a unit of work. */
+.project-row h3 {
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
 }
 
 .project-row-head {
