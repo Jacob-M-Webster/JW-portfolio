@@ -1,0 +1,40 @@
+/*
+  Self-hosted, Latin-subset fonts (SIL OFL 1.1; licenses in public/fonts/).
+  Built by scripts/fonts/build_fonts.py, which also prints the fallback
+  metric overrides below. "JW Serif" is a renamed subset of Source Serif 4,
+  because its copyright notice reserves the name "Source".
+*/
+
+@font-face {
+  font-family: Overpass;
+  src: url('/fonts/overpass-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JW Serif';
+  src: url('/fonts/serif-latin.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Overpass fallback';
+  src: local('Arial');
+  size-adjust: 100.83%;
+  ascent-override: 87.57%;
+  descent-override: 37.98%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'JW Serif fallback';
+  src: local('Georgia');
+  size-adjust: 103.85%;
+  ascent-override: 99.76%;
+  descent-override: 32.26%;
+  line-gap-override: 0%;
+}
