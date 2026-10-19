@@ -15,11 +15,11 @@ interface Props {
 }
 
 const { x, y, w, h, title, sub = [], planned = false } = Astro.props;
-const TITLE_LH = 16;
-const SUB_LH = 14;
+const TITLE_LH = 17;
+const SUB_LH = 16;
 const block = title.length * TITLE_LH + sub.length * SUB_LH;
 // Baseline of the first line, so the block sits centered in the box.
-const top = y + (h - block) / 2 + 12;
+const top = y + (h - block) / 2 + 13;
 const cx = x + w / 2;
 ---
 

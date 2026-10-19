@@ -228,7 +228,7 @@ Each component lists default, hover, focus, active, and disabled states where th
 
 **Figures (project diagrams)**
 - Inline SVG, drawn with token colors via `currentColor` and CSS variables, so both themes work. Frame: 1 px `--concrete` border, radius 3, padding 24. Caption below in `--text-small`. Built = solid 2 px `--asphalt` stroke; planned = 2 px dashed `--asphalt` stroke (never `--concrete` or `--lane`, which are below 3:1 on `--fog`). The legend is a sentence in the caption, not a swatch row.
-- Each figure has `role="img"` and a real `aria-label`/`<title>`/`<desc>`. The accessible name (`figure.alt` in the project file) and the `<desc>` name every planned (dashed) part in words, or say "No planned parts"; `ProjectFigure.astro` fails the build if the alt text misses one (list in `src/lib/figures.ts`).
+- Each figure has `role="img"` and a real `aria-label`/`<title>`/`<desc>`. The accessible name (`figure.alt` in the project file) and the `<desc>` name every planned (dashed) part in words, or say "No planned parts"; `ProjectFigure.astro` fails the build if the alt text misses one (list in `src/lib/figures.ts`). Every label renders at 12 px or more at 375 px: labels are 14 (titles) and 13.5 (secondary and arrow labels) viewBox units, each viewBox is trimmed to the drawing, the frame padding is 12 px below 480 px, and the SVG is capped at 26rem.
 
 **Sensor viewport**
 - Dark `--viewport` panel, radius 3, 1 px `--concrete` border. A canvas fills it. Below it, a caption (`--text-small`) and the live point count. The caption sits outside the panel so it remains readable in every state.
