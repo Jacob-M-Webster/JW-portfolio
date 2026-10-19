@@ -54,7 +54,7 @@ The build is split into stages. Each stage has its own plan-mode session, delive
 - The old copy, project images, photos, and logos are removed in Stage 2, not Stage 1 (recon section 6 lists them).
 
 **`/goal`**
-> The build passes; `check:tokens` and `check:size` pass and their output is pasted; a contrast table for all token pairs in light and dark is pasted and every text pair is at least 4.5:1 and every graphic and focus pair at least 3:1; screenshots of the style-guide route at 375, 768, 1280 and 1920 px in both themes are captured and I have written a short critique of each following section 8b of the design doc.
+> The build passes; `check:tokens` and `check:size` pass and their output is pasted; a contrast table for all token pairs in light and dark is pasted and every text pair is at least 4.5:1 and every required graphic and focus pair at least 3:1 (decorative pairs listed with reasons); screenshots of the style-guide route at 375, 768, 1280 and 1920 px in both themes are captured and I have written a short critique of each following section 8b of the design doc.
 
 **Human gate:** Jake looks at the style guide screenshots on a laptop and a phone. Question: does it feel like his, and is it free of the banned patterns?
 

@@ -53,4 +53,5 @@ Append one line per decision made during the build: `YYYY-MM-DD | stage | decisi
 
 | Date | Stage | Decision | Reason |
 |---|---|---|---|
-| | | | |
+| 2026-10-19 | 1 | Added `--on-lane` (`#25282C`, both themes) as the ink paired with `--lane` | Dark `--asphalt` on `--lane` is 1.46:1; `--on-lane` gives 8.21:1 in both themes and equals `--asphalt` in light |
+| 2026-10-19 | 1 | Decorative graphics (rules, lane track and fill, status squares, frame borders) are exempt from 3:1 and listed with reasons; `--lane`/`--concrete` are restricted to those uses by `check:tokens` | Jake's call; `--concrete` and light `--lane` on `--fog` are below 3:1, and darkening them would push toward heavy hairlines |

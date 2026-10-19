@@ -52,6 +52,7 @@ All tokens are CSS custom properties on `:root`, with a dark override under `@me
 | `--concrete` | `#C4C9C4` | `#454A50` | Rules, borders, dashed lane track |
 | `--lane` | `#F0B90B` | `#F0B90B` | The accent: fills, active states, lane-line progress |
 | `--viewport` | `#25282C` | `#1B1E21` | Background of the sensor viewport panel (dark in both themes) |
+| `--on-lane` | `#25282C` | `#25282C` | The ink paired with `--lane`: text on a `--lane` fill, and the fill behind `--lane` text. Fixed in both themes, because the dark theme's `--asphalt` on `--lane` is 1.46:1 |
 
 Return colors used inside the scene (see `05-3d-and-motion.md`), a height ramp from ground to roof:
 
@@ -64,7 +65,8 @@ Return colors used inside the scene (see `05-3d-and-motion.md`), a height ramp f
 **Why this palette:** concrete, asphalt, and lane paint are the physical world of the subject. The scene's ramp mirrors how LiDAR viewers color points by height. Yellow appears twice (lane line, scene top) so the page and the viewport feel like one system.
 
 **Rules**
-- `--lane` is a *fill* color or a graphic, never body-text color on `--fog` in the light theme (its contrast against `--fog` is too low). Text on a `--lane` fill is `--asphalt`.
+- `--lane` is a *fill* color or a graphic, never a text color in either theme. Text on a `--lane` fill is `--on-lane`; when `--lane` is the text color (primary button hover), the fill behind it is `--on-lane`.
+- `--lane` and `--concrete` are allowed only in these uses: 1 px rules, the lane-line track and fill, status squares, the viewport border, figure-frame borders, the primary button fill, and the link highlighter background. `check:tokens` fails on any other use. Graphics that carry meaning, including the solid and dashed strokes in project diagrams, use `--asphalt`.
 - Contrast requirement: all text at least 4.5:1, large text and UI graphics at least 3:1. **Claude must compute and print the ratio for every text/background pair and for the focus ring**, in light and dark, before Stage 1 is done. The hex values above are starting points; adjust them minimally if a pair fails and record the change in the decision log.
 - No gradients anywhere in the UI. The only multi-color element is the scene's height ramp.
 - No pure `#000` or `#fff`.
@@ -181,7 +183,7 @@ On a phone the first viewport must already contain the name, the H1, the lead pa
 | 1 px rules (`--concrete`) | Separate project rows and role entries | Between rows only; no rules around everything |
 | Numerals | Mark real sequences | Only the pipeline steps on project pages and the dates on the experience timeline |
 | Definition lists | Facts blocks and skills | Project facts, skills, honors |
-| Solid versus dashed strokes | Built versus planned | Project diagrams |
+| Solid versus dashed strokes | Built versus planned | Project diagrams; both in `--asphalt` |
 
 ---
 
@@ -195,12 +197,12 @@ Each component lists default, hover, focus, active, and disabled states where th
 
 **Links (inline)**
 - Default: `--asphalt` text, 1.5 px `--asphalt` underline, offset 3 px.
-- Hover and focus-visible: highlighter treatment, with the text on a solid `--lane` background, underline removed, text stays `--asphalt`. No transition.
+- Hover and focus-visible: highlighter treatment, with the text on a solid `--lane` background, underline removed, text becomes `--on-lane`. No transition.
 - Visited: no color change.
 - External links open in the same tab unless they are the resume PDF or a video; no "opens in new window" icons.
 
 **Buttons (two types only)**
-- Primary: `--lane` fill, `--asphalt` text, 2 px `--asphalt` border, radius 3. Hover: fill becomes `--asphalt`, text `--lane`. Active: translate 0, no scale.
+- Primary: `--lane` fill, `--on-lane` text, 2 px `--asphalt` border, radius 3. Hover: fill becomes `--on-lane`, text `--lane`. Active: translate 0, no scale.
 - Secondary: transparent, 2 px `--asphalt` border. Hover: fill `--asphalt`, text `--fog`.
 - Height 48 px, horizontal padding 20 px. Text is a verb phrase in sentence case.
 
@@ -223,7 +225,7 @@ Each component lists default, hover, focus, active, and disabled states where th
 - `dl` with Status, Role, When, Stack, Links. Two columns on desktop, stacked on mobile. Terms in `--text-small` weight 600, sentence case.
 
 **Figures (project diagrams)**
-- Inline SVG, drawn with token colors via `currentColor` and CSS variables, so both themes work. Frame: 1 px `--concrete` border, radius 3, padding 24. Caption below in `--text-small`. Built = solid 2 px stroke; planned = 2 px dashed stroke. The legend is a sentence in the caption, not a swatch row.
+- Inline SVG, drawn with token colors via `currentColor` and CSS variables, so both themes work. Frame: 1 px `--concrete` border, radius 3, padding 24. Caption below in `--text-small`. Built = solid 2 px `--asphalt` stroke; planned = 2 px dashed `--asphalt` stroke (never `--concrete` or `--lane`, which are below 3:1 on `--fog`). The legend is a sentence in the caption, not a swatch row.
 - Each figure has `role="img"` and a real `aria-label`/`<title>`/`<desc>`.
 
 **Sensor viewport**

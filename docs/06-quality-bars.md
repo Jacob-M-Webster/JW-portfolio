@@ -42,6 +42,7 @@ Measured with Lighthouse (mobile preset, the default simulated throttling) on th
 - **Keyboard:** full navigation with Tab and Shift+Tab only. A skip link is the first focusable element. Every control reachable. No focus traps. Focus order matches reading order.
 - **Focus visibility:** every focusable element shows a ring of at least 3:1 contrast against its surroundings, in both themes.
 - **Contrast:** every text and background pair at least 4.5:1 (3:1 for large text and UI graphics). Claude prints the table of computed ratios for all token pairs, in both themes, including the focus ring and the highlighter-hover link state.
+- **Decorative exemption:** a graphic pair is exempt from 3:1 only if it is decorative under WCAG 1.4.11, meaning it is `aria-hidden` or its meaning is carried by adjacent text (for example 1 px rules, the lane-line track and fill, status squares, the viewport and figure-frame borders). Exempt pairs are still printed in the contrast table, in their own group, each with its reason. Anything else that carries meaning (focus ring, button borders, diagram strokes) must reach 3:1, which is why those use `--asphalt`.
 - **Headings:** one `h1` per page, no skipped levels, headings describe their sections.
 - **Landmarks:** `header`, `nav`, `main`, `footer` present once each.
 - **Links and buttons:** names make sense out of context; the `Resume` link names its file type.
