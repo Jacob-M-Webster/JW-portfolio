@@ -73,7 +73,7 @@
   --measure: 38rem;
   --header-h: 64px;
   --target-min: 44px;
-  --viewport-max: 720px;
+  --viewport-max: 640px;
 
   /* Components (03 section 5 names these sizes explicitly) */
   --button-h: 48px;

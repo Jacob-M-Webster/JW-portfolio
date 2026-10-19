@@ -213,6 +213,7 @@ Otherwise: the poster stays (or returns), the point file is never requested if c
 
 Renders the same point data with the same camera, ramp colors, and ring points onto a `--viewport` background, so the poster matches the live scene. Outputs:
 - `poster-car` and `poster-quad` and `poster-scatter` at 1600 by 1200 (desktop) and 800 by 600 (mobile), as AVIF with WebP fallback, with explicit `width` and `height` on the `<img>`.
+- Viewport sizing these must fill: on desktop the panel is 4:3, the full width of grid columns 7 to 12, height capped at 640 px (at most 853 by 640 CSS px; see `03` section 4.4), so the 1600 by 1200 poster fits without cropping and covers the largest panel at about 1.9x density. On tablet (50svh) and mobile (about 46svh) the panel isn't 4:3, so the poster is drawn with `object-fit: cover`, centered on the subject. The canvas uses the same box.
 - `og-home.png` at 1200 by 630: the car poster with the name `Jacob Webster` and the line `Perception and autonomy software` set in Overpass 700. This is the only place text is baked into an image; the alt text and meta tags carry the same words.
 - Deterministic, so re-running changes no bytes.
 

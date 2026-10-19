@@ -66,4 +66,5 @@ Append one line per decision made during the build: `YYYY-MM-DD | stage | decisi
 | 2026-10-19 | 1 | The style guide exists only under `astro dev` (injected route); `src/dev/` is exempt from the `--lane`/`--concrete` allowlist | It shows every token as a swatch and never ships |
 | 2026-10-19 | 1 | `theme-color` meta deferred to Stage 5 | It needs hex outside the token file; it belongs with the metadata work |
 | 2026-10-19 | 1 | `scripts/` excluded from `astro check` until `@types/node` is approved | Type-checking Node scripts needs that package, which is not on the approved list |
+| 2026-10-19 | 1 | Desktop grid changed to content 1 to 6, viewport 7 to 12; panel 4:3, height capped at 640 px (`--viewport-max`), still sticky | Jake's call: a 4:3 panel matches the posters and frames a car better than the tall `100svh` panel (about 440 by 720) |
 | 2026-10-19 | 1 | The six "extraneous" WASM packages stay | They are optional platform fallbacks recorded in the lockfile, so `npm prune` keeps them; nothing ships from them |

@@ -333,11 +333,11 @@ main {
   }
 
   .home-grid > * {
-    grid-column: 1 / 8;
+    grid-column: 1 / 7;
   }
 
   .home-grid > .viewport {
-    grid-column: 8 / -1;
+    grid-column: 7 / -1;
     grid-row: 1 / -1;
     align-self: start;
     position: sticky;
@@ -345,8 +345,11 @@ main {
     margin-block: var(--space-8) 0;
   }
 
+  /* 4:3 to match the posters; capped at --viewport-max tall. */
   .home-grid > .viewport .viewport-panel {
-    height: calc(100svh - var(--header-h) - var(--space-7));
+    height: auto;
+    aspect-ratio: 4 / 3;
+    max-width: calc(var(--viewport-max) * 4 / 3);
   }
 }
 
