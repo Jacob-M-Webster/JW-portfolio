@@ -214,7 +214,8 @@ function checkMarkup(
       add(m.index ?? 0, 'img-size', m[0].slice(0, 60));
   }
   if (!DEV_ONLY.test(file)) {
-    for (const m of tags.matchAll(/var\(--(lane|concrete)\)/g)) {
+    const restricted = Object.keys(RESTRICTED_COLORS).join('|');
+    for (const m of tags.matchAll(new RegExp(`var\\(--(${restricted})\\)`, 'g'))) {
       add(
         m.index ?? 0,
         `${m[1]}-use`,

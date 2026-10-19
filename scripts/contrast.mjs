@@ -75,6 +75,29 @@ const PAIRS = [
     'Illustration frame; the caption carries the meaning',
   ],
   ['concrete', 'viewport', 'Viewport border against the panel', 'decorative', 'Frame edge only'],
+  ['on-viewport', 'viewport', 'Height legend text inside the panel', 'text'],
+  ['on-viewport', 'viewport', 'Height legend bar outline', 'graphic'],
+  [
+    'ramp-ground',
+    'viewport',
+    'Height legend, low step',
+    'decorative',
+    'aria-hidden; the outline carries the bar edge and "Low"/"High" carry the meaning',
+  ],
+  [
+    'ramp-mid',
+    'viewport',
+    'Height legend, middle step',
+    'decorative',
+    'aria-hidden; the outline carries the bar edge and "Low"/"High" carry the meaning',
+  ],
+  [
+    'ramp-top',
+    'viewport',
+    'Height legend, high step',
+    'decorative',
+    'aria-hidden; the outline carries the bar edge and "Low"/"High" carry the meaning',
+  ],
 ];
 const MIN = { text: 4.5, graphic: 3 };
 

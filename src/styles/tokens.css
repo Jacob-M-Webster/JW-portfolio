@@ -18,8 +18,9 @@
   --lane: #f0b90b;
   --on-lane: #25282c;
   --viewport: #25282c;
+  --on-viewport: #e6e8e4; /* text on the viewport panel; fixed in both themes */
 
-  /* Scene height ramp (used only by the WebGL scene). */
+  /* Scene height ramp (the WebGL scene and its legend). */
   --ramp-ground: #2b3f9e;
   --ramp-mid: #1a98a6;
   --ramp-top: #f0b90b;

@@ -14,7 +14,8 @@ export const BREAKPOINTS = [480, 768, 1024, 1280, 1440];
 export const SPACING_VARS = /^--(space-\d+|gutter|button-pad-inline)$/;
 
 /**
- * Where --lane and --concrete may be used (03 section 3.1). Each entry is a
+ * Where --lane, --concrete, the ramp and --on-viewport may be used (03
+ * section 3.1). Each entry is a
  * selector pattern; a declaration using the token must sit in a rule whose
  * every selector matches one of them.
  */
@@ -32,6 +33,11 @@ export const RESTRICTED_COLORS = {
     /^\.viewport\b/,
     /^\.figure-frame\b/,
   ],
+  // The ramp leaves the scene only for its legend inside the panel.
+  'ramp-ground': [/^\.viewport-legend-bar\b/],
+  'ramp-mid': [/^\.viewport-legend-bar\b/],
+  'ramp-top': [/^\.viewport-legend-bar\b/],
+  'on-viewport': [/^\.viewport-legend\b/],
 };
 
 /** Simple pattern bans: [rule id, regex, applies to CSS (true) or any text (false)]. */

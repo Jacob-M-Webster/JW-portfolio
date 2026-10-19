@@ -4,6 +4,12 @@
 // posters' sizes, so the panel's --viewport fill is the rectangle in both
 // themes) and Stage 3 swaps in the rendered posters. The caption arrives
 // with them, once it is true. The canvas (Stage 4) goes in the same panel.
+
+// The legend describes points colored by height. Over an empty placeholder
+// that would be false, so production omits it until Stage 3 sets this; the
+// dev server shows it so the layout can be reviewed.
+const POSTERS_READY = false;
+const showLegend = POSTERS_READY || import.meta.env.DEV;
 ---
 
 <figure class="viewport">
@@ -18,5 +24,21 @@
       alt=""
       decoding="async"
     />
+    {
+      showLegend && (
+        <div class="viewport-legend small">
+          <p>Color shows height.</p>
+          <p class="viewport-legend-scale">
+            Low
+            <span class="viewport-legend-bar" aria-hidden="true">
+              <span />
+              <span />
+              <span />
+            </span>
+            High
+          </p>
+        </div>
+      )
+    }
   </div>
 </figure>

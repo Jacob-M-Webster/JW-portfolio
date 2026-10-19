@@ -353,6 +353,7 @@ main {
 }
 
 .viewport-panel {
+  position: relative;
   overflow: hidden;
   height: 46svh;
   background: var(--viewport);
@@ -365,6 +366,45 @@ main {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* Height legend, inside the panel: three solid steps, ground to roof. The
+   1 px outline gives the bar its 3:1 edge; the words carry the meaning. */
+.viewport-legend {
+  position: absolute;
+  inset-inline-end: var(--space-3);
+  inset-block-end: var(--space-3);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-1) var(--space-4);
+  color: var(--on-viewport);
+}
+
+.viewport-legend-scale {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.viewport-legend-bar {
+  display: flex;
+  border: var(--stroke-rule) solid var(--on-viewport);
+}
+
+.viewport-legend-bar span {
+  width: var(--space-4);
+  height: var(--space-2);
+  background: var(--ramp-ground);
+}
+
+.viewport-legend-bar span:nth-child(2) {
+  background: var(--ramp-mid);
+}
+
+.viewport-legend-bar span:nth-child(3) {
+  background: var(--ramp-top);
 }
 
 @media (min-width: 768px) {

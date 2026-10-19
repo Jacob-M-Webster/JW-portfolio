@@ -52,9 +52,10 @@ All tokens are CSS custom properties on `:root`, with a dark override under `@me
 | `--concrete` | `#C4C9C4` | `#454A50` | Rules, borders, dashed lane track |
 | `--lane` | `#F0B90B` | `#F0B90B` | The accent: fills, active states, lane-line progress |
 | `--viewport` | `#25282C` | `#1B1E21` | Background of the sensor viewport panel (dark in both themes) |
+| `--on-viewport` | `#E6E8E4` | `#E6E8E4` | Text and the legend outline inside the viewport panel. Fixed in both themes, because the panel is dark in both |
 | `--on-lane` | `#25282C` | `#25282C` | The ink paired with `--lane`: text on a `--lane` fill, and the fill behind `--lane` text. Fixed in both themes, because the dark theme's `--asphalt` on `--lane` is 1.46:1 |
 
-Return colors used inside the scene (see `05-3d-and-motion.md`), a height ramp from ground to roof:
+Return colors used inside the scene (see `05-3d-and-motion.md`) and by its height legend, a ramp from ground to roof:
 
 | Token | Value | Role |
 |---|---|---|
@@ -66,7 +67,7 @@ Return colors used inside the scene (see `05-3d-and-motion.md`), a height ramp f
 
 **Rules**
 - `--lane` is a *fill* color or a graphic, never a text color in either theme. Text on a `--lane` fill is `--on-lane`; when `--lane` is the text color (primary button hover), the fill behind it is `--on-lane`.
-- `--lane` and `--concrete` are allowed only in these uses: 1 px rules, the lane-line track and fill, status squares, the viewport border, figure-frame borders, the primary button fill, and the link highlighter background. `check:tokens` fails on any other use. Graphics that carry meaning, including the solid and dashed strokes in project diagrams, use `--asphalt`.
+- `--lane` and `--concrete` are allowed only in these uses: 1 px rules, the lane-line track and fill, status squares, the viewport border, figure-frame borders, the primary button fill, and the link highlighter background. `check:tokens` fails on any other use. The same check limits the `--ramp-*` tokens to the legend bar and `--on-viewport` to the legend. Graphics that carry meaning, including the solid and dashed strokes in project diagrams, use `--asphalt`.
 - Contrast requirement: all text at least 4.5:1, large text and UI graphics at least 3:1. **Claude must compute and print the ratio for every text/background pair and for the focus ring**, in light and dark, before Stage 1 is done. The hex values above are starting points; adjust them minimally if a pair fails and record the change in the decision log.
 - No gradients anywhere in the UI. The only multi-color element is the scene's height ramp.
 - No pure `#000` or `#fff`.
@@ -233,6 +234,7 @@ Each component lists default, hover, focus, active, and disabled states where th
 **Sensor viewport**
 - Dark `--viewport` panel, radius 3, 1 px `--concrete` border. A canvas fills it. Below it, a caption (`--text-small`) and the live point count. The caption sits outside the panel so it remains readable in every state.
 - Under any fallback condition the same frame shows the poster image.
+- **Height legend**, inside the panel at the bottom right, 12 px in: the sentence `Color shows height.` then `Low`, a stepped bar of three solid 16 by 8 px blocks (`--ramp-ground`, `--ramp-mid`, `--ramp-top`; no gradient) with a 1 px `--on-viewport` outline, and `High`, all in `--text-small` `--on-viewport`. The bar is `aria-hidden`; the words carry the meaning. It is the panel's own key, so it isn't the swatch row that section 5 Figures rules out. It renders only when `POSTERS_READY` is true in `ViewportFrame.astro` (and always under `astro dev` for review), because it describes points that the Stage 2 placeholder doesn't contain.
 
 **Footer**
 - Left aligned. Four links and one sentence. Nothing else.

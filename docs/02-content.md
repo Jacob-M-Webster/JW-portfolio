@@ -229,6 +229,7 @@ Every project page uses this structure, in this order. Headings are sentence cas
 | Project row hover/focus | Underline thickens; no scale, no shadow |
 | Status words | `In progress`, `Paused`, `Hackathon prototype`, `2nd overall` |
 | Scene caption (visible text near the viewport) | `Illustration: a point cloud drawn for this page. Each dot is one return.` |
+| Height legend (inside the viewport panel; shown only once the posters are real) | Caption `Color shows height.` Scale labels `Low` and `High` at the two ends of the stepped bar |
 | Scene live readout (optional; must be real) | `30,000 points`, showing the actual count currently rendered |
 | 404 | Heading `That page doesn't exist.` Body `The link may be old. Projects and the resume are one click away.` Links: `Projects`, `Home` |
 | Image alt text | Describes content and purpose, and names every planned part: `Diagram of the Spot pipeline: speech to text into a grounding model, and a separate person tracker on the camera feed, then planned steps: match the box to a tracked person, a navigation goal, follow the person` |
