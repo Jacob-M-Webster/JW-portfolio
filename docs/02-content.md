@@ -2,7 +2,9 @@
 
 This is the only source of copy and facts for the site. If something is not here, it does not go on the site. Missing information is written as `TODO(jake): ...` and blocks the production build.
 
-Sources for every fact below: Jake's final resume, his GitHub profile and repositories, and his own statements. "Verify" means Jake must confirm against his own records before launch.
+Sources for every fact below: Jake's final resume, his GitHub profile and repositories, and his own statements.
+
+`docs/jake-answers.md` (Jake's answers, 2026-10-19) overrides this file where they conflict. Its section A overrides are applied below; its other sections resolve `TODO(jake)` items in `content/`. "Verify" means Jake must confirm against his own records before launch.
 
 ---
 
@@ -15,7 +17,7 @@ Sources for every fact below: Jake's final resume, his GitHub profile and reposi
 | F3 | Software Engineer (Part-Time), Michelin, Greenville SC, Sep 2026 to present. Works on documentation updates and testing and code-quality tooling (Renovate dependency updates, SonarQube static analysis, automated test setup) | Resume | Check what Michelin allows to be listed publicly |
 | F4 | Software Engineering Intern, Michelin, May to Aug 2026. Playwright frontend tests cut minor release testing from 150 minutes to 3.5 minutes on the inventory management application. Cut the steps to transmit parcel data by 75% using Kafka and Java microservices | Resume | |
 | F5 | Software Engineering Fellow, University of South Carolina Center for Industry Solutions, Columbia SC, Aug 2025 to present | Resume | |
-| F6 | Spot work (in progress): voice commands are parsed into a text query; NVIDIA's LocateAnything-3B vision-language model returns a bounding box for the described person; YOLO11n (person class) tracks between model calls. Runs on a laptop plus a GPU desktop today. Not yet integrated or running on Spot | Jake | Model name exactly as the repo spells it |
+| F6 | Spot work (in progress, started September 2026; Jake is the sole contributor): faster-whisper (Whisper base.en) transcribes the spoken command; the raw transcript goes straight to NVIDIA's LocateAnything-3B vision-language model as the query, which returns a bounding box for the described person; separately, YOLO11n (person class) detects and tracks people across Spot's live camera feed. The two are not integrated. Runs on a laptop plus a GPU desktop, with footage from Spot's own cameras | Jake, `jake-answers.md` A and B | |
 | F7 | Caelus: ROS2 drone perception prototype led by Jake (team of 3). Accumulates 2D LiDAR scans into a 3D voxel point cloud at 10 cm resolution. The project is paused. The Z-axis uses a placeholder increment rather than measured angle data | Resume, Jake | Whether to say "paused" on the site (default: yes) |
 | F8 | WayFinder: LightGBM model that infers traffic light state from nearby vehicle behavior, as a fallback when signals fail. 95% accuracy when confident. False-green errors cut to 2.5% from a 19% baseline. 0.25 ms per inference. Per-lane features from 2M+ rows across 16k Waymo scenarios, with ego-lane detection and leakage controls. ShellHacks X, Sep 2026 | Resume | Definition of "confident"; which parts Jake wrote (a teammate built the hardware demo; Jake did not) |
 | F9 | Baton: multi-user layer for AI coding agents. PalmettoHacks, Oct 2026, 2nd overall, team of 4. Jake contributed to the layer and designed the append-only event log | Resume, repo README | Event-log ownership wording after Jake's prep; hackathon dates |
@@ -36,8 +38,8 @@ Format: what may be said, what may not. "Allowed" phrasing can be reworded, but 
 |---|---|
 | "I'm building a system that lets a Boston Dynamics Spot find and follow a person described out loud." (the verb is *building*) | "Spot follows people", "autonomously follows", "deployed on Spot", "working end to end" |
 | "A vision-language model locates the person in the camera image from a text description." | "Real-time" (unless a latency number is measured and shown) |
-| "A small YOLO model tracks that person between model calls." | Any claim about navigation, obstacle avoidance, or safety behavior being done |
-| "The pieces run on a laptop and a GPU desktop. They are not yet running on the robot." | Implying the model runs on Spot's own hardware |
+| "YOLO11n detects and tracks people across the live camera feed on its own. The vision-language model and YOLO are separate components; connecting them is the next step." (`jake-answers.md` A) | Any claim about navigation, obstacle avoidance, or safety behavior being done; any claim that the tracker follows the person the model found |
+| "The pieces run on a laptop and a GPU desktop." All camera footage comes from Spot's own cameras; the code runs on a laptop and a GPU desktop because deploying to the robot slows iteration. (`jake-answers.md` A) | Implying the model runs on Spot's own hardware |
 | "Next: connect the tracker's output to Spot's navigation." | Dates or promises about when it will work |
 
 ### Caelus (F7)
@@ -92,7 +94,7 @@ Format: what may be said, what may not. "Allowed" phrasing can be reworded, but 
 ### What I'm working on now
 Two short items, no heading decoration.
 
-1. `Spot voice-following.` `I'm building a system that lets a Boston Dynamics Spot find and follow a person described out loud. Speech, visual grounding, and tracking work separately; I'm connecting them.` Link: `Read the Spot write-up` (to the project page)
+1. `Spot voice-following.` `I'm building a system that lets a Boston Dynamics Spot find and follow a person described out loud. Speech to text, visual grounding, and person tracking each work on their own. Connecting them is next.` Link: `Read the Spot write-up` (to the project page)
 2. `Michelin.` `I work part-time as a software engineer on testing and code-quality tooling.`
 
 ### Projects (section heading: `Projects`)
@@ -100,7 +102,7 @@ Row copy (title, one line, status, stack):
 
 | Project | One line | Status | Stack |
 |---|---|---|---|
-| Spot voice-following | Describe a person out loud; a robot dog finds and tracks them. | In progress | Python, LocateAnything-3B, YOLO11n |
+| Spot voice-following | A voice-commanded person-following system for a Boston Dynamics Spot, in progress. | In progress | Python, LocateAnything-3B, YOLO11n |
 | WayFinder | Infers a traffic light's state from how nearby cars behave, for when the signal fails. | Hackathon prototype, ShellHacks X | Python, LightGBM, Pandas |
 | Baton | A shared, replayable session where a team watches and steers one AI coding agent. | 2nd overall, PalmettoHacks | Python, FastAPI, React, WebSockets, SQLite |
 
@@ -162,20 +164,18 @@ Every project page uses this structure, in this order. Headings are sentence cas
 - **Summary:** `Describe a person out loud and a Boston Dynamics Spot finds and tracks them. The perception pieces work separately; I'm connecting them.`
 - **Facts block:**
   - Status: `In progress`
-  - Role: `Building the perception pipeline` (`TODO(jake)`: exact wording of what Jake builds versus what labmates build; the project has a labmate collaborator)
-  - When: `Aug 2025 to present, at USC's Center for Industry Solutions` (`TODO(jake)`: month the Spot work started)
+  - Role: Jake is the sole contributor (`jake-answers.md` B gives the role line).
+  - When: `September 2026 to present, at USC's Center for Industry Solutions` (the fellowship itself, Aug 2025 to present, stays on the experience timeline)
   - Stack: `Python, NVIDIA LocateAnything-3B, YOLO11n` (`TODO(jake)`: speech-to-text tool)
   - Links: none yet (`TODO(jake)`: repo or demo if public)
 - **The problem:** `Following someone on command needs three things a robot doesn't have by default: understanding a spoken description, finding the right person in the camera image, and not losing them. Most person-following demos track "the nearest person." I want "the person in the red jacket."` (`TODO(jake)`: confirm this is the intended framing; delete if not.)
 - **What I built:** `TODO(jake): list the specific components Jake wrote, one sentence each. Do not include anything a labmate wrote.`
-- **How it works** (a real sequence, so numbered steps are allowed here):
-  1. Speech becomes text. (`TODO(jake)`: tool) *Built.*
-  2. The text becomes a query. *Built.*
-  3. A vision-language model (LocateAnything-3B, on a GPU desktop) returns a bounding box for the described person. *Built.*
-  4. A YOLO11n person tracker follows that box between model calls on a laptop. *Built.*
-  5. The tracked box becomes a goal for Spot's navigation. *Planned.*
-  6. Spot follows the person. *Planned.*
-  Diagram: steps 1 to 4 drawn with solid outlines, steps 5 and 6 dashed. A one-line caption: `Solid boxes work today; dashed boxes are next.`
+- **How it works** (`jake-answers.md` B; two real sequences, so step numerals are allowed inside each chain). Two solid chains converge on a dashed hand-off:
+  - Chain 1 (built): spoken command, then speech to text (faster-whisper, Whisper base.en), then the vision-language model (LocateAnything-3B), then a bounding box for the described person. The transcript goes straight to the model as the query; there is no rewriting step yet.
+  - Chain 2 (built): Spot's camera feed, then person detection and tracking (YOLO11n), then tracked people with IDs.
+  - Both chains take the same camera feed as input to their vision step.
+  - Planned (dashed): match the model's box to a tracked person, then turn that person into a navigation goal for Spot, then follow the person.
+  Caption: `Solid boxes work today, each on its own. Dashed boxes are what I'm building next.`
 - **Results:** `None measured yet.` (If measured: `TODO(jake)`: latency per grounding call, tracker frame rate, hand-off accuracy. Do not estimate.)
 - **What isn't done:** `The pieces run on a laptop and a GPU desktop, not on Spot. The hand-off from the model's box to the tracker, and from the tracker to navigation, is what I'm working on.` (`TODO(jake)`: replace with the true current state; list how the model's box is matched to a tracked person, how a lost target is handled, and the safety stop behavior, each as done or not done.)
 
@@ -229,7 +229,7 @@ Every project page uses this structure, in this order. Headings are sentence cas
 | Scene caption (visible text near the viewport) | `Illustration: a point cloud drawn for this page. Each dot is one return.` |
 | Scene live readout (optional; must be real) | `30,000 points`, showing the actual count currently rendered |
 | 404 | Heading `That page doesn't exist.` Body `The link may be old. Projects and the resume are one click away.` Links: `Projects`, `Home` |
-| Image alt text | Describes content and purpose: `Diagram of the Spot pipeline: speech, query, grounding model, tracker, then planned navigation` |
+| Image alt text | Describes content and purpose, and names every planned part: `Diagram of the Spot pipeline: speech to text into a grounding model, and a separate person tracker on the camera feed, then planned steps: match the box to a tracked person, a navigation goal, follow the person` |
 | Canvas | `aria-hidden="true"`; the caption above carries the meaning |
 | Skip link | `Skip to content` |
 | Print | Not required; if added, hide the scene and show the resume contact line |
