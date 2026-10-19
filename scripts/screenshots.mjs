@@ -18,7 +18,7 @@ const SCHEMES = /** @type {const} */ (['light', 'dark']);
 const JS = process.env.JS !== 'off';
 
 /** Faces the site ships: family -> [min weight, max weight], normal style only. */
-const FACES = { Overpass: [400, 700], 'JW Serif': [400, 400] };
+const FACES = { Overpass: [400, 800], 'JW Serif': [400, 400] };
 
 mkdirSync(OUT, { recursive: true });
 const browser = await chromium.launch();

@@ -105,7 +105,7 @@ Fallback stacks:
 - Headlines are set with the type treatment doing real work: tight leading, negative tracking of about `-0.015em` on the display size only, and weight 700. Do not add effects.
 - Use tabular numerals for measurements and dates if the font supports them.
 - No monospace face in the system. (A readout of live numbers in the viewport uses Overpass with tabular figures.)
-- `font-display: swap`; preload only the two files above the fold (Overpass 700 and the Source Serif 4 regular subset); subset to Latin; total font payload 90 KB or less.
+- `font-display: swap`; preload only the two files above the fold (the Overpass variable file, weights 400 to 800, and the Source Serif 4 regular subset); subset to Latin; total font payload 90 KB or less.
 
 ### 3.3 Spacing, radius, borders, shadow
 

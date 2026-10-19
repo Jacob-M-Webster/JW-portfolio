@@ -101,7 +101,7 @@ def main(src: Path, fallbacks: Path) -> None:
     # Subset before instancing: the instancer leaves gvar entries the subsetter can't resolve.
     overpass = TTFont(src / "overpass" / "Overpass[wght].ttf")
     subset_font(overpass)
-    overpass = instancer.instantiateVariableFont(overpass, {"wght": (400, 700)})
+    overpass = instancer.instantiateVariableFont(overpass, {"wght": (400, 800)})
     sans_metrics = overrides(overpass, arial)
     save_woff2(overpass, OUT / "overpass-latin.woff2")
     shutil.copyfile(src / "overpass" / "OFL.txt", OUT / "LICENSE-Overpass-OFL.txt")
