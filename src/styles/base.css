@@ -127,6 +127,10 @@ p {
   font-weight: var(--weight-ui);
 }
 
+.nowrap {
+  white-space: nowrap;
+}
+
 time,
 .tabular {
   font-variant-numeric: tabular-nums;

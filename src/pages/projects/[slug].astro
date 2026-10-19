@@ -41,6 +41,8 @@ const sections = html
   .filter((chunk) => chunk.startsWith('<h2'))
   .map((chunk) => ({ id: /<h2 id="([^"]+)"/.exec(chunk)?.[1], html: chunk }));
 const HOW_IT_WORKS = PROJECT_SECTIONS.indexOf('How it works');
+// Hyphenated compounds ("voice-following") never break at the hyphen.
+const titleParts = data.title.split(/(\s+)/);
 ---
 
 <BaseLayout title={`${data.title}: Jacob Webster`} description={data.oneLine}>
@@ -59,7 +61,9 @@ const HOW_IT_WORKS = PROJECT_SECTIONS.indexOf('How it works');
       </ol>
     </nav>
 
-    <h1>{data.title}</h1>
+    <h1>
+      {titleParts.map((part) => (part.includes('-') ? <span class="nowrap">{part}</span> : part))}
+    </h1>
     <p class="lede">{data.summary}</p>
 
     <div class="project-body">
