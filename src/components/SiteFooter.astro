@@ -1,0 +1,26 @@
+---
+import { site } from '../site';
+---
+
+<footer class="site-footer" id="contact">
+  <div class="page">
+    <ul role="list">
+      <li>
+        <a href={`mailto:${site.email}`}>Email {site.email}</a>
+      </li>
+      <li>
+        <a href={site.linkedin} rel="noopener">
+          LinkedIn
+        </a>
+      </li>
+      <li>
+        <a href={site.github} rel="noopener">
+          GitHub
+        </a>
+      </li>
+      <li>
+        <a href={site.resume}>Resume (PDF)</a>
+      </li>
+    </ul>
+  </div>
+</footer>

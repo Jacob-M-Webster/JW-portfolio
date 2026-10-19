@@ -1,0 +1,27 @@
+---
+import { site } from '../site';
+---
+
+<header class="site-header">
+  <div class="page">
+    <a class="wordmark" href="/">
+      {site.name}
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <ul role="list">
+        <li class="nav-wide">
+          <a href="/#projects">Projects</a>
+        </li>
+        <li class="nav-wide">
+          <a href="/#experience">Experience</a>
+        </li>
+        <li>
+          <a href={site.resume}>Resume</a>
+        </li>
+        <li>
+          <a href={`mailto:${site.email}`}>Email</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

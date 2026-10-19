@@ -1,0 +1,300 @@
+---
+// Dev-only style guide (injected by astro.config.mjs under `astro dev`).
+// Elements with data-force get that pseudo-state applied by
+// scripts/screenshots.mjs through the DevTools protocol.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ActionLink from '../components/ActionLink.astro';
+import ViewportFrame from '../components/ViewportFrame.astro';
+import { site } from '../site';
+
+const colors = [
+  ['fog', 'Page background'],
+  ['asphalt', 'Text, strong strokes, focus ring'],
+  ['asphalt-soft', 'Secondary text'],
+  ['concrete', 'Rules, lane track, frame borders'],
+  ['lane', 'Fills only: primary button, highlighter, lane fill'],
+  ['on-lane', 'Ink paired with lane'],
+  ['viewport', 'Sensor viewport panel'],
+  ['ramp-ground', 'Scene: lowest returns'],
+  ['ramp-mid', 'Scene: body'],
+  ['ramp-top', 'Scene: highest returns'],
+];
+const spaces = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const states = ['default', 'hover', 'focus-visible', 'active'];
+---
+
+<BaseLayout title="Style guide">
+  <div class="page sg">
+    <section class="section">
+      <h1>Style guide</h1>
+      <p>
+        Every token and component state, for checking against the design system. Not part of the
+        production build.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Color</h2>
+      <dl class="sg-rows">
+        {colors.map(([name, role]) => (
+          <div class="sg-row">
+            <dt>
+              <span class={`sg-swatch sw-${name}`} />
+              <code>--{name}</code>
+            </dt>
+            <dd class="small">{role}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="section">
+      <h2>Type</h2>
+      <div class="sg-type">
+        <p class="small">Display, Overpass 700</p>
+        <p class="sg-display">I build perception and autonomy software.</p>
+        <p class="small">Heading 2, Overpass 700</p>
+        <h2>Projects</h2>
+        <p class="small">Heading 3, Overpass 700</p>
+        <h3>Spot voice-following</h3>
+        <p class="small">Body, JW Serif 400</p>
+        <p>
+          I'm a computer science senior at the University of South Carolina, graduating in May 2027.
+          I enjoy building software for machines that move. I'm looking for new grad software
+          engineering roles in autonomy and infrastructure.
+        </p>
+        <p class="small">UI, Overpass 600</p>
+        <p class="sg-ui">Download resume (PDF)</p>
+        <p class="small">Small, Overpass 400 and 600, tabular figures</p>
+        <p class="small tabular">
+          <time>Sep 2026 to present</time>. <span class="status">In progress</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Spacing and radius</h2>
+      <dl class="sg-rows">
+        {spaces.map((n) => (
+          <div class="sg-row">
+            <dt>
+              <code>--space-{n}</code>
+            </dt>
+            <dd>
+              <span class={`sg-bar sp-${n}`} />
+            </dd>
+          </div>
+        ))}
+        <div class="sg-row">
+          <dt>
+            <code>--radius</code>
+          </dt>
+          <dd>
+            <span class="sg-radius"></span>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="section">
+      <h2>Links</h2>
+      <dl class="sg-rows">
+        {['default', 'hover', 'focus-visible', 'visited'].map((state) => (
+          <div class="sg-row">
+            <dt class="small">{state}</dt>
+            <dd>
+              <a href={site.github} data-force={state === 'default' ? undefined : state}>
+                Baton on GitHub
+              </a>
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="section">
+      <h2>Buttons</h2>
+      <dl class="sg-rows">
+        {states.map((state) => (
+          <div class="sg-row">
+            <dt class="small">{state}</dt>
+            <dd class="actions">
+              <ActionLink
+                href={site.resume}
+                variant="primary"
+                data-force={state === 'default' ? undefined : state}
+              >
+                Download resume (PDF)
+              </ActionLink>
+              <ActionLink
+                href={`mailto:${site.email}`}
+                variant="secondary"
+                data-force={state === 'default' ? undefined : state}
+              >
+                Email me
+              </ActionLink>
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <p class="small">
+        Both buttons are links, so there is no disabled state. Active changes nothing: no translate,
+        no scale.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Skip link, focused</h2>
+      <div class="sg-skip">
+        <a class="button skip-link" data-variant="primary" href="#main" data-force="focus-visible">
+          Skip to content
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Sensor viewport frame</h2>
+      <p>Empty until the poster arrives in Stage 2.</p>
+      <ViewportFrame />
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .sg-rows {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .sg-row {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: center;
+  }
+
+  .sg-row dt {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .sg-row dd {
+    margin: 0;
+  }
+
+  code {
+    font-family: var(--font-sans);
+    font-size: var(--text-small);
+  }
+
+  .sg-swatch {
+    display: inline-block;
+    width: var(--space-6);
+    height: var(--space-6);
+    border: var(--stroke-rule) solid var(--asphalt);
+  }
+
+  .sw-fog {
+    background: var(--fog);
+  }
+  .sw-asphalt {
+    background: var(--asphalt);
+  }
+  .sw-asphalt-soft {
+    background: var(--asphalt-soft);
+  }
+  .sw-concrete {
+    background: var(--concrete);
+  }
+  .sw-lane {
+    background: var(--lane);
+  }
+  .sw-on-lane {
+    background: var(--on-lane);
+  }
+  .sw-viewport {
+    background: var(--viewport);
+  }
+  .sw-ramp-ground {
+    background: var(--ramp-ground);
+  }
+  .sw-ramp-mid {
+    background: var(--ramp-mid);
+  }
+  .sw-ramp-top {
+    background: var(--ramp-top);
+  }
+
+  .sg-type > * + * {
+    margin-block-start: var(--space-2);
+  }
+
+  .sg-type .small:not(:first-child) {
+    margin-block-start: var(--space-6);
+  }
+
+  .sg-display {
+    font-family: var(--font-sans);
+    font-size: var(--text-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  .sg-ui {
+    font-family: var(--font-sans);
+    font-size: var(--text-ui);
+    font-weight: var(--weight-ui);
+  }
+
+  .sg-bar {
+    display: block;
+    height: var(--space-3);
+    background: var(--asphalt);
+  }
+
+  .sp-1 {
+    width: var(--space-1);
+  }
+  .sp-2 {
+    width: var(--space-2);
+  }
+  .sp-3 {
+    width: var(--space-3);
+  }
+  .sp-4 {
+    width: var(--space-4);
+  }
+  .sp-5 {
+    width: var(--space-5);
+  }
+  .sp-6 {
+    width: var(--space-6);
+  }
+  .sp-7 {
+    width: var(--space-7);
+  }
+  .sp-8 {
+    width: var(--space-8);
+  }
+  .sp-9 {
+    width: var(--space-9);
+  }
+  .sp-10 {
+    width: var(--space-10);
+  }
+
+  .sg-radius {
+    display: block;
+    width: var(--space-8);
+    height: var(--space-7);
+    border: var(--stroke-strong) solid var(--asphalt);
+    border-radius: var(--radius);
+  }
+
+  .sg-skip {
+    position: relative;
+    min-height: var(--space-8);
+  }
+</style>

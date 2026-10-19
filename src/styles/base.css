@@ -1,0 +1,374 @@
+/*
+  Base styles: reset, typography, focus, links, buttons, page shell.
+  Tokens only (check:tokens). Spec: docs/03-design-system.md.
+*/
+
+/* Reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+img,
+svg,
+canvas,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+ul[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+:target,
+[id] {
+  scroll-margin-top: var(--space-5);
+}
+
+/* Typography */
+
+:root {
+  font-synthesis: none;
+}
+
+body {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--fog);
+  color: var(--asphalt);
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+}
+
+h2 {
+  font-size: var(--text-h2);
+  line-height: var(--leading-h2);
+}
+
+h3 {
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+}
+
+p {
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+.small {
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+}
+
+.status {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-ui);
+}
+
+time,
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Focus: every interactive element */
+
+:focus-visible {
+  outline: var(--stroke-focus) solid var(--asphalt);
+  outline-offset: var(--focus-offset);
+}
+
+/* Links: underline by default, highlighter on hover and focus */
+
+a {
+  color: var(--asphalt);
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--stroke-underline);
+  text-underline-offset: var(--underline-offset);
+  padding-inline: var(--space-1);
+  margin-inline: calc(-1 * var(--space-1));
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+a:visited {
+  color: var(--asphalt);
+}
+
+a:hover,
+a:focus-visible {
+  background: var(--lane);
+  color: var(--on-lane);
+  text-decoration-line: none;
+}
+
+/* Buttons: two types, both links */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--button-h);
+  padding-inline: var(--button-pad-inline);
+  margin-inline: 0;
+  border: var(--stroke-strong) solid var(--asphalt);
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  font-weight: var(--weight-ui);
+  line-height: var(--leading-ui);
+  text-decoration-line: none;
+}
+
+.button[data-variant='primary'] {
+  background: var(--lane);
+  color: var(--on-lane);
+}
+
+.button[data-variant='primary']:hover,
+.button[data-variant='primary']:focus-visible {
+  background: var(--on-lane);
+  color: var(--lane);
+}
+
+.button[data-variant='secondary'] {
+  background: transparent;
+  color: var(--asphalt);
+}
+
+.button[data-variant='secondary']:hover,
+.button[data-variant='secondary']:focus-visible {
+  background: var(--asphalt);
+  color: var(--fog);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Skip link: a primary button, visible only on keyboard focus */
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-4);
+  z-index: 1;
+}
+
+.skip-link:not(:focus-visible) {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Page shell */
+
+.page {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.site-header .page {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: var(--header-h);
+}
+
+.site-header a,
+.site-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+}
+
+.wordmark {
+  font-weight: var(--weight-bold);
+}
+
+.site-header a {
+  text-decoration-line: none;
+}
+
+.site-nav ul {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.site-nav a {
+  font-weight: var(--weight-ui);
+}
+
+.site-nav .nav-wide {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .site-nav ul {
+    gap: var(--space-5);
+  }
+
+  .site-nav .nav-wide {
+    display: list-item;
+  }
+}
+
+main {
+  flex: 1;
+}
+
+.site-footer .page {
+  padding-block: var(--space-8);
+}
+
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+}
+
+.site-footer a {
+  overflow-wrap: anywhere;
+}
+
+/* Sections */
+
+.section {
+  padding-block: var(--space-8);
+}
+
+.section > * + * {
+  margin-block-start: var(--space-5);
+}
+
+.hero {
+  padding-block-start: var(--space-7);
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-block: var(--space-9);
+  }
+
+  .hero {
+    padding-block-start: var(--space-8);
+  }
+}
+
+/* Home grid: content left, sticky sensor viewport right (desktop) */
+
+.home-grid {
+  display: grid;
+}
+
+.viewport {
+  margin-block-end: var(--space-8);
+}
+
+.viewport-panel {
+  height: 46svh;
+  max-height: var(--viewport-max);
+  background: var(--viewport);
+  border: var(--stroke-rule) solid var(--concrete);
+  border-radius: var(--radius);
+}
+
+@media (min-width: 768px) {
+  .viewport-panel {
+    height: 50svh;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: repeat(var(--home-rows, 1), auto);
+    column-gap: var(--space-6);
+  }
+
+  .home-grid > * {
+    grid-column: 1 / 8;
+  }
+
+  .home-grid > .viewport {
+    grid-column: 8 / -1;
+    grid-row: 1 / -1;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-5));
+    margin-block: var(--space-8) 0;
+  }
+
+  .home-grid > .viewport .viewport-panel {
+    height: calc(100svh - var(--header-h) - var(--space-7));
+  }
+}
+
+/* High contrast and print */
+
+@media (forced-colors: active) {
+  a:hover,
+  a:focus-visible {
+    text-decoration-line: underline;
+  }
+
+  .button {
+    border-color: ButtonText;
+  }
+
+  .viewport-panel {
+    border-color: CanvasText;
+  }
+}
+
+@media print {
+  .viewport {
+    display: none;
+  }
+}

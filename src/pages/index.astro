@@ -1,23 +1,28 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Jacob Webster: perception and autonomy software</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  </head>
-  <body>
-    <main>
-      <h1>I build perception and autonomy software.</h1>
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ActionLink from '../components/ActionLink.astro';
+import ViewportFrame from '../components/ViewportFrame.astro';
+import { site } from '../site';
+---
+
+<BaseLayout title="Jacob Webster: perception and autonomy software">
+  <div class="page home-grid">
+    <section class="section hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">I build perception and autonomy software.</h1>
       <p>
         I'm a computer science senior at the University of South Carolina, graduating in May 2027. I
         enjoy building software for machines that move. I'm looking for new grad software
         engineering roles in autonomy and infrastructure.
       </p>
-      <p>
-        <a href="/jacob-webster-resume.pdf">Download resume (PDF)</a>
-        <a href="mailto:jakewebster5619@gmail.com">Email me</a>
-      </p>
-    </main>
-  </body>
-</html>
+      <div class="actions">
+        <ActionLink href={site.resume} variant="primary">
+          Download resume (PDF)
+        </ActionLink>
+        <ActionLink href={`mailto:${site.email}`} variant="secondary">
+          Email me
+        </ActionLink>
+      </div>
+    </section>
+    <ViewportFrame />
+  </div>
+</BaseLayout>
