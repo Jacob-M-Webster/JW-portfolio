@@ -1,0 +1,8 @@
+docs/
+dist/
+.astro/
+public/
+assets-private/
+.screenshots/
+package-lock.json
+CLAUDE.md
