@@ -90,7 +90,7 @@ Fallback stacks:
 
 | Token | Size | Line height | Weight | Use |
 |---|---|---|---|---|
-| `--text-display` | `clamp(2.5rem, 1.5rem + 4vw, 4.75rem)` | 1.02 | 700 | The H1 only |
+| `--text-display` | `clamp(2.5rem, 1.5rem + 3vw, 4rem)` | 1.02 | 700 | The H1 only |
 | `--text-h2` | `clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem)` | 1.1 | 700 | Section headings |
 | `--text-h3` | `clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem)` | 1.2 | 700 | Project titles, role titles |
 | `--text-body` | `1.125rem` | 1.65 (serif gets extra leading) | 400 | Prose |
@@ -171,7 +171,7 @@ On a phone the first viewport must already contain the name, the H1, the lead pa
 ### 4.4 Grid and measures
 
 - Max page width 1200 px, centered. Page gutters `clamp(16px, 4vw, 48px)`.
-- Desktop (1024 px and up): 12-column grid. Content spans columns 1 to 6; the viewport spans columns 7 to 12 (sticky, `top` equal to header height plus 24 px). The panel is 4:3 (the posters' aspect, so nothing is cropped), full column width, with its height capped at 640 px (so at most 853 by 640).
+- Desktop (1024 px and up): 12-column grid. Content spans columns 1 to 6; the viewport spans columns 7 to 12 (sticky, `top` equal to header height plus 24 px). The panel is 4:3 (the posters' aspect, so nothing is cropped), full column width: at most 536 by 402 at the 1200 px page maximum. There is no height cap, because the column can never make the panel taller than that.
 - Tablet (768 to 1023 px): single column; the viewport is inline in the hero at 50svh; no sticky behavior.
 - Prose width 38rem max. Never full-width prose.
 - Alignment: everything left-aligned. The footer and 404 are left-aligned too.
@@ -212,7 +212,7 @@ Each component lists default, hover, focus, active, and disabled states where th
 - `outline: 3px solid var(--asphalt)` in light, `var(--asphalt)` (which is light in dark theme) in dark; `outline-offset: 3px`. Must be at least 3:1 against whatever it sits on. Never `outline: none` without a replacement.
 
 **Hero**
-- H1 in `--text-display`, left aligned, wrapping naturally within the 6-column content area. Lead paragraph in serif body size. Two buttons. No badges, no stat bar, no gradient, no scroll-down arrow.
+- H1 in `--text-display` with `text-wrap: balance`, left aligned, wrapping naturally within the 6-column content area. No line may hold only "I build", and no line other than the last may be a single word, at 1024, 1280, 1440 and 1920 px. Lead paragraph in serif body size. Two buttons. No badges, no stat bar, no gradient, no scroll-down arrow.
 
 **Project rows (the Projects list)**
 - Not cards. Each project is a full-width ruled row: title (`--text-h3`) on the left with the status text beside it; the one-line description in serif below; the stack as a plain comma-separated sentence in `--text-small`.

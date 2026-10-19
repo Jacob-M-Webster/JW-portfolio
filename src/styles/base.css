@@ -313,7 +313,6 @@ main {
 
 .viewport-panel {
   height: 46svh;
-  max-height: var(--viewport-max);
   background: var(--viewport);
   border: var(--stroke-rule) solid var(--concrete);
   border-radius: var(--radius);
@@ -345,11 +344,10 @@ main {
     margin-block: var(--space-8) 0;
   }
 
-  /* 4:3 to match the posters; capped at --viewport-max tall. */
+  /* 4:3 to match the posters; full column width, at most 536 by 402. */
   .home-grid > .viewport .viewport-panel {
     height: auto;
     aspect-ratio: 4 / 3;
-    max-width: calc(var(--viewport-max) * 4 / 3);
   }
 }
 
