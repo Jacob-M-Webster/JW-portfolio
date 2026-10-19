@@ -1,9 +1,30 @@
 // @ts-check
 // Rules for check:content, maintained from docs/02-content.md:
 // section B (forbidden claims) and section F (banned words).
-// `scope` limits a rule to files whose path matches it.
+// `scope` limits a rule to files whose path matches it. `level: 'warn'`
+// reports a hit as a warning in every mode, including --strict.
 
-/** @typedef {{ id: string, re: RegExp, source: string, scope?: RegExp }} Rule */
+/** @typedef {{ id: string, re: RegExp, source: string, scope?: RegExp, level?: 'warn' }} Rule */
+
+/**
+ * Where the Spot honesty rules apply: the Spot page, the home copy (which
+ * describes Spot in the Now item and the project row) and the Spot figure,
+ * in source and in the build. The fixtures folder holds the planted test.
+ */
+export const SPOT_SCOPE = new RegExp(
+  [
+    /content\/projects\/spot\.md$/,
+    /content\/(site|experience|education|skills|honors)\.json$/,
+    /src\/pages\/index\.astro$/,
+    /src\/components\/ProjectRow\.astro$/,
+    /src\/components\/figures\/SpotFigure\.astro$/,
+    /dist\/index\.html$/,
+    /dist\/projects\/spot\/index\.html$/,
+    /scripts\/fixtures\/spot-claims\//,
+  ]
+    .map((r) => r.source)
+    .join('|'),
+);
 
 /** @type {Rule[]} */
 export const FORBIDDEN = [
@@ -13,6 +34,53 @@ export const FORBIDDEN = [
   { id: 'deployed-on-spot', re: /\bdeployed on (spot|the robot)\b/i, source: 'B Spot' },
   { id: 'end-to-end', re: /\bworking end[- ]to[- ]end\b/i, source: 'B Spot' },
   { id: 'real-time', re: /\breal[- ]?time\b/i, source: 'B Spot, Caelus' },
+  // Spot, scoped (02 B Spot, checked phrases): what the system does today
+  // must not read as finding, following or tracking the described person.
+  {
+    id: 'spot-finds-and-follows',
+    re: /\bfinds and (follows|tracks)\b/i,
+    source: 'B Spot',
+    scope: SPOT_SCOPE,
+  },
+  {
+    id: 'spot-follows-person',
+    re: /\bfollows (a|the|that) (person|human)\b/i,
+    source: 'B Spot',
+    scope: SPOT_SCOPE,
+  },
+  {
+    id: 'spot-follows-them',
+    re: /\bfollows (them|you|people)\b/i,
+    source: 'B Spot',
+    scope: SPOT_SCOPE,
+  },
+  {
+    id: 'spot-tracks-person',
+    re: /\btracks (them|that person|the person|a person)\b/i,
+    source: 'B Spot',
+    scope: SPOT_SCOPE,
+  },
+  { id: 'spot-end-to-end', re: /\bworks end[- ]to[- ]end\b/i, source: 'B Spot', scope: SPOT_SCOPE },
+  {
+    id: 'spot-quality-words',
+    re: /\b(accurate|decent|reliable|robust|seamless|real[- ]?time)\b/i,
+    source: 'B Spot; jake-answers B',
+    scope: SPOT_SCOPE,
+  },
+  {
+    id: 'spot-integrat',
+    re: /\bintegrat(ed|es|ion)\b/i,
+    source: 'B Spot',
+    scope: SPOT_SCOPE,
+    level: 'warn',
+  },
+  {
+    id: 'spot-runs-on-robot',
+    re: /\b(runs|deployed) on (the robot|Spot)\b/i,
+    source: 'B Spot',
+    scope: SPOT_SCOPE,
+    level: 'warn',
+  },
   // Caelus (F7)
   { id: 'autonomous-navigation', re: /\bautonomous navigation\b/i, source: 'B Caelus' },
   { id: 'slam', re: /\bSLAM\b/, source: 'B Caelus' },

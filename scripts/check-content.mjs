@@ -2,7 +2,8 @@
 // check:content. Always fails on forbidden claims, banned words and
 // incomplete project files. TODO(jake) fails only in strict mode (--strict, or
 // VERCEL_ENV=production on Vercel's production builds); otherwise it warns.
-// With --dist it scans the build output too.
+// Warn-level rules stay warnings in every mode. With --dist it scans the
+// build output too.
 import { walk, read, lineOf, report } from './lib/files.mjs';
 import { FORBIDDEN, BANNED_WORDS, ALLOWED_PHRASES, PROJECT_KEYS } from './content-rules.mjs';
 
@@ -40,8 +41,12 @@ function maskAllowed(/** @type {string} */ text) {
 
 for (const file of files) {
   const text = read(file);
-  const add = (/** @type {number} */ i, /** @type {string} */ rule, /** @type {string} */ found) =>
-    errors.push({ file, line: lineOf(text, i), rule, text: found });
+  const add = (
+    /** @type {number} */ i,
+    /** @type {string} */ rule,
+    /** @type {string} */ found,
+    list = errors,
+  ) => list.push({ file, line: lineOf(text, i), rule, text: found });
 
   for (const m of text.matchAll(/TODO\(jake\)[^\n]{0,80}/g)) {
     const finding = { file, line: lineOf(text, m.index ?? 0), rule: 'todo-jake', text: m[0] };
@@ -57,7 +62,12 @@ for (const file of files) {
       rule.re.flags.includes('g') ? rule.re.flags : rule.re.flags + 'g',
     );
     for (const m of copy.matchAll(re))
-      add(m.index ?? 0, `forbidden:${rule.id} (02 ${rule.source})`, m[0]);
+      add(
+        m.index ?? 0,
+        `forbidden:${rule.id} (02 ${rule.source})`,
+        m[0],
+        rule.level === 'warn' ? warnings : errors,
+      );
   }
   for (const { word, re } of BANNED) {
     for (const m of copy.matchAll(re)) add(m.index ?? 0, `banned-word (02 F)`, `${m[0]} [${word}]`);

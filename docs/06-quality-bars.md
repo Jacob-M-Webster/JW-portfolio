@@ -115,7 +115,7 @@ Evergreen browsers, latest two versions: Chrome, Edge, Firefox, Safari (macOS an
 
 | Script | What it fails on |
 |---|---|
-| `check:content` | Always: missing required frontmatter; a project page missing "What isn't done"; any claim string from the forbidden columns in `02` section B (a maintained list of regexes: `autonomously follows`, `deployed on Spot`, `SLAM`, `real-time`, `production-ready`, `I built Baton`, and so on), and any banned word from `02` section F. In strict mode only (`--strict`, or `VERCEL_ENV=production`, which Vercel sets on production builds): any `TODO(jake)` anywhere in `content/`, `src/`, or the build output. Outside strict mode each `TODO(jake)` is listed as a warning. |
+| `check:content` | Always: missing required frontmatter; a project page missing "What isn't done"; any claim string from the forbidden columns in `02` section B (a maintained list of regexes: `autonomously follows`, `deployed on Spot`, `SLAM`, `real-time`, `production-ready`, `I built Baton`, and so on), any banned word from `02` section F, and the Spot checked phrases in `02` section B (scoped to the Spot page, home copy, and Spot figure). Warn-level rules (the Spot "integrat…" and "runs/deployed on the robot" phrases) are warnings in every mode. In strict mode only (`--strict`, or `VERCEL_ENV=production`, which Vercel sets on production builds): any `TODO(jake)` anywhere in `content/`, `src/`, or the build output. Outside strict mode each `TODO(jake)` is listed as a warning. |
 | `check:assets` | See `05` section 9 |
 | `check:links` | Any internal link, anchor, or external link that does not resolve (external checks may be allowed to warn, not fail, for rate-limited hosts) |
 | `check:a11y` | Any axe violation on any route in either theme |

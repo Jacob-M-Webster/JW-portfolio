@@ -42,6 +42,8 @@ Format: what may be said, what may not. "Allowed" phrasing can be reworded, but 
 | "The pieces run on a laptop and a GPU desktop." All camera footage comes from Spot's own cameras; the code runs on a laptop and a GPU desktop because deploying to the robot slows iteration. (`jake-answers.md` A) | Implying the model runs on Spot's own hardware |
 | "Next: connect the tracker's output to Spot's navigation." | Dates or promises about when it will work |
 
+**Checked phrases** (`check:content`, scoped to the Spot page, the home copy, and the Spot figure, in source and in `dist/`). Fail: "finds and follows/tracks"; "follows a/the/that person or human"; "follows them/you/people"; "tracks them/that person/the person/a person"; "works end to end"; "accurate", "decent", "reliable", "robust", "seamless", "real-time". Warn (in every mode, including strict): "integrated/integrates/integration"; "runs on" or "deployed on" the robot or Spot. The planted test is `scripts/fixtures/spot-claims/planted.md`.
+
 ### Caelus (F7)
 | Allowed | Forbidden |
 |---|---|
