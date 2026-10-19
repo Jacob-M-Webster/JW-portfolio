@@ -215,7 +215,7 @@ Each component lists default, hover, focus, active, and disabled states where th
 - H1 in `--text-display` with `text-wrap: balance`, left aligned, wrapping naturally within the 6-column content area. No line may hold only "I build", and no line other than the last may be a single word, at 1024, 1280, 1440 and 1920 px. Lead paragraph in serif body size. Two buttons. No badges, no stat bar, no gradient, no scroll-down arrow.
 
 **Project rows (the Projects list)**
-- Not cards. Each project is a full-width ruled row: title (set at `--text-h2` size, still an `h3`) on the left with the status text beside it; the one-line description in serif below; the stack as a plain comma-separated sentence in `--text-small`.
+- Not cards. Each project is a full-width ruled row: title (set at `--text-h2` size, still an `h3`) with the status text on its own line below it; the one-line description in serif below; the stack as a plain comma-separated sentence in `--text-small`.
 - The title is the only link; its click area stretches over the row (the stretched-link technique), with a visible focus ring around the row.
 - Status is plain text with a small filled square (8 px) in a state color: in progress (`--lane`), paused (`--concrete`), prototype and placed (`--asphalt`). The square is decorative and has `aria-hidden`; the word carries the meaning.
 - Hover and focus: the title gets the highlighter treatment; on desktop the matching scene state also becomes active (see `05`).
