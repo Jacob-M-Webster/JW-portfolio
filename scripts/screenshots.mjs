@@ -1,7 +1,8 @@
 // @ts-check
 // Captures each route at 375, 768, 1280 and 1920 px in light and dark.
-// Needs `npm run dev` running. Elements with data-force="hover|focus-visible|
-// active|visited" get that pseudo-state through the DevTools protocol.
+// Needs `npm run dev` running; JS=off disables JavaScript. Elements with
+// data-force="hover|focus-visible|active|visited" get that pseudo-state through
+// the DevTools protocol.
 // Also audits fonts: every family/weight/style in use must be one the shipped
 // files cover, so nothing renders as faux bold or italic.
 import { mkdirSync } from 'node:fs';
@@ -14,6 +15,7 @@ const OUT = join(ROOT, '.screenshots', process.env.SHOTS_DIR ?? 'stage1');
 const ROUTES = (process.env.ROUTES ?? '/styleguide,/').split(',');
 const WIDTHS = [375, 768, 1280, 1920];
 const SCHEMES = /** @type {const} */ (['light', 'dark']);
+const JS = process.env.JS !== 'off';
 
 /** Faces the site ships: family -> [min weight, max weight], normal style only. */
 const FACES = { Overpass: [400, 700], 'JW Serif': [400, 400] };
@@ -28,7 +30,11 @@ const problems = [];
 for (const route of ROUTES) {
   for (const width of WIDTHS) {
     for (const colorScheme of SCHEMES) {
-      const context = await browser.newContext({ viewport: { width, height: 900 }, colorScheme });
+      const context = await browser.newContext({
+        viewport: { width, height: 900 },
+        colorScheme,
+        javaScriptEnabled: JS,
+      });
       const page = await context.newPage();
       await page.goto(BASE + route, { waitUntil: 'networkidle' });
       await page.evaluate(() => document.fonts.ready);
@@ -68,7 +74,7 @@ for (const route of ROUTES) {
         if (!ok) problems.push(`${route} ${width} ${colorScheme}: ${family} ${weight} ${style}`);
       }
 
-      const name = `${route === '/' ? 'home' : route.replace(/\//g, '')}-${width}-${colorScheme}.png`;
+      const name = `${route === '/' ? 'home' : route.replace(/^\//, '').replace(/\//g, '-')}-${width}-${colorScheme}.png`;
       await page.screenshot({ path: join(OUT, name), fullPage: true });
       console.log(`saved ${name}`);
       await context.close();
