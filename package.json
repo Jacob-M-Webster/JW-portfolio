@@ -18,7 +18,8 @@
     "typecheck": "astro check",
     "lint": "prettier --check .",
     "format": "prettier --write .",
-    "shots": "node scripts/screenshots.mjs"
+    "shots": "node scripts/screenshots.mjs",
+    "check:assets": "node scripts/check-assets.mjs"
   },
   "dependencies": {
     "astro": "~7.3.8"
