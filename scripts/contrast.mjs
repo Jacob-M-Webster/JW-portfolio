@@ -93,7 +93,7 @@ for (const kind of /** @type {const} */ (['text', 'graphic', 'decorative'])) {
       : '| Foreground on background | Use | Light | Dark | Result |',
   );
   console.log('|---|---|---|---|---|');
-  for (const [fg, bg, use, k, reason] of PAIRS.filter((p) => p[3] === kind)) {
+  for (const [fg, bg, use, , reason] of PAIRS.filter((p) => p[3] === kind)) {
     const r = Object.fromEntries(Object.entries(themes).map(([t, c]) => [t, ratio(c[fg], c[bg])]));
     let last = reason ?? '';
     if (kind !== 'decorative') {
