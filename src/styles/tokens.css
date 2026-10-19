@@ -1,0 +1,91 @@
+/*
+  Design tokens. This is the only file allowed to contain raw color values
+  (enforced by check:tokens). Spec: docs/03-design-system.md section 3.
+
+  Breakpoints (mobile-first, min-width only): 480, 768, 1024, 1440 px.
+  Custom properties can't be used inside media queries, so check:tokens
+  enforces this list instead.
+*/
+
+:root {
+  color-scheme: light dark;
+
+  /* Color: the road. */
+  --fog: #edefec;
+  --asphalt: #25282c;
+  --asphalt-soft: #4a4f55;
+  --concrete: #c4c9c4;
+  --lane: #f0b90b;
+  --on-lane: #25282c;
+  --viewport: #25282c;
+
+  /* Scene height ramp (used only by the WebGL scene). */
+  --ramp-ground: #2b3f9e;
+  --ramp-mid: #1a98a6;
+  --ramp-top: #f0b90b;
+
+  /* Type */
+  --font-sans: Overpass, 'Overpass fallback', 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'JW Serif', 'JW Serif fallback', Charter, 'Iowan Old Style', Georgia, serif;
+
+  --text-display: clamp(2.5rem, 1.5rem + 4vw, 4.75rem);
+  --leading-display: 1.02;
+  --tracking-display: -0.015em;
+  --text-h2: clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem);
+  --leading-h2: 1.1;
+  --text-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  --leading-h3: 1.2;
+  --text-body: 1.125rem;
+  --leading-body: 1.65;
+  --text-ui: 1rem;
+  --leading-ui: 1.4;
+  --text-small: 0.875rem;
+  --leading-small: 1.5;
+
+  --weight-regular: 400;
+  --weight-ui: 600;
+  --weight-bold: 700;
+
+  /* Spacing: 4 px base. No other values. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 144px;
+
+  /* Shape and strokes */
+  --radius: 3px;
+  --stroke-rule: 1px;
+  --stroke-underline: 1.5px;
+  --stroke-strong: 2px;
+  --stroke-focus: 3px;
+  --focus-offset: 3px;
+  --underline-offset: 3px;
+
+  /* Layout */
+  --page-max: 1200px;
+  --gutter: clamp(16px, 4vw, 48px);
+  --measure: 38rem;
+  --header-h: 64px;
+  --target-min: 44px;
+  --viewport-max: 720px;
+
+  /* Components (03 section 5 names these sizes explicitly) */
+  --button-h: 48px;
+  --button-pad-inline: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fog: #2a2e32;
+    --asphalt: #e6e8e4;
+    --asphalt-soft: #aeb4b9;
+    --concrete: #454a50;
+    --viewport: #1b1e21;
+  }
+}
