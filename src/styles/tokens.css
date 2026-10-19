@@ -45,6 +45,7 @@
   --weight-regular: 400;
   --weight-ui: 600;
   --weight-bold: 700;
+  --weight-display: 800; /* the H1 only */
 
   /* Spacing: 4 px base. No other values. */
   --space-1: 4px;

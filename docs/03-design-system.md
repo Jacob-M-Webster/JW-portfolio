@@ -90,7 +90,7 @@ Fallback stacks:
 
 | Token | Size | Line height | Weight | Use |
 |---|---|---|---|---|
-| `--text-display` | `clamp(2.5rem, 1.5rem + 3vw, 4rem)` | 1.02 | 700 | The H1 only |
+| `--text-display` | `clamp(2.5rem, 1.5rem + 3vw, 4rem)` | 1.02 | 800 (`--weight-display`) | The H1 only |
 | `--text-h2` | `clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem)` | 1.1 | 700 | Section headings |
 | `--text-h3` | `clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem)` | 1.2 | 700 | Project titles, role titles |
 | `--text-body` | `1.125rem` | 1.65 (serif gets extra leading) | 400 | Prose |
@@ -102,7 +102,7 @@ Fallback stacks:
 - **Sentence case everywhere.** No ALL-CAPS labels, no tracked caps, no small-caps.
 - **No eyebrow labels** above headings unless the label names something the heading doesn't.
 - **No single-word accents in headlines** (one word in a different color, italic, or weight).
-- Headlines are set with the type treatment doing real work: tight leading, negative tracking of about `-0.015em` on the display size only, and weight 700. Do not add effects.
+- Headlines are set with the type treatment doing real work: tight leading, negative tracking of about `-0.015em` on the display size only, and weight 800 on the H1 and 700 on every other heading. Do not add effects.
 - Use tabular numerals for measurements and dates if the font supports them.
 - No monospace face in the system. (A readout of live numbers in the viewport uses Overpass with tabular figures.)
 - `font-display: swap`; preload only the two files above the fold (the Overpass variable file, weights 400 to 800, and the Source Serif 4 regular subset); subset to Latin; total font payload 90 KB or less.

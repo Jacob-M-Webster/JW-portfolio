@@ -73,6 +73,7 @@ h3 {
 
 h1 {
   font-size: var(--text-display);
+  font-weight: var(--weight-display);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
 }
