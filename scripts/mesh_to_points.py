@@ -206,7 +206,7 @@ def inspect():
         "- Forward axis: OBJ +Z (the low hood) maps to scene +X; OBJ +X maps to scene -Z.",
         "",
     ]
-    REPORT.write_text("\n".join(lines), encoding="utf-8")
+    REPORT.write_text("\n".join(lines), encoding="utf-8", newline="\n")
     print("\n".join(lines))
 
 
@@ -284,7 +284,8 @@ def build(out_dir):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "scene-points.bin").write_bytes(b"".join(q.tobytes() for q in blobs))
-    (out_dir / "scene-points.json").write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
+    # newline="\n": the bytes must not depend on the OS (Windows text mode writes CRLF).
+    (out_dir / "scene-points.json").write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8", newline="\n")
     for f in ("scene-points.bin", "scene-points.json"):
         data = (out_dir / f).read_bytes()
         print(f"{f}: {len(data):,} bytes, sha256 {hashlib.sha256(data).hexdigest()}")

@@ -1,0 +1,2 @@
+# Derived scene data is compared byte for byte (scripts/tests); never convert line endings.
+public/models/** -text
