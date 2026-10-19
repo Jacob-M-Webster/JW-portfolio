@@ -21,6 +21,8 @@ function devStyleguide() {
 
 // https://astro.build/config
 export default defineConfig({
+  // Keeps the dev overlay out of style-guide screenshots; dev only.
+  devToolbar: { enabled: false },
   build: {
     // One external stylesheet keeps the Stage 5 CSP to style-src 'self'.
     inlineStylesheets: 'never',

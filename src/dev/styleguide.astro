@@ -168,9 +168,15 @@ const states = ['default', 'hover', 'focus-visible', 'active'];
 
   .sg-row {
     display: grid;
-    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
-    gap: var(--space-4);
+    gap: var(--space-2);
     align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .sg-row {
+      grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+      gap: var(--space-4);
+    }
   }
 
   .sg-row dt {
