@@ -1,299 +1,308 @@
-# 02. Content
+# 03. Design system
 
-This is the only source of copy and facts for the site. If something is not here, it does not go on the site. Missing information is written as `TODO(jake): ...` and blocks the production build.
-
-Sources for every fact below: Jake's final resume, his GitHub profile and repositories, and his own statements. "Verify" means Jake must confirm against his own records before launch.
+Read this before writing any CSS or markup. It exists to keep the site from looking like every other generated portfolio.
 
 ---
 
-## A. Facts ledger
+## 1. Design thesis
 
-| ID | Fact | Source | Verify before launch |
+**Subject:** perception software for machines that move. The world this subject lives in: LiDAR returns, bird's-eye views, lane paint, road signage, the sensor's point of view.
+
+**Audience job:** a recruiter or engineer decides in seconds whether this person builds real perception systems.
+
+**The one memorable thing:** the *sensor viewport*, a framed panel showing a live point cloud of a car and a robot, swept by a LiDAR-style beam. Everything else on the page is quiet, typographic, and disciplined so that this panel carries the identity.
+
+**Principles**
+1. **Spend boldness in one place.** The viewport is loud. Type, layout, and color around it are restrained.
+2. **Structure carries information.** A dashed lane line shows scroll progress because it is a progress indicator. Numbers mark steps only where the content is a real sequence. Rules separate things that are separate.
+3. **Content-derived visuals.** Each project's figure is drawn from that project's real architecture, not from stock decoration.
+4. **Honest drawing.** Built parts are solid; planned parts are dashed. The visual language itself tells the truth about status.
+5. **Left-aligned and legible.** Reading comes first. Nothing centered except where a single short line demands it.
+
+---
+
+## 2. Rejected defaults (and why)
+
+These are the looks that currently appear on generated sites regardless of subject. They are rejected here. If the build drifts toward one of them, fix it.
+
+| Default | Why it's rejected |
+|---|---|
+| Warm cream background with a high-contrast serif display and a terracotta or clay accent | Reads as generated; unrelated to perception or robotics |
+| Near-black page with a single acid-green or vermilion accent | Same: a default, not a decision |
+| Broadsheet layout: hairline rules everywhere, zero radius, dense newspaper columns | A mood borrowed from print, unrelated to the subject |
+| The "SaaS card kit": identical rounded cards, soft grey shadow on each, gradient washes | Makes three different projects look the same |
+| Template chrome: tracked-out ALL-CAPS eyebrow labels, middle-dot meta strings (`A · B · C`), `WORD — fragment` labels, a monospace face for small data labels, `→` on every link | Appears whatever the subject; signals no thought |
+| Numbered markers `01 / 02 / 03` on non-sequential content | Decoration pretending to be structure |
+| Fade-and-slide-up entrance on every section; hover lift on every card | Motion with no purpose |
+| Gradient text, glassmorphism panels, blurred color blobs, glow | Tells of a template |
+
+---
+
+## 3. Tokens
+
+All tokens are CSS custom properties on `:root`, with a dark override under `@media (prefers-color-scheme: dark)`. Components never use raw hex values.
+
+### 3.1 Color (named, 6 core values)
+
+| Token | Light | Dark | Role |
 |---|---|---|---|
-| F1 | Name: Jacob Webster (goes by Jake) | Resume | |
-| F2 | B.S. Computer Science, University of South Carolina, Aug 2024 to May 2027, GPA 3.6 | Resume | GPA shown on the site: optional. Default: omit from the hero, include on the experience/education block. |
-| F3 | Software Engineer (Part-Time), Michelin, Greenville SC, Sep 2026 to present. Works on documentation updates and testing and code-quality tooling (Renovate dependency updates, SonarQube static analysis, automated test setup) | Resume | Check what Michelin allows to be listed publicly |
-| F4 | Software Engineering Intern, Michelin, May to Aug 2026. Playwright frontend tests cut minor release testing from 150 minutes to 3.5 minutes on the inventory management application. Cut the steps to transmit parcel data by 75% using Kafka and Java microservices | Resume | |
-| F5 | Software Engineering Fellow, University of South Carolina Center for Industry Solutions, Columbia SC, Aug 2025 to present | Resume | |
-| F6 | Spot work (in progress): voice commands are parsed into a text query; NVIDIA's LocateAnything-3B vision-language model returns a bounding box for the described person; YOLO11n (person class) tracks between model calls. Runs on a laptop plus a GPU desktop today. Not yet integrated or running on Spot | Jake | Model name exactly as the repo spells it |
-| F7 | Caelus: ROS2 drone perception prototype led by Jake (team of 3). Accumulates 2D LiDAR scans into a 3D voxel point cloud at 10 cm resolution. The project is paused. The Z-axis uses a placeholder increment rather than measured angle data | Resume, Jake | Whether to say "paused" on the site (default: yes) |
-| F8 | WayFinder: LightGBM model that infers traffic light state from nearby vehicle behavior, as a fallback when signals fail. 95% accuracy when confident. False-green errors cut to 2.5% from a 19% baseline. 0.25 ms per inference. Per-lane features from 2M+ rows across 16k Waymo scenarios, with ego-lane detection and leakage controls. ShellHacks X, Sep 2026 | Resume | Definition of "confident"; which parts Jake wrote (a teammate built the hardware demo; Jake did not) |
-| F9 | Baton: multi-user layer for AI coding agents. PalmettoHacks, Oct 2026, 2nd overall, team of 4. Jake contributed to the layer and designed the append-only event log | Resume, repo README | Event-log ownership wording after Jake's prep; hackathon dates |
-| F10 | Honors: Palmetto Fellows Scholarship (SC merit-based); Dean's Scholar (5 semesters); hackathons: CUhackit 2025 Best Web Dev, NASA Space Apps Most Inspirational, PalmettoHacks 2nd Overall | Resume | Dean's Scholar semester count against the transcript |
-| F11 | Contact: jakewebster5619@gmail.com; linkedin.com/in/jacob-webster2; github.com/Jacob-M-Webster | Resume, GitHub | |
-| F12 | Looking for: new grad software engineering roles in autonomy and infrastructure, 2027 | GitHub profile | |
-| F13 | Baton demo video: https://youtu.be/sKwHaWB106Q. Repo: https://github.com/Jacob-M-Webster/Baton | Repo README | Repo public and secrets-clean |
-| F14 | WayFinder repo: https://github.com/Jacob-M-Webster/Wayfinder | GitHub | README explains the Python model and the web visualizer |
+| `--fog` | `#EDEFEC` | `#2A2E32` | Page background |
+| `--asphalt` | `#25282C` | `#E6E8E4` | Primary text and strong strokes |
+| `--asphalt-soft` | `#4A4F55` | `#AEB4B9` | Secondary text |
+| `--concrete` | `#C4C9C4` | `#454A50` | Rules, borders, dashed lane track |
+| `--lane` | `#F0B90B` | `#F0B90B` | The accent: fills, active states, lane-line progress |
+| `--viewport` | `#25282C` | `#1B1E21` | Background of the sensor viewport panel (dark in both themes) |
+
+Return colors used inside the scene (see `05-3d-and-motion.md`), a height ramp from ground to roof:
+
+| Token | Value | Role |
+|---|---|---|
+| `--ramp-ground` | `#2B3F9E` | Lowest points (ground, wheels) |
+| `--ramp-mid` | `#1A98A6` | Body |
+| `--ramp-top` | `#F0B90B` | Highest points (roof sensor, head) — the same yellow as `--lane` |
+
+**Why this palette:** concrete, asphalt, and lane paint are the physical world of the subject. The scene's ramp mirrors how LiDAR viewers color points by height. Yellow appears twice (lane line, scene top) so the page and the viewport feel like one system.
+
+**Rules**
+- `--lane` is a *fill* color or a graphic, never body-text color on `--fog` in the light theme (its contrast against `--fog` is too low). Text on a `--lane` fill is `--asphalt`.
+- Contrast requirement: all text at least 4.5:1, large text and UI graphics at least 3:1. **Claude must compute and print the ratio for every text/background pair and for the focus ring**, in light and dark, before Stage 1 is done. The hex values above are starting points; adjust them minimally if a pair fails and record the change in the decision log.
+- No gradients anywhere in the UI. The only multi-color element is the scene's height ramp.
+- No pure `#000` or `#fff`.
+
+### 3.2 Typography
+
+Two typefaces, clearly distinct, both open-licensed and self-hosted (verify each license is SIL OFL and ship the license file):
+
+| Role | Family | Why |
+|---|---|---|
+| Headings, UI text, buttons, labels | **Overpass** (variable) | Derived from the U.S. highway sign alphabet. It is the typeface of the road, which is the subject's world. |
+| Running prose | **Source Serif 4** (variable) | A readable text serif; the contrast with Overpass is deliberate. |
+
+Fallback stacks:
+- `Overpass, "Helvetica Neue", Arial, sans-serif`
+- `"Source Serif 4", Charter, "Iowan Old Style", Georgia, serif`
+
+**Scale** (fluid, `clamp`; sizes are starting values to tune against screenshots):
+
+| Token | Size | Line height | Weight | Use |
+|---|---|---|---|---|
+| `--text-display` | `clamp(2.5rem, 1.5rem + 4vw, 4.75rem)` | 1.02 | 700 | The H1 only |
+| `--text-h2` | `clamp(1.75rem, 1.25rem + 1.8vw, 2.75rem)` | 1.1 | 700 | Section headings |
+| `--text-h3` | `clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem)` | 1.2 | 700 | Project titles, role titles |
+| `--text-body` | `1.125rem` | 1.65 (serif gets extra leading) | 400 | Prose |
+| `--text-ui` | `1rem` | 1.4 | 600 | Links in nav, buttons, labels |
+| `--text-small` | `0.875rem` | 1.5 | 400/600 | Captions, facts blocks |
+
+**Rules**
+- Line length 65 characters maximum for prose (`max-width: 38rem` at body size).
+- **Sentence case everywhere.** No ALL-CAPS labels, no tracked caps, no small-caps.
+- **No eyebrow labels** above headings unless the label names something the heading doesn't.
+- **No single-word accents in headlines** (one word in a different color, italic, or weight).
+- Headlines are set with the type treatment doing real work: tight leading, negative tracking of about `-0.015em` on the display size only, and weight 700. Do not add effects.
+- Use tabular numerals for measurements and dates if the font supports them.
+- No monospace face in the system. (A readout of live numbers in the viewport uses Overpass with tabular figures.)
+- `font-display: swap`; preload only the two files above the fold (Overpass 700 and the Source Serif 4 regular subset); subset to Latin; total font payload 90 KB or less.
+
+### 3.3 Spacing, radius, borders, shadow
+
+- Spacing scale, 4 px base: `4, 8, 12, 16, 24, 32, 48, 64, 96, 144`. No other values.
+- Section vertical padding: `96` on desktop, `64` on mobile. Between a heading and its content: `24`. Between rows: `32`.
+- **One radius:** `--radius: 3px`, used only on buttons, the viewport panel, and figure frames. Everything else is square.
+- Borders: 1 px `--concrete` for rules; 2 px `--asphalt` for button strokes and the focus ring.
+- **No box shadows. No blurs. No glows.**
 
 ---
 
-## B. Claims ledger
+## 4. Layout
 
-Format: what may be said, what may not. "Allowed" phrasing can be reworded, but it may not claim more.
+### 4.1 Concept
 
-### Spot voice-following (F6)
-| Allowed | Forbidden |
-|---|---|
-| "I'm building a system that lets a Boston Dynamics Spot find and follow a person described out loud." (the verb is *building*) | "Spot follows people", "autonomously follows", "deployed on Spot", "working end to end" |
-| "A vision-language model locates the person in the camera image from a text description." | "Real-time" (unless a latency number is measured and shown) |
-| "A small YOLO model tracks that person between model calls." | Any claim about navigation, obstacle avoidance, or safety behavior being done |
-| "The pieces run on a laptop and a GPU desktop. They are not yet running on the robot." | Implying the model runs on Spot's own hardware |
-| "Next: connect the tracker's output to Spot's navigation." | Dates or promises about when it will work |
+A two-column layout on desktop. The left column holds the content and scrolls. The right column holds the **sticky sensor viewport**, which stays in view and changes what it shows as the left column advances. A dashed **lane line** runs down the left gutter and fills with yellow as the page scrolls.
 
-### Caelus (F7)
-| Allowed | Forbidden |
-|---|---|
-| "Led a three-person team building Caelus, a ROS2 drone perception prototype." | "Autonomous navigation", "SLAM", "real-time 3D mapping", "3D LiDAR" |
-| "It accumulates 2D LiDAR scans into a 3D voxel point cloud at 10 cm resolution." | Any claim that the third dimension comes from measured sensor rotation |
-| "The project is paused." | "Completed", "flight-tested" |
+On mobile there is no sticky panel. The viewport appears once, inline, in the hero. Below it, each project shows a static poster. Reason: a sticky panel eats a third of a phone screen, and scroll-linked 3D costs battery and attention.
 
-### WayFinder (F8)
-| Allowed | Forbidden |
-|---|---|
-| The numbers exactly as in F8, with the baseline stated | "Deployed", "production", "works on real intersections" |
-| "Inferred from the behavior of nearby vehicles" | "I built the hardware demo" (a teammate did) |
-| "Trained and tested on Waymo scenario data" | Naming a specific Waymo dataset by title unless Jake confirms it |
-| "A hackathon prototype" | Any claim about Waymo using or endorsing it |
-
-### Baton (F9)
-| Allowed | Forbidden |
-|---|---|
-| "2nd overall at PalmettoHacks." | "I built Baton" (it was a team of 4) |
-| "I contributed to the shared-session layer and designed the append-only event log." (after Jake confirms) | "Production-ready", "secure", "enterprise" |
-| "Built with heavy AI assistance." (D4, wording below) | Market size, pricing, revenue, customers, validation claims (these live in the hackathon pitch, not on a portfolio) |
-| "The default sandbox is a guard, not isolation." (from the repo's own README) | Claims about features the README lists as untested (Docker sandbox mode) |
-
-### Michelin (F3, F4)
-| Allowed | Forbidden |
-|---|---|
-| The two intern results exactly as in F4 | "Owned", "led", or "architected" the application |
-| "Part-time software engineer working on testing and code-quality tooling" | Naming internal systems or tools beyond the public-safe wording in the resume |
-
-### General
-- No "expert", "senior", "seasoned", "world-class", "passionate".
-- No logos for Waymo, Jaguar, Boston Dynamics, Michelin, NVIDIA, or USC.
-- Boston Dynamics, Waymo, NVIDIA, YOLO, and Michelin appear as plain text names.
-- Every number on the site is either in this doc or computed live and real (for example, the actual number of points in the scene).
-- No fake telemetry, fake counters, or decorative numbers.
-
----
-
-## C. Home page copy
-
-### Header
-- Wordmark (left): `Jacob Webster`
-- Links (right): `Projects`, `Experience`, `Resume`, `Email`
-
-### Hero
-- **H1:** `I build perception and autonomy software.`
-- **Lead paragraph:** `I'm a computer science senior at the University of South Carolina, graduating in May 2027. I enjoy building software for machines that move. I'm looking for new grad software engineering roles in autonomy and infrastructure.`
-- **Actions (two links styled as buttons):** `Download resume (PDF)` and `Email me`
-
-### What I'm working on now
-Two short items, no heading decoration.
-
-1. `Spot voice-following.` `I'm building a system that lets a Boston Dynamics Spot find and follow a person described out loud. Speech, visual grounding, and tracking work separately; I'm connecting them.` Link: `Read the Spot write-up` (to the project page)
-2. `Michelin.` `I work part-time as a software engineer on testing and code-quality tooling.`
-
-### Projects (section heading: `Projects`)
-Row copy (title, one line, status, stack):
-
-| Project | One line | Status | Stack |
-|---|---|---|---|
-| Spot voice-following | Describe a person out loud; a robot dog finds and tracks them. | In progress | Python, LocateAnything-3B, YOLO11n |
-| WayFinder | Infers a traffic light's state from how nearby cars behave, for when the signal fails. | Hackathon prototype, ShellHacks X | Python, LightGBM, Pandas |
-| Baton | A shared, replayable session where a team watches and steers one AI coding agent. | 2nd overall, PalmettoHacks | Python, FastAPI, React, WebSockets, SQLite |
-
-### Experience (section heading: `Experience`)
-Reverse chronological. Real chronology, so dates are the structure.
-
-**Software Engineer (part-time), Michelin, Greenville, SC. Sep 2026 to present**
-- Updating technical documentation for the team's applications.
-- Setting up testing and code-quality tooling, including Renovate dependency updates and SonarQube static analysis.
-
-**Software Engineering Intern, Michelin, Greenville, SC. May to Aug 2026**
-- Developed automated frontend tests with Playwright for the inventory management application, cutting minor release testing from 150 minutes to 3.5.
-- Reduced the steps to transmit parcel data by 75% using Kafka and Java microservices.
-
-**Software Engineering Fellow, USC Center for Industry Solutions, Columbia, SC. Aug 2025 to present**
-- Building the Spot voice-following system described above.
-- Led a team of three building Caelus, a ROS2 drone perception prototype that accumulates 2D LiDAR scans into a 3D voxel point cloud at 10 cm resolution. The project is paused.
-- Set the team's Git workflow and code review standards.
-
-### Education
-`University of South Carolina. B.S. Computer Science. Aug 2024 to May 2027.` Optional: `GPA 3.6` (D-level choice: include here, not in the hero).
-
-### Skills (plain definition list, grouped by what Jake does)
-- `Languages:` Python, C++, Java, C, JavaScript and TypeScript, SQL
-- `Robotics and machine learning:` ROS2, LiDAR point clouds, LightGBM, PyTorch, TensorFlow, YOLO, vision-language models
-- `Backend and systems:` Linux, Git, Kafka, Spring Boot, REST APIs, FastAPI, WebSockets, SQLite
-- `Web and testing:` React, Node.js, Tailwind CSS, Playwright
-
-No logo walls, skill bars, percentages, or star ratings.
-
-### Honors
-- `Palmetto Fellows Scholarship (South Carolina merit-based scholarship)`
-- `Dean's Scholar, 5 semesters`
-- `Hackathons: CUhackit 2025 (Best Web Development), NASA Space Apps (Most Inspirational), PalmettoHacks (2nd overall)`
-
-### Footer
-- `Email jakewebster5619@gmail.com`, `LinkedIn`, `GitHub`, `Resume (PDF)`
-- Line: `Built by me. Illustrations of the car and robot are point clouds drawn for this page.`
-- No copyright year banner required; if present, `© 2026 Jacob Webster`.
-
----
-
-## D. Project pages
-
-Every project page uses this structure, in this order. Headings are sentence case. Do not add sections.
-
-1. Title and one-line summary
-2. A small facts block (definition list): Status, Role, When, Stack, Links
-3. The problem
-4. What I built (names the exact pieces Jake wrote)
-5. How it works (honest diagram: solid = built, dashed = planned)
-6. Results (only measured numbers, each with its baseline)
-7. What isn't done
-8. Links (repo, demo, and a "Back to projects" link)
-
-### D1. Spot voice-following
-
-- **Title:** `Spot voice-following`
-- **Summary:** `Describe a person out loud and a Boston Dynamics Spot finds and tracks them. The perception pieces work separately; I'm connecting them.`
-- **Facts block:**
-  - Status: `In progress`
-  - Role: `Building the perception pipeline` (`TODO(jake)`: exact wording of what Jake builds versus what labmates build; the project has a labmate collaborator)
-  - When: `Aug 2025 to present, at USC's Center for Industry Solutions` (`TODO(jake)`: month the Spot work started)
-  - Stack: `Python, NVIDIA LocateAnything-3B, YOLO11n` (`TODO(jake)`: speech-to-text tool)
-  - Links: none yet (`TODO(jake)`: repo or demo if public)
-- **The problem:** `Following someone on command needs three things a robot doesn't have by default: understanding a spoken description, finding the right person in the camera image, and not losing them. Most person-following demos track "the nearest person." I want "the person in the red jacket."` (`TODO(jake)`: confirm this is the intended framing; delete if not.)
-- **What I built:** `TODO(jake): list the specific components Jake wrote, one sentence each. Do not include anything a labmate wrote.`
-- **How it works** (a real sequence, so numbered steps are allowed here):
-  1. Speech becomes text. (`TODO(jake)`: tool) *Built.*
-  2. The text becomes a query. *Built.*
-  3. A vision-language model (LocateAnything-3B, on a GPU desktop) returns a bounding box for the described person. *Built.*
-  4. A YOLO11n person tracker follows that box between model calls on a laptop. *Built.*
-  5. The tracked box becomes a goal for Spot's navigation. *Planned.*
-  6. Spot follows the person. *Planned.*
-  Diagram: steps 1 to 4 drawn with solid outlines, steps 5 and 6 dashed. A one-line caption: `Solid boxes work today; dashed boxes are next.`
-- **Results:** `None measured yet.` (If measured: `TODO(jake)`: latency per grounding call, tracker frame rate, hand-off accuracy. Do not estimate.)
-- **What isn't done:** `The pieces run on a laptop and a GPU desktop, not on Spot. The hand-off from the model's box to the tracker, and from the tracker to navigation, is what I'm working on.` (`TODO(jake)`: replace with the true current state; list how the model's box is matched to a tracked person, how a lost target is handled, and the safety stop behavior, each as done or not done.)
-
-### D2. WayFinder
-
-- **Title:** `WayFinder`
-- **Summary:** `A model that infers a traffic light's state from how nearby cars behave, so an autonomous vehicle has a fallback when a signal goes dark.`
-- **Facts block:**
-  - Status: `Hackathon prototype`
-  - Role: `Model and feature pipeline` (`TODO(jake)`: confirm; list anything else Jake built, such as the web visualizer; note that a teammate built the hardware demo)
-  - When: `ShellHacks X, September 2026` (`TODO(jake)`: verify)
-  - Stack: `Python, LightGBM, Pandas` (the repo also contains a TypeScript visualizer; say who built it)
-  - Links: repo (F14)
-- **The problem:** `When a traffic signal is out, an autonomous vehicle can't read it. Other cars still behave as if the signal exists: they stop, they go, they queue by lane. That behavior carries information.`
-- **What I built:** `A LightGBM classifier and the per-lane feature pipeline behind it. I engineered features from more than 2 million rows across 16,000 Waymo scenarios, added ego-lane detection, and put controls in place to prevent data leakage between training and test.` (`TODO(jake)`: confirm every clause.)
-- **How it works:** a simple labeled flow: scenario data, per-lane features, model, predicted signal state with a confidence. Mark the hardware demo as `built by a teammate`.
-- **Results:**
-  - `95% accuracy when the model is confident.` (`TODO(jake)`: define the confidence threshold and what share of cases are "confident".)
-  - `False-green errors cut to 2.5%, down from a 19% baseline.` (`TODO(jake)`: define the baseline.)
-  - `0.25 ms per inference.` (`TODO(jake)`: the hardware this was measured on.)
-- **What isn't done:** `It's a hackathon prototype. It hasn't been tested outside the Waymo scenarios it trained on. A false green is the dangerous error, which is why I optimized against it, but this is not a safety system.` (`TODO(jake)`: confirm; add any real limits.)
-
-### D3. Baton
-
-- **Title:** `Baton`
-- **Summary:** `A shared session where a whole team can watch, comment on, and steer one AI coding agent, with a log you can replay from any step.`
-- **Facts block:**
-  - Status: `Hackathon project, 2nd overall at PalmettoHacks`
-  - Role: `I contributed to the shared-session layer and designed the append-only event log.` (`TODO(jake)`: confirm this after the prep pass; remove "designed" if it isn't accurate.)
-  - When: `PalmettoHacks, October 2026, with a team of four` (`TODO(jake)`: verify)
-  - Stack: `Python, FastAPI, React, WebSockets, SQLite`
-  - Links: repo and demo video (F13)
-- **The problem:** `Coding agents live in one person's terminal. When the agent goes down the wrong path, a teammate who knows the code can't see it, and when the person who started it logs off, the work stalls.`
-- **What I built:** `The pieces I own are the event log that every session is built on, and ... ` (`TODO(jake)`: finish after prep.)
-- **How it works:** `Every agent message, tool call, and human action is appended to a log with a sequence number. Browsers subscribe over WebSockets, replay from any point, then go live. The agent's context is rebuilt from the log on each turn. That one choice gives crash recovery, forking a session from any step, and switching AI models mid-session.` Diagram: log in the center; agent, browsers, and replay around it. All parts are built; none planned.
-- **Results:** `2nd overall at PalmettoHacks.` No other results.
-- **What isn't done:** `The default command runner is a guard, not a sandbox: it blocks obviously destructive commands but isn't isolation. A container mode exists but wasn't tested. Identity is name-only. Run it on a network you trust.` (Taken from the repo's own README; keep it consistent with the README.)
-- **How it was built (D4):** `We built this quickly and used AI coding tools heavily. I focused on understanding and owning the event log.` (`TODO(jake)`: edit to taste, keeping it true.)
-
----
-
-## E. Microcopy
-
-| Place | Copy |
-|---|---|
-| Resume link | `Download resume (PDF)` |
-| Email link | `Email me` (opens `mailto:`); visible address in the footer |
-| External links | Link text names the destination: `Baton on GitHub`, `Watch the Baton demo`. Never `Click here`, never an arrow glyph. |
-| Project row hover/focus | Underline thickens; no scale, no shadow |
-| Status words | `In progress`, `Paused`, `Hackathon prototype`, `2nd overall` |
-| Scene caption (visible text near the viewport) | `Illustration: a point cloud drawn for this page. Each dot is one return.` |
-| Scene live readout (optional; must be real) | `30,000 points`, showing the actual count currently rendered |
-| 404 | Heading `That page doesn't exist.` Body `The link may be old. Projects and the resume are one click away.` Links: `Projects`, `Home` |
-| Image alt text | Describes content and purpose: `Diagram of the Spot pipeline: speech, query, grounding model, tracker, then planned navigation` |
-| Canvas | `aria-hidden="true"`; the caption above carries the meaning |
-| Skip link | `Skip to content` |
-| Print | Not required; if added, hide the scene and show the resume contact line |
-
----
-
-## F. Writing rules
-
-### Do
-- Lead with the thing, then the evidence.
-- Name the baseline whenever you give a number.
-- Say what's unfinished in the same breath as what works.
-- Use the same name for the same thing everywhere: "Spot voice-following" is never also "robot dog project."
-- Make link text self-explanatory out of context.
-
-### Don't use these words or phrases
-passionate, driven, leverage, leveraging, cutting-edge, state-of-the-art, seamless, robust (unless describing a measured property), innovative, solutions, synergy, journey, deep dive, game-changing, next-generation, world-class, rockstar, ninja, guru, "I'm excited to", "I love to", "hard-working", "team player", "fast learner".
-
-### Rewrites
-| Instead of | Write |
-|---|---|
-| `Passionate about autonomous vehicles` | `I enjoy building software for machines that move.` |
-| `Leveraged ML to deliver robust results` | `Cut false-green errors from 19% to 2.5% with a LightGBM model.` |
-| `Cutting-edge robotics project` | `A Spot robot that finds a person from a spoken description.` |
-| `Fast learner who thrives in teams` | (delete; show the Git workflow and code review standards he set) |
-| `Check out my work →` | `See the three projects` |
-
-### Formatting rules
-- Sentence case for every heading, label, and button.
-- No exclamation marks. No emoji. No ellipsis for effect.
-- No em dash used as a label separator ("Status — in progress"). Use a definition list.
-- Dates: `Sep 2026 to present`, `May to Aug 2026`. Write "to," not a dash, in prose.
-- Numbers: digits for measurements (`150 minutes`, `95%`, `0.25 ms`).
-
----
-
-## G. Content files (structure for the build)
-
-Content lives outside components so Jake can edit it without touching layout:
+### 4.2 Desktop wireframe (1280 px)
 
 ```
-content/
-  site.json              # name, descriptor, links, status line
-  experience.json        # roles with dates and bullets
-  skills.json            # grouped lists
-  honors.json
-  projects/
-    spot.md              # frontmatter: title, summary, status, role, when, stack, links; body sections D1
-    wayfinder.md
-    baton.md
++----------------------------------------------------------------------+
+| Jacob Webster                        Projects  Experience  Resume  Email |
++----------------------------------------------------------------------+
+|:  I build perception and            +------------------------------+ |
+|:  autonomy software.                |                              | |
+|:                                    |        sensor viewport       | |
+|:  I'm a computer science senior ... |        (sticky, dark panel)  | |
+|:  [Download resume (PDF)] [Email me]|                              | |
+|:                                    |                              | |
+|:  What I'm working on now          +------------------------------+ |
+|:  Spot voice-following ...          Illustration: a point cloud ...  |
+|:  Michelin ...                       30,000 points                    |
+|:  Projects                                                           |
+|:  Spot voice-following   In progress                                 |
+|:  ...                                                                |
++----------------------------------------------------------------------+
+  ':' = the dashed lane line in the left gutter
 ```
 
-Frontmatter schema for a project (validated at build; missing required fields fail the build):
+### 4.3 Mobile wireframe (375 px)
 
-```yaml
-title: string
-summary: string          # one sentence, no more than 160 characters
-status: string           # one of: in-progress | paused | prototype | placed
-statusLabel: string      # what the reader sees, e.g. "In progress"
-role: string             # one sentence, first person
-when: string
-stack: [string]          # no more than 6
-links:
-  - label: string        # names the destination
-    href: url
-order: number
 ```
++-----------------------------+
+| Jacob Webster   Resume Email|
++-----------------------------+
+| I build perception and      |
+| autonomy software.          |
+| I'm a computer science ...  |
+| [Download resume] [Email me]|
+| +-------------------------+ |
+| |   sensor viewport       | |
+| |   (inline, ~46svh)      | |
+| +-------------------------+ |
+| Illustration: a point ...   |
+| What I'm working on now     |
+| ...                         |
++-----------------------------+
+```
+On a phone the first viewport must already contain the name, the H1, the lead paragraph and both actions. The viewport may sit partly below the fold; content never waits for it.
+
+### 4.4 Grid and measures
+
+- Max page width 1200 px, centered. Page gutters `clamp(16px, 4vw, 48px)`.
+- Desktop (1024 px and up): 12-column grid. Content column spans 7; viewport spans 5 (sticky, `top` equal to header height plus 24 px, height `calc(100svh - header - 48px)`, max 720 px).
+- Tablet (768 to 1023 px): single column; the viewport is inline in the hero at 50svh; no sticky behavior.
+- Prose width 38rem max. Never full-width prose.
+- Alignment: everything left-aligned. The footer and 404 are left-aligned too.
+- Breakpoints: 480, 768, 1024, 1440. Mobile-first CSS.
+
+### 4.5 Structural devices (each has a job)
+
+| Device | Job | Where |
+|---|---|---|
+| Lane line (dashed, vertical, left gutter, desktop only) | Shows scroll progress | Fixed in the gutter; `--concrete` track, `--lane` fill; static full track under reduced motion |
+| 1 px rules (`--concrete`) | Separate project rows and role entries | Between rows only; no rules around everything |
+| Numerals | Mark real sequences | Only the pipeline steps on project pages and the dates on the experience timeline |
+| Definition lists | Facts blocks and skills | Project facts, skills, honors |
+| Solid versus dashed strokes | Built versus planned | Project diagrams |
+
+---
+
+## 5. Components
+
+Each component lists default, hover, focus, active, and disabled states where they apply. Motion on interaction is instant or 120 ms or less; there are no hover transitions that move or scale elements.
+
+**Header**
+- Wordmark `Jacob Webster` in Overpass 700, links in `--text-ui`. Not sticky on desktop (the viewport is). On mobile, show `Resume` and `Email` only; no hamburger, no overlay menu.
+- Tap targets 44 px high minimum.
+
+**Links (inline)**
+- Default: `--asphalt` text, 1.5 px `--asphalt` underline, offset 3 px.
+- Hover and focus-visible: highlighter treatment, with the text on a solid `--lane` background, underline removed, text stays `--asphalt`. No transition.
+- Visited: no color change.
+- External links open in the same tab unless they are the resume PDF or a video; no "opens in new window" icons.
+
+**Buttons (two types only)**
+- Primary: `--lane` fill, `--asphalt` text, 2 px `--asphalt` border, radius 3. Hover: fill becomes `--asphalt`, text `--lane`. Active: translate 0, no scale.
+- Secondary: transparent, 2 px `--asphalt` border. Hover: fill `--asphalt`, text `--fog`.
+- Height 48 px, horizontal padding 20 px. Text is a verb phrase in sentence case.
+
+**Focus ring (all interactive elements)**
+- `outline: 3px solid var(--asphalt)` in light, `var(--asphalt)` (which is light in dark theme) in dark; `outline-offset: 3px`. Must be at least 3:1 against whatever it sits on. Never `outline: none` without a replacement.
+
+**Hero**
+- H1 in `--text-display`, left aligned, wrapping naturally within the 7-column content area. Lead paragraph in serif body size. Two buttons. No badges, no stat bar, no gradient, no scroll-down arrow.
+
+**Project rows (the Projects list)**
+- Not cards. Each project is a full-width ruled row: title (`--text-h3`) on the left with the status text beside it; the one-line description in serif below; the stack as a plain comma-separated sentence in `--text-small`.
+- The title is the only link; its click area stretches over the row (the stretched-link technique), with a visible focus ring around the row.
+- Status is plain text with a small filled square (8 px) in a state color: in progress (`--lane`), paused (`--concrete`), prototype and placed (`--asphalt`). The square is decorative and has `aria-hidden`; the word carries the meaning.
+- Hover and focus: the title gets the highlighter treatment; on desktop the matching scene state also becomes active (see `05`).
+
+**Experience timeline**
+- A definition-style list. Dates in `--text-small` left, role and employer right. Real sequence, so the dates *are* the structure. Bullets are short plain sentences.
+
+**Facts block (project pages)**
+- `dl` with Status, Role, When, Stack, Links. Two columns on desktop, stacked on mobile. Terms in `--text-small` weight 600, sentence case.
+
+**Figures (project diagrams)**
+- Inline SVG, drawn with token colors via `currentColor` and CSS variables, so both themes work. Frame: 1 px `--concrete` border, radius 3, padding 24. Caption below in `--text-small`. Built = solid 2 px stroke; planned = 2 px dashed stroke. The legend is a sentence in the caption, not a swatch row.
+- Each figure has `role="img"` and a real `aria-label`/`<title>`/`<desc>`.
+
+**Sensor viewport**
+- Dark `--viewport` panel, radius 3, 1 px `--concrete` border. A canvas fills it. Below it, a caption (`--text-small`) and the live point count. The caption sits outside the panel so it remains readable in every state.
+- Under any fallback condition the same frame shows the poster image.
+
+**Footer**
+- Left aligned. Four links and one sentence. Nothing else.
+
+---
+
+## 6. Imagery
+
+- No stock photos, no illustrations from libraries, no icon sets, no emoji, no decorative SVG blobs.
+- Screenshots (if any are added later): 1 px `--concrete` frame, true aspect ratio, captioned.
+- The poster image is generated from the same point data as the scene (see `05`).
+- The favicon is a small cluster of points in the ramp colors on `--viewport`, or a plain `JW` set in Overpass 700. One of those, not both.
+
+---
+
+## 7. Motion rules (summary; details in `05`)
+
+- One orchestrated moment: the first-load sweep that resolves scattered points into the car.
+- Scroll-linked morphs in the viewport, because the scene mirrors where the reader is.
+- Everything else is instant: no entrance animations on sections, no hover lift, no parallax on text, no cursor followers.
+- Reduced motion removes all of it and shows the poster.
+
+---
+
+## 8. Banned patterns (check these in `08`)
+
+Anything in this list found in the build is a defect.
+
+**Visual**
+- Gradient backgrounds, gradient text, gradient borders
+- Glassmorphism (blurred translucent panels), backdrop blur, glow, drop shadows
+- Blurred color blobs, mesh gradients, noise textures as decoration
+- Rounded corners larger than 3 px; the same radius used on everything
+- Identical card grids; three-column icon-plus-heading-plus-blurb layouts
+- Icon sets and emoji (including in buttons and bullets)
+- Dark mode toggles or theme switchers
+- Parallax text, sticky text that overlaps other text, scroll hijacking, scroll snapping
+- Floating decorative shapes, particles that aren't the scene
+- Animated gradient borders, shimmer effects, skeleton screens for static content
+
+**Typographic**
+- Tracked-out ALL-CAPS labels or eyebrows
+- A monospace face used for small labels or metadata
+- Middle-dot meta strings (`A · B · C`) and `WORD — fragment` labels
+- `→`, `›`, or `↗` appended to links or buttons
+- One word of a headline accented by color, italic, or weight
+- Typewriter effects, text that fades in word by word
+- Numbered `01 / 02 / 03` markers on non-sequential content
+
+**Structural**
+- Skill bars, percentages, star ratings, logo walls, tag clouds
+- "Scroll down" prompts or bouncing arrows
+- Fake numbers: counters that tick up, fake latency or FPS readouts, "100+ commits" style stats not backed by a source
+- Testimonials, quotes, or logos of companies Jake hasn't worked for
+- Stock hero sentences: "Hi, I'm Jake 👋", "Welcome to my portfolio", "Crafting digital experiences"
+- Lorem ipsum or placeholder text in any built page (use `TODO(jake)` and fail the build)
+
+**Code**
+- Raw hex values in components (use tokens)
+- `!important`
+- `outline: none` without a replacement focus style
+- Animations that run when the tab is hidden or the element is offscreen
+- Any `<img>` without width and height
+
+---
+
+## 8b. Taste calibration
+
+Use this routine on every visual stage.
+
+1. **Plan first.** Before code, write a compact plan: palette (the six values above), type roles, a layout sketch in ASCII, and three principles. Compare it against section 2. If any element would appear on a generic portfolio, change it and say what you changed.
+2. **Build.** Follow the tokens exactly.
+3. **Screenshot and critique.** Capture 375, 768, 1280 and 1920 px, light and dark. For each, answer in writing: What is the first thing the eye lands on? Is it the intended thing? What is the second? Is any element competing with the viewport? Where is the empty space doing work?
+4. **Remove one accessory.** Before declaring a stage done, remove the one decorative element that contributes least. If nothing qualifies, say so.
+5. **Cross-check content.** Read every sentence on screen against `02-content.md`.
+
+When in doubt: simpler, quieter, more left-aligned, more specific to the subject.

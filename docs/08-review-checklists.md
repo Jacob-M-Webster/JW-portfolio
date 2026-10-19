@@ -1,159 +1,170 @@
-# 07. Build plan
+# 08. Review checklists
 
-The build is split into stages. Each stage has its own plan-mode session, deliverables, verification, a `/goal` condition, and a human gate where Jake reviews before the next stage starts.
-
-## How to run a stage
-
-1. **Branch.** Work on `redesign`. Start each stage from a clean `git status`.
-2. **Plan mode.** Start Claude Code in plan mode (`claude --permission-mode plan`, or Shift+Tab until the status bar shows plan mode). Paste the stage's *plan prompt*. Review and edit the plan (Ctrl+G opens it in your editor). Approve it.
-3. **Build with `/goal`.** Exit plan mode and set the stage's goal with `/goal <condition>`. The goal's evaluator judges the condition only from what Claude shows in the conversation, so every condition requires pasted command output. A goal without pasted evidence cannot be met.
-4. **Review.** Run the stage's checklist in `08-review-checklists.md`. Jake does the human gate.
-5. **Clear and move on.** `/goal clear` if it is still active, commit, and start the next stage in a fresh session so context stays small.
-
-**Rules for every stage**
-- A stage's goal is never "make the site look good." It is a list of things Claude can run and show.
-- Stop conditions are part of the goal: if blocked twice on the same issue, stop and ask.
-- Don't start the next stage's work early.
-- Don't change a doc to make a check pass; if a doc is wrong, say so and ask.
+Run the relevant checklist at the end of each stage. Mark every line pass or fail with evidence (a command output, a screenshot path, or a quoted ledger row). A line without evidence is a fail.
 
 ---
 
-## Stage 0. Recon (no code changes)
+## 1. Claims audit (the honesty check)
 
-**Purpose:** learn what exists before changing it.
+Do this for every sentence that states a fact on the site, in the built output, not in the source.
 
-**Plan prompt**
-> Read `CLAUDE.md` and everything in `docs/`. Then inspect this repository without changing any files and write `docs/recon.md` containing: (1) framework, language, package manager, Node version, and every dependency with one line on what it's for; (2) routes and pages that exist; (3) where content currently lives; (4) build, dev, lint, and deploy commands, verified by actually running the build; (5) Lighthouse mobile baseline (three-run median) for the home page; (6) what's worth keeping and what should go, with reasons; (7) a recommendation on decision D7 (framework) with the trade-offs. Do not propose design or copy. Do not delete or modify anything except creating `docs/recon.md`.
+**Procedure**
+1. Export the visible text of each route (Playwright `innerText` of `main`, plus header and footer).
+2. For each sentence containing a fact (a number, date, title, employer, technology, status, result, or award), find its row in `02-content.md`, section A (facts) or section D (project content).
+3. Check it against the forbidden column in section B.
+4. Record it in a table.
 
-**Deliverables:** `docs/recon.md`; `CLAUDE.md` "Commands" section filled in.
+| Route | Sentence | Ledger row | Forbidden-column hit? | Verified by Jake |
+|---|---|---|---|---|
 
-**`/goal`**
-> `docs/recon.md` exists and covers all seven numbered items; the build command ran successfully and its output is pasted; the Lighthouse median table is pasted; `git status` shows only `docs/recon.md` and `CLAUDE.md` changed.
+**Fails if**
+- Any sentence has no ledger row.
+- Any sentence hits a forbidden phrase.
+- Any number appears without its baseline or unit.
+- Spot is described as working end to end, deployed, or autonomous.
+- Caelus is described as SLAM, real-time mapping, or measured 3D rotation.
+- WayFinder implies Jake built the hardware demo, or implies production use.
+- Baton says "I built Baton", or includes market, pricing, or customer claims.
+- The word "paused" is missing next to Caelus.
+- The resume PDF on the site differs from Jake's current resume (compare dates and titles).
 
-**Human gate:** Jake reads `recon.md`, decides D7, and confirms what to keep.
-
----
-
-## Stage 1. Foundations
-
-**Purpose:** tokens, fonts, base styles, layout shell, check scripts. No content styling beyond what proves the foundations work.
-
-**Plan prompt**
-> Follow `docs/03-design-system.md` and `docs/06-quality-bars.md`. Plan the foundations: the token file (colors for light and dark, type scale, spacing scale, radius), self-hosted fonts (verify each license is OFL and include the license files; subset to Latin; preload the two critical files), base CSS (reset, typography, focus ring, link and button styles per the doc), the page shell (header, main, footer, skip link, grid with the sticky-column layout reserved), and the check scripts `check:tokens`, `check:content`, `check:size`. Before writing code, produce the design plan required by section 8b of the design doc: palette, type roles, an ASCII layout sketch, and three principles, and say what you changed after comparing it against section 2.
-
-**Deliverables**
-- Token CSS, font files and licenses, base styles, shell components.
-- A temporary style-guide route (not shipped to production) showing every component state in light and dark.
-- Contrast table printed for every token pair.
-- `check:tokens`, `check:content`, `check:size` working.
-
-**`/goal`**
-> The build passes; `check:tokens` and `check:size` pass and their output is pasted; a contrast table for all token pairs in light and dark is pasted and every text pair is at least 4.5:1 and every graphic and focus pair at least 3:1; screenshots of the style-guide route at 375, 768, 1280 and 1920 px in both themes are captured and I have written a short critique of each following section 8b of the design doc.
-
-**Human gate:** Jake looks at the style guide screenshots on a laptop and a phone. Question: does it feel like his, and is it free of the banned patterns?
+Also run: `check:content` (forbidden-phrase regexes and `TODO(jake)` scan).
 
 ---
 
-## Stage 2. Content and pages (no 3D)
+## 2. Anti-slop audit (the design check)
 
-**Purpose:** every page and section, complete and correct, with posters in place of the scene.
+Go through `03-design-system.md` section 8 line by line against the built site. For each item, record: present or absent, and where.
 
-**Plan prompt**
-> Follow `docs/02-content.md` and `docs/04-site-flow.md`. Plan the content files (`content/` structure in `02`, section G), the home page sections, the three project pages with their SVG figures (built solid, planned dashed), the 404, and the poster placeholders. Use `TODO(jake)` for anything missing. List every `TODO(jake)` you expect. Do not write the WebGL scene. Do not add motion beyond what `03` allows.
+**Quick scans (run and paste)**
+- `grep -rniE "gradient|backdrop-filter|box-shadow|filter: *blur|text-shadow" src/ styles/` → no results (the single exception: none).
+- `grep -rniE "text-transform: *uppercase|letter-spacing" src/ styles/` → letter-spacing appears only on `--text-display`; no `uppercase`.
+- `grep -rniE "font-family" src/ styles/` → only the two declared families, via tokens.
+- `grep -rnE "#[0-9a-fA-F]{3,8}\b" src/ styles/` → hex only in the token file (and the poster script).
+- `grep -rniE "!important" src/ styles/` → no results.
+- `grep -rnE "→|›|↗|➜" src/ content/` → no results.
+- `grep -rniE "lorem|ipsum" src/ content/` → no results.
+- `grep -rniE "outline: *none|outline: *0" src/ styles/` → each hit has a replacement focus style.
+- No `<img>` without `width` and `height`.
+- No icon library, no emoji characters in markup (`grep` for common emoji ranges).
 
-**Deliverables**
-- All routes in `04`, section 1, built from the content files.
-- Project figures as inline SVG using tokens.
-- Placeholder poster images (flat `--viewport` rectangles with correct dimensions) in the viewport frame.
-- A list of every remaining `TODO(jake)`.
+**Visual pass (screenshots at 375, 768, 1280, 1920, both themes)**
 
-**`/goal`**
-> Every route in `docs/04-site-flow.md` section 1 builds; `check:content` output is pasted showing only the expected `TODO(jake)` items (listed in a table with file and line); `check:a11y` shows zero axe violations on all routes in both themes; the home page with JavaScript disabled is screenshotted at 375 and 1280 px and shows name, school and graduation date, target role, resume link and email without scrolling; every sentence on screen is mapped to a row in the claims ledger (table pasted).
+For each screenshot, answer in writing:
+1. What does the eye land on first? Is it the sensor viewport or the H1 (both are acceptable; nothing else is)?
+2. Is any element competing with the viewport?
+3. Is anything centered that should be left-aligned?
+4. Are there more than two type weights or sizes in use in one block without a reason?
+5. Do the three project rows look different because the content differs, or the same because a template made them?
+6. Where is the empty space? Is it doing work (separating things, giving rest), or is it leftover?
+7. Remove one accessory: what is the least necessary element? Remove it or say why nothing qualifies.
 
-**Human gate (the important one):** Jake reads every line of every page against his own records and fills in or removes each `TODO(jake)`. Nothing moves on until `check:content` passes with zero TODOs.
-
----
-
-## Stage 3. Asset pipeline
-
-**Purpose:** produce the derived point-cloud files and posters, with proof that no raw asset ships.
-
-**Plan prompt**
-> Follow `docs/05-3d-and-motion.md` sections 2 and 6.1. Plan `scripts/mesh_to_points.py`, `scripts/make_quadruped.py`, `scripts/render_poster.py`, and `scripts/check-assets`. Start by inspecting the purchased meshes in `assets-private/` and writing `docs/asset-report.md` (group names, face counts, bounding boxes, exclusion list). Decide D10 by rendering a quick preview of each candidate car and recommending one. Do not copy any raw file out of `assets-private/`. Do not commit anything from `assets-private/`.
-
-**Deliverables**
-- `docs/asset-report.md`, scripts, `public/models/scene-points.bin` and `.json`, posters (AVIF and WebP), `og-home.png`.
-- Unit tests for the scripts.
-
-**`/goal`**
-> `docs/asset-report.md` exists; running the sampling and poster scripts twice gives byte-identical outputs (SHA-256 pairs pasted); the script unit tests pass and their output is pasted; `check:assets` passes with output pasted showing `git ls-files`, `git log --all`, extension, and hash checks; `scene-points.bin` is within the size budget (sizes pasted, uncompressed and brotli); poster previews of car, quadruped and scatter are screenshotted.
-
-**Human gate:** Jake views the posters. Does the car read as a car? Does the quadruped read as a four-legged robot? Is anything recognizably a competitor's trade dress? Jake confirms nothing from `assets-private/` is staged.
+**Taste tests**
+- Cover the name. Could this page belong to anyone? If yes, find what is generic and make it specific to perception, robotics, or Jake's work.
+- Could this page be mistaken for a template? Check the first viewport against the rejected defaults in `03`, section 2.
 
 ---
 
-## Stage 4. Scene and choreography
+## 3. Content proofreading
 
-**Purpose:** the live viewport, intro, scroll states, hover, fallbacks.
-
-**Plan prompt**
-> Follow `docs/05-3d-and-motion.md` sections 3 to 8. Plan the raw WebGL2 renderer (or justify a library in one paragraph and stop for approval), the state machine, the scroll mapping measured from the DOM, the hover override, the adaptive quality controller, the fallback conditions, and the Playwright tests listed in section 9. Include the live point-count readout. Do not add any animation outside the scene and the lane line.
-
-**Deliverables**
-- Scene module, lane line, fallbacks, tests.
-- Frame-time report under 4x CPU throttling.
-
-**`/goal`**
-> All nine scene Playwright checks in `docs/05-3d-and-motion.md` section 9 pass, with output pasted; the 4x-throttled frame-time median and p95 are pasted and the adaptive quality step-down is demonstrated; the scene module gzip size and scene data size are pasted and within budget; screenshots of each scene state (car, quadruped, scatter) on desktop and the mobile hero are pasted; with `reducedMotion` on and with `getContext` stubbed to null, the page shows posters and has zero console errors; `check:assets` still passes.
-
-**Human gate:** Jake scrolls the page on a real laptop and a real phone, with the browser console open. Does it feel smooth? Is anything distracting while reading? Does the caption read as honest? Are text, links, and buttons usable at every moment?
+- Read every page aloud once.
+- No banned words (list in `02`, section F).
+- Sentence case in every heading, label, and button.
+- Dates written as `Sep 2026 to present`; no dash ranges in prose.
+- Same name for the same thing everywhere (Spot voice-following, WayFinder, Baton, Caelus).
+- Link text names the destination.
+- Alt text and captions are accurate and not redundant.
+- Spelling of proper names: Boston Dynamics, Spot, LocateAnything-3B, YOLO11n, LightGBM, WayFinder, Baton, PalmettoHacks, ShellHacks, CUhackit, NASA Space Apps, Michelin, USC Center for Industry Solutions.
 
 ---
 
-## Stage 5. Polish, performance, and metadata
+## 4. Device and browser checks
 
-**Purpose:** meet the budgets, finish metadata, remove the least necessary decoration.
+Record device, browser, version, result, and notes.
 
-**Plan prompt**
-> Follow `docs/06-quality-bars.md`. Plan the remaining work: `check:perf`, `check:links`, `check:a11y` finalization, metadata (titles, descriptions, Open Graph, JSON-LD, sitemap, robots, favicon), security headers if the host supports them, the repo README, and a final pass on tokens and banned patterns. Then perform the "remove one accessory" step from the design doc and say what was removed.
-
-**`/goal`**
-> `npm run check:all` exits 0 with its full output pasted; the Lighthouse mobile median table meets every bar in section 1 of the quality doc; the contrast table is re-printed and passes; a secrets scan over the full git history is pasted and clean; `npm audit` shows no high or critical issues; the README explains running, building, adding a project, regenerating assets, and where private assets live; the "remove one accessory" note is written.
-
-**Human gate:** Jake screen-reader-tests the home page, checks the site on two real phones, and reads the metadata in a link preview (paste the preview URL into a chat app).
-
----
-
-## Stage 6. Final review and launch
-
-**Purpose:** a clean, defensible launch.
-
-**Plan prompt**
-> Run the full review in `docs/08-review-checklists.md`: the claims audit, the anti-slop audit, the device and browser checks, and the launch checklist. Produce `docs/launch-report.md` with a pass or fail and evidence for each line. Do not fix failures silently; list them with proposed fixes.
-
-**`/goal`**
-> `docs/launch-report.md` exists with every line of the claims audit, the anti-slop audit, and the launch checklist marked pass with evidence or fail with a proposed fix; zero fails remain; `npm run check:all` output is pasted again after the last change.
-
-**Human gate:** Jake reads the claims audit one more time, confirms the resume PDF on the site matches the current resume, then deploys. After deploying, he opens the live site on a phone and runs Lighthouse against the live URL.
+| Check | Devices |
+|---|---|
+| Home, hero, viewport, all rows | Laptop Chrome, Safari, Firefox; one iPhone (Safari); one Android phone (Chrome) |
+| Project pages and figures | Same |
+| Light and dark themes | Switch the OS setting on each device |
+| Portrait and landscape on phones | Rotate; no overflow |
+| 200% zoom on desktop | No overlap, no horizontal scroll |
+| Keyboard only (desktop) | Tab through everything; skip link works |
+| Screen reader (VoiceOver or NVDA) | Read home top to bottom |
+| Reduced motion on | Poster shown; no animation |
+| Slow network (DevTools "Slow 4G") | Content readable before the scene loads |
+| JavaScript disabled | Content intact |
+| Link preview | Paste the live URL into a chat app; image, title, and description correct |
 
 ---
 
-## After launch
+## 5. Stage checklists
 
-- Update `content/` when the Spot work changes status. The "What isn't done" section is the first thing to edit.
-- Re-run `check:content` after any copy change.
-- When Caelus, Spot, or a new project needs a write-up, copy an existing project file; do not add new section types.
-- Review the site against the resume every time the resume changes.
+### Stage 1
+- [ ] Token file is the only place raw hex appears
+- [ ] Contrast table printed; all pairs pass in both themes (including focus ring and highlighter hover)
+- [ ] Two fonts only; licenses included; font payload within budget
+- [ ] Style guide shows every component state in both themes
+- [ ] Anti-slop quick scans clean
+- [ ] Screenshot critiques written
+
+### Stage 2
+- [ ] Every route builds
+- [ ] Every sentence has a ledger row (claims audit)
+- [ ] Every `TODO(jake)` listed
+- [ ] Zero axe violations
+- [ ] JS-off screenshots pass the first-viewport test (S1)
+- [ ] Project pages include "What isn't done"
+- [ ] Figures use solid for built and dashed for planned
+
+### Stage 3
+- [ ] `docs/asset-report.md` written
+- [ ] Scripts deterministic (hashes match across two runs)
+- [ ] `check:assets` clean (git index, git history, extensions, hashes, textures)
+- [ ] Output sizes within budget
+- [ ] Posters reviewed by Jake
+
+### Stage 4
+- [ ] Nine scene checks pass
+- [ ] Adaptive quality demonstrated
+- [ ] No third-party requests in the network log
+- [ ] No console errors in any fallback path
+- [ ] Mobile hero scene runs at 12,000 points with DPR capped
+- [ ] Hover and scroll don't fight (recorded manual check)
+
+### Stage 5
+- [ ] `check:all` exits 0
+- [ ] Lighthouse median table meets all bars
+- [ ] Secrets scan over the full history is clean
+- [ ] `npm audit` has no high or critical findings
+- [ ] README complete
+- [ ] "Remove one accessory" done
+
+### Stage 6 (launch)
+- [ ] Claims audit: zero fails, Jake has re-read it
+- [ ] Anti-slop audit: zero fails
+- [ ] Device and browser table filled
+- [ ] Resume PDF on the site is the current resume
+- [ ] Email link, LinkedIn link, GitHub link, and resume link all work on the live site
+- [ ] Redirects from old URLs (if any) are in place
+- [ ] Open Graph preview correct
+- [ ] 404 page works on the live host
+- [ ] `robots.txt` and `sitemap.xml` live
+- [ ] GitHub profile README and pinned repos match the site (names, wording)
+- [ ] LinkedIn "Featured" and website field point to the site
+- [ ] Raw purchased assets confirmed absent from the live site (fetch a few likely URLs; each returns 404)
 
 ---
 
-## Prompt snippets worth reusing
+## 6. Things Jake does by hand
 
-**For any visual change:**
-> Before editing, state which token and which component this uses. After editing, screenshot at 375 and 1280 in both themes, and tell me what you would remove.
+These can't be delegated to the agent.
 
-**For any copy change:**
-> Quote the ledger row this claim comes from. If there isn't one, don't write the sentence; write `TODO(jake)` and tell me what you need.
-
-**When something breaks:**
-> Don't guess. Reproduce it, paste the failing output, state the cause in one sentence, then fix it and paste the passing output.
+1. Fill in or delete every `TODO(jake)`.
+2. Confirm every fact and date in `02`, section A, against his records.
+3. Decide D1 to D10.
+4. Supply `public/jacob-webster-resume.pdf`.
+5. Read the claims audit and approve it.
+6. Test on real phones and with a screen reader.
+7. Review the license text for the purchased model for any web-use clause, and keep the receipt.
+8. Deploy.

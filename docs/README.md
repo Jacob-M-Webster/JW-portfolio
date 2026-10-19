@@ -30,12 +30,13 @@ These documents are the spec for the jakewebster.dev redesign. They are written 
 | D2 | Theme | Both themes built; follow `prefers-color-scheme`; light is the fallback | Recruiters use both; the sensor viewport reads well in either. |
 | D3 | Project detail pages | Yes: Spot, WayFinder, Baton get their own pages | Detail pages are where "My role" and honest limits live. |
 | D4 | Disclose AI assistance on the Baton page | Yes, one plain sentence (wording in `02-content.md`) | Matches what Jake says in interviews; avoids a mismatch. |
-| D5 | Headshot | None | Adds weight and a decision Jake hasn't made. Add later if wanted. |
+| D5 | Headshot | None. The old site's hero photo is removed with the old design. Jake may later add one small photo of himself alone (optimized, with alt text) outside the first viewport. | Keeps the first screen about the work; easy to add later. |
 | D6 | Analytics | None | No cookies, no consent banner, faster page. |
-| D7 | Framework | Decided in Stage 0 from the existing code. Preference is a static-output setup (for example Astro) with the 3D scene as a lazy-loaded island. Keep the current framework if it already ships static output and a rewrite isn't justified. | Content site; minimal JS. |
-| D8 | Resume PDF on the site | The general version, supplied by Jake at `public/jacob-webster-resume.pdf` | Role-specific versions are for applications, not the public site. |
+| D7 | Framework | **Decided after Stage 0 recon: keep Astro 7.x** (static output, deployed on Vercel). Pin the minor version and the Node version. The 3D scene is a lazy-loaded plain module, with no UI framework. | Already static, already deploying, ships no framework JS. |
+| D8 | Resume PDF on the site | The general version, supplied by Jake at `public/jacob-webster-resume.pdf`. The old URL `/Jacob_Webster_Resume.pdf` keeps working through a permanent redirect (set in `vercel.json`), because past applications may link to it. | Role-specific versions are for applications, not the public site. Don't break old links. |
 | D9 | Contact method | Email link only. No form, no phone number. | Privacy and simplicity. |
 | D10 | Which purchased car file feeds the point cloud | Decide in Stage 3 by comparing sampled silhouettes of the Waymo_Taxi OBJ and the low-poly glTF | Pick whichever reads better from the side and three-quarter view. |
+| D11 | Canonical host | `https://www.jakewebster.dev` (the apex domain redirects to www on Vercel). Use it for canonical URLs, the sitemap, and Open Graph URLs. | Matches the live redirect behavior found in Stage 0. |
 
 ## Glossary
 

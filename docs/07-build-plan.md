@@ -1,126 +1,165 @@
-# 06. Quality bars
+# 07. Build plan
 
-Numbers and checks that decide whether anything is "done". Each bar names the command or test that proves it. Paste the output in the conversation; a claim without output does not count.
+The build is split into stages. Each stage has its own plan-mode session, deliverables, verification, a `/goal` condition, and a human gate where Jake reviews before the next stage starts.
 
----
+## How to run a stage
 
-## 1. Performance
+1. **Branch.** Work on `redesign`. Start each stage from a clean `git status`.
+2. **Plan mode.** Start Claude Code in plan mode (`claude --permission-mode plan`, or Shift+Tab until the status bar shows plan mode). Paste the stage's *plan prompt*. Review and edit the plan (Ctrl+G opens it in your editor). Approve it.
+3. **Build with `/goal`.** Exit plan mode and set the stage's goal with `/goal <condition>`. The goal's evaluator judges the condition only from what Claude shows in the conversation, so every condition requires pasted command output. A goal without pasted evidence cannot be met.
+4. **Review.** Run the stage's checklist in `08-review-checklists.md`. Jake does the human gate.
+5. **Clear and move on.** `/goal clear` if it is still active, commit, and start the next stage in a fresh session so context stays small.
 
-Measured with Lighthouse (mobile preset, the default simulated throttling) on the production build served locally or from a preview deployment, three runs, report the median.
-
-| Metric | Bar |
-|---|---|
-| Lighthouse performance (mobile) | 90 or higher |
-| Largest Contentful Paint | 2.5 s or less |
-| Cumulative Layout Shift | 0.05 or less |
-| Total Blocking Time | 200 ms or less |
-| Interaction to Next Paint (lab proxy) | 200 ms or less |
-| First-load transfer, home page, **excluding** the lazy scene module and point file | 400 KB or less |
-| Total JavaScript on first load (excluding the scene) | 100 KB gzip or less |
-| Scene module | per `05` section 7 |
-| Scene data | per `05` section 7 |
-| Fonts | 2 families, Latin subset, 90 KB or less in total |
-| Images above the fold | AVIF or WebP; explicit `width` and `height`; `fetchpriority="high"` on the LCP image only |
-| Requests to third-party origins | 0 |
-| Main-thread long tasks over 50 ms during load | none caused by our code, or each explained |
-
-**Rules**
-- No render-blocking JavaScript. Scripts are `type="module"` (deferred) or loaded on idle.
-- No layout shift from fonts (`size-adjust` on the fallback, preload the two critical files).
-- CSS is inlined or a single small file; no unused framework CSS shipped.
-- The scene never delays any of: first paint, text, links, the resume button.
-
-**Command:** `npm run check:perf` (to be created in Stage 5) runs Lighthouse three times and prints the median of each metric. If a bar fails, fix it or write down why and get Jake's approval; don't lower a bar silently.
+**Rules for every stage**
+- A stage's goal is never "make the site look good." It is a list of things Claude can run and show.
+- Stop conditions are part of the goal: if blocked twice on the same issue, stop and ask.
+- Don't start the next stage's work early.
+- Don't change a doc to make a check pass; if a doc is wrong, say so and ask.
 
 ---
 
-## 2. Accessibility (WCAG 2.2 AA minimum)
+## Stage 0. Recon (no code changes)
 
-**Automated:** Lighthouse accessibility score 100, and `axe-core` (via Playwright) reports zero violations on `/`, `/projects/spot`, `/projects/wayfinder`, `/projects/baton`, and `/404`, in light and dark.
+**Purpose:** learn what exists before changing it.
 
-**Manual or scripted checks (all must be recorded as pass in `08`)**
-- **Keyboard:** full navigation with Tab and Shift+Tab only. A skip link is the first focusable element. Every control reachable. No focus traps. Focus order matches reading order.
-- **Focus visibility:** every focusable element shows a ring of at least 3:1 contrast against its surroundings, in both themes.
-- **Contrast:** every text and background pair at least 4.5:1 (3:1 for large text and UI graphics). Claude prints the table of computed ratios for all token pairs, in both themes, including the focus ring and the highlighter-hover link state.
-- **Headings:** one `h1` per page, no skipped levels, headings describe their sections.
-- **Landmarks:** `header`, `nav`, `main`, `footer` present once each.
-- **Links and buttons:** names make sense out of context; the `Resume` link names its file type.
-- **Images and figures:** meaningful alt text or `role="img"` with an accessible name for diagrams; decorative items hidden. The canvas is `aria-hidden`; the caption carries the meaning.
-- **Motion:** `prefers-reduced-motion: reduce` removes the scene, sweep, morphs, and lane fill. Nothing flashes more than 3 times per second (see `05`).
-- **Zoom and reflow:** at 200% browser zoom (1280 px equivalent) and at 320 px width, no horizontal scroll, no clipped or overlapping content.
-- **Target size:** interactive targets are at least 44 by 44 px (the WCAG 2.2 minimum is 24; this site uses 44).
-- **Language:** `<html lang="en">`.
-- **Forced colors:** content is readable and focus rings visible under `forced-colors: active`.
-- **Screen reader pass:** VoiceOver or NVDA read the home page once top to bottom; record anything confusing and fix it. (Jake does this one by hand; Claude supplies the checklist.)
+**Plan prompt**
+> Read `CLAUDE.md` and everything in `docs/`. Then inspect this repository without changing any files and write `docs/recon.md` containing: (1) framework, language, package manager, Node version, and every dependency with one line on what it's for; (2) routes and pages that exist; (3) where content currently lives; (4) build, dev, lint, and deploy commands, verified by actually running the build; (5) Lighthouse mobile baseline (three-run median) for the home page; (6) what's worth keeping and what should go, with reasons; (7) a recommendation on decision D7 (framework) with the trade-offs. Do not propose design or copy. Do not delete or modify anything except creating `docs/recon.md`.
+
+**Deliverables:** `docs/recon.md`; `CLAUDE.md` "Commands" section filled in.
+
+**`/goal`**
+> `docs/recon.md` exists and covers all seven numbered items; the build command ran successfully and its output is pasted; the Lighthouse median table is pasted; `git status` shows only `docs/recon.md` and `CLAUDE.md` changed.
+
+**Human gate:** Jake reads `recon.md`, decides D7, and confirms what to keep.
 
 ---
 
-## 3. Progressive enhancement
+## Stage 1. Foundations
 
-- With JavaScript disabled: all text, links, project pages, the resume link, and the email link work; the viewport shows the poster; the page looks intentional.
-- With CSS custom properties unsupported: not a target (evergreen browsers only).
-- Content is never injected by script.
+**Purpose:** tokens, fonts, base styles, layout shell, check scripts. No content styling beyond what proves the foundations work.
 
----
+**Plan prompt**
+> Follow `docs/03-design-system.md` and `docs/06-quality-bars.md`. Plan the foundations: the token file (colors for light and dark, type scale, spacing scale, radius), self-hosted fonts (verify each license is OFL and include the license files; subset to Latin; preload the two critical files), base CSS (reset, typography, focus ring, link and button styles per the doc), the page shell (header, main, footer, skip link, grid with the sticky-column layout reserved), and the check scripts `check:tokens`, `check:content`, `check:size`. Before writing code, produce the design plan required by section 8b of the design doc: palette, type roles, an ASCII layout sketch, and three principles, and say what you changed after comparing it against section 2.
 
-## 4. SEO and metadata
+**Deliverables**
+- Token CSS, font files and licenses, base styles, shell components.
+- A temporary style-guide route (not shipped to production) showing every component state in light and dark.
+- Contrast table printed for every token pair.
+- `check:tokens`, `check:content`, `check:size` working.
 
-| Item | Spec |
-|---|---|
-| `<title>` home | `Jacob Webster: perception and autonomy software` |
-| `<title>` project | `{Project}: Jacob Webster` |
-| Meta description | One sentence per page, 150 characters or fewer, no keyword stuffing, from `02` |
-| Canonical URL | Set per page |
-| Open Graph / Twitter card | `og:title`, `og:description`, `og:image` (the generated `og-home.png`, or a per-project crop), `og:type=website`, `twitter:card=summary_large_image`; image alt text provided |
-| Structured data | A single JSON-LD `Person` on the home page: `name`, `url`, `sameAs` (LinkedIn, GitHub), `alumniOf` (the University of South Carolina). Nothing else; no job title claims beyond the resume. |
-| `sitemap.xml`, `robots.txt` | Generated; `robots.txt` allows all |
-| Favicon | SVG favicon plus a 180 px touch icon (per `03`) |
-| `theme-color`, `color-scheme` | Set for both themes |
-| Lighthouse SEO | 100 |
+**Added after the Stage 0 recon**
+- Remove the old stylesheet (`src/styles/global.css`), the nav scroll script (`src/scripts/nav.js`), and the Google Fonts links. Third-party requests must be 0.
+- Run `npm prune` to remove the extraneous packages the recon found. Add an `.nvmrc` and confirm Vercel's Node setting matches it. Pin Astro's minor version.
+- Dev dependencies to propose in the plan, for Jake to approve by name: `@astrojs/check`, `typescript`, `prettier`, `prettier-plugin-astro`, `@playwright/test`, `@axe-core/playwright`. Run Lighthouse with `npx lighthouse@12` rather than installing it. Do not add Astro's `ClientRouter` (view transitions).
+- The old copy, project images, photos, and logos are removed in Stage 2, not Stage 1 (recon section 6 lists them).
 
----
+**`/goal`**
+> The build passes; `check:tokens` and `check:size` pass and their output is pasted; a contrast table for all token pairs in light and dark is pasted and every text pair is at least 4.5:1 and every graphic and focus pair at least 3:1; screenshots of the style-guide route at 375, 768, 1280 and 1920 px in both themes are captured and I have written a short critique of each following section 8b of the design doc.
 
-## 5. Privacy and security
-
-- **No analytics, no cookies, no third-party requests.** The only storage use is the `sessionStorage` flag for the intro (no personal data).
-- **No phone number, address, or any personal data beyond the email, LinkedIn, and GitHub links.**
-- **Content Security Policy** if the host supports headers: `default-src 'self'`; `img-src 'self' data:`; `style-src 'self'` (inline critical CSS allowed via hash or nonce); `script-src 'self'`; `font-src 'self'`; `connect-src 'self'`; `frame-ancestors 'none'`; `base-uri 'self'`; `form-action 'none'`. If the Baton demo video is embedded, use a link to YouTube instead of an iframe, so no third-party origin loads.
-- Other headers if supported: `Referrer-Policy: strict-origin-when-cross-origin`, `X-Content-Type-Options: nosniff`, `Permissions-Policy` with camera, microphone, and geolocation denied.
-- **Dependencies:** minimal; lockfile committed; `npm audit` (or the package manager's equivalent) shows no high or critical issues; each dependency justified in the plan.
-- **Secrets:** no `.env` values, keys, or tokens in the repo or history. Run a secrets scan (`gitleaks` or `trufflehog`) on the full history and paste the result.
-- **Licensed assets:** `check:assets` passes (see `05` section 9).
+**Human gate:** Jake looks at the style guide screenshots on a laptop and a phone. Question: does it feel like his, and is it free of the banned patterns?
 
 ---
 
-## 6. Browser support
+## Stage 2. Content and pages (no 3D)
 
-Evergreen browsers, latest two versions: Chrome, Edge, Firefox, Safari (macOS and iOS 16 or later), plus Chrome on Android. WebGL2 absence is handled by the fallback; nothing else may depend on it. No polyfills.
+**Purpose:** every page and section, complete and correct, with posters in place of the scene.
+
+**Plan prompt**
+> Follow `docs/02-content.md` and `docs/04-site-flow.md`. Plan the content files (`content/` structure in `02`, section G), the home page sections, the three project pages with their SVG figures (built solid, planned dashed), the 404, and the poster placeholders. Use `TODO(jake)` for anything missing. List every `TODO(jake)` you expect. Do not write the WebGL scene. Do not add motion beyond what `03` allows.
+
+**Deliverables**
+- All routes in `04`, section 1, built from the content files.
+- Project figures as inline SVG using tokens.
+- Placeholder poster images (flat `--viewport` rectangles with correct dimensions) in the viewport frame.
+- A list of every remaining `TODO(jake)`.
+
+**`/goal`**
+> Every route in `docs/04-site-flow.md` section 1 builds; `check:content` output is pasted showing only the expected `TODO(jake)` items (listed in a table with file and line); `check:a11y` shows zero axe violations on all routes in both themes; the home page with JavaScript disabled is screenshotted at 375 and 1280 px and shows name, school and graduation date, target role, resume link and email without scrolling; every sentence on screen is mapped to a row in the claims ledger (table pasted).
+
+**Human gate (the important one):** Jake reads every line of every page against his own records and fills in or removes each `TODO(jake)`. Nothing moves on until `check:content` passes with zero TODOs.
 
 ---
 
-## 7. Code quality
+## Stage 3. Asset pipeline
 
-- TypeScript (or JSDoc-typed JavaScript) with strict settings if the framework uses scripts at all.
-- Linting and formatting configured and passing (`npm run lint`).
-- CSS uses tokens only. No `!important`. No raw hex values outside the token file. A script greps for both.
-- No dead code, no commented-out blocks, no leftover `console.log`.
-- Components are small and named for what they are, not how they look.
-- Content is in `content/` files (see `02`, section G); the build validates the schema.
-- README at the repo root explains how to run, build, add a project, regenerate the point-cloud assets, and where the private assets live.
+**Purpose:** produce the derived point-cloud files and posters, with proof that no raw asset ships.
+
+**Plan prompt**
+> Follow `docs/05-3d-and-motion.md` sections 2 and 6.1. Plan `scripts/mesh_to_points.py`, `scripts/make_quadruped.py`, `scripts/render_poster.py`, and `scripts/check-assets`. Start by inspecting the purchased meshes in `assets-private/` and writing `docs/asset-report.md` (group names, face counts, bounding boxes, exclusion list). Decide D10 by rendering a quick preview of each candidate car and recommending one. Do not copy any raw file out of `assets-private/`. Do not commit anything from `assets-private/`.
+
+**Deliverables**
+- `docs/asset-report.md`, scripts, `public/models/scene-points.bin` and `.json`, posters (AVIF and WebP), `og-home.png`.
+- Unit tests for the scripts.
+
+**`/goal`**
+> `docs/asset-report.md` exists; running the sampling and poster scripts twice gives byte-identical outputs (SHA-256 pairs pasted); the script unit tests pass and their output is pasted; `check:assets` passes with output pasted showing `git ls-files`, `git log --all`, extension, and hash checks; `scene-points.bin` is within the size budget (sizes pasted, uncompressed and brotli); poster previews of car, quadruped and scatter are screenshotted.
+
+**Human gate:** Jake views the posters. Does the car read as a car? Does the quadruped read as a four-legged robot? Is anything recognizably a competitor's trade dress? Jake confirms nothing from `assets-private/` is staged.
 
 ---
 
-## 8. The checks (scripts to create; names are fixed so `/goal` conditions can reference them)
+## Stage 4. Scene and choreography
 
-| Script | What it fails on |
-|---|---|
-| `check:content` | Any `TODO(jake)` anywhere in `content/`, `src/`, or the build output; missing required frontmatter; a project page missing "What isn't done"; any claim string from the forbidden columns in `02` section B (a maintained list of regexes: `autonomously follows`, `deployed on Spot`, `SLAM`, `real-time`, `production-ready`, `I built Baton`, and so on) |
-| `check:assets` | See `05` section 9 |
-| `check:links` | Any internal link, anchor, or external link that does not resolve (external checks may be allowed to warn, not fail, for rate-limited hosts) |
-| `check:a11y` | Any axe violation on any route in either theme |
-| `check:perf` | Any Lighthouse metric outside section 1 |
-| `check:tokens` | Raw hex outside the token file, `!important`, banned selectors |
-| `check:size` | First-load transfer, JS, font, and scene budgets exceeded |
-| `check:all` | Runs every check above in order; non-zero exit on any failure |
+**Purpose:** the live viewport, intro, scroll states, hover, fallbacks.
 
-The production build (`npm run build`) runs `check:content`, `check:assets`, and `check:tokens` before it emits output.
+**Plan prompt**
+> Follow `docs/05-3d-and-motion.md` sections 3 to 8. Plan the raw WebGL2 renderer (or justify a library in one paragraph and stop for approval), the state machine, the scroll mapping measured from the DOM, the hover override, the adaptive quality controller, the fallback conditions, and the Playwright tests listed in section 9. Include the live point-count readout. Do not add any animation outside the scene and the lane line.
+
+**Deliverables**
+- Scene module, lane line, fallbacks, tests.
+- Frame-time report under 4x CPU throttling.
+
+**`/goal`**
+> All nine scene Playwright checks in `docs/05-3d-and-motion.md` section 9 pass, with output pasted; the 4x-throttled frame-time median and p95 are pasted and the adaptive quality step-down is demonstrated; the scene module gzip size and scene data size are pasted and within budget; screenshots of each scene state (car, quadruped, scatter) on desktop and the mobile hero are pasted; with `reducedMotion` on and with `getContext` stubbed to null, the page shows posters and has zero console errors; `check:assets` still passes.
+
+**Human gate:** Jake scrolls the page on a real laptop and a real phone, with the browser console open. Does it feel smooth? Is anything distracting while reading? Does the caption read as honest? Are text, links, and buttons usable at every moment?
+
+---
+
+## Stage 5. Polish, performance, and metadata
+
+**Purpose:** meet the budgets, finish metadata, remove the least necessary decoration.
+
+**Plan prompt**
+> Follow `docs/06-quality-bars.md`. Plan the remaining work: `check:perf`, `check:links`, `check:a11y` finalization, metadata (titles, descriptions, Open Graph, JSON-LD, sitemap, robots, favicon), security headers if the host supports them, the repo README, and a final pass on tokens and banned patterns. Then perform the "remove one accessory" step from the design doc and say what was removed.
+
+**`/goal`**
+> `npm run check:all` exits 0 with its full output pasted; the Lighthouse mobile median table meets every bar in section 1 of the quality doc; the contrast table is re-printed and passes; a secrets scan over the full git history is pasted and clean; `npm audit` shows no high or critical issues; the README explains running, building, adding a project, regenerating assets, and where private assets live; the "remove one accessory" note is written.
+
+**Human gate:** Jake screen-reader-tests the home page, checks the site on two real phones, and reads the metadata in a link preview (paste the preview URL into a chat app).
+
+---
+
+## Stage 6. Final review and launch
+
+**Purpose:** a clean, defensible launch.
+
+**Plan prompt**
+> Run the full review in `docs/08-review-checklists.md`: the claims audit, the anti-slop audit, the device and browser checks, and the launch checklist. Produce `docs/launch-report.md` with a pass or fail and evidence for each line. Do not fix failures silently; list them with proposed fixes.
+
+**`/goal`**
+> `docs/launch-report.md` exists with every line of the claims audit, the anti-slop audit, and the launch checklist marked pass with evidence or fail with a proposed fix; zero fails remain; `npm run check:all` output is pasted again after the last change.
+
+**Human gate:** Jake reads the claims audit one more time, confirms the resume PDF on the site matches the current resume, then deploys. After deploying, he opens the live site on a phone and runs Lighthouse against the live URL.
+
+---
+
+## After launch
+
+- Update `content/` when the Spot work changes status. The "What isn't done" section is the first thing to edit.
+- Re-run `check:content` after any copy change.
+- When Caelus, Spot, or a new project needs a write-up, copy an existing project file; do not add new section types.
+- Review the site against the resume every time the resume changes.
+
+---
+
+## Prompt snippets worth reusing
+
+**For any visual change:**
+> Before editing, state which token and which component this uses. After editing, screenshot at 375 and 1280 in both themes, and tell me what you would remove.
+
+**For any copy change:**
+> Quote the ledger row this claim comes from. If there isn't one, don't write the sentence; write `TODO(jake)` and tell me what you need.
+
+**When something breaks:**
+> Don't guess. Reproduce it, paste the failing output, state the cause in one sentence, then fix it and paste the passing output.
