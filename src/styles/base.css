@@ -34,7 +34,8 @@ video {
   max-width: 100%;
 }
 
-ul[role='list'] {
+ul[role='list'],
+ol[role='list'] {
   list-style: none;
   padding: 0;
 }
@@ -98,7 +99,31 @@ p {
 }
 
 .status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   font-family: var(--font-sans);
+  font-weight: var(--weight-ui);
+}
+
+/* Decorative; the status word carries the meaning (03 section 5). */
+.status-square {
+  flex: none;
+  width: var(--space-2);
+  height: var(--space-2);
+  background: var(--asphalt);
+}
+
+.status-square[data-status='in-progress'] {
+  background: var(--lane);
+}
+
+.status-square[data-status='paused'] {
+  background: var(--concrete);
+}
+
+.todo {
+  color: var(--asphalt-soft);
   font-weight: var(--weight-ui);
 }
 
@@ -275,6 +300,16 @@ main {
 
 .site-footer a {
   overflow-wrap: anywhere;
+}
+
+/* Rules: 1 px --concrete between the entries of a list (03 section 4.5) */
+
+.rule-list > li {
+  border-block-end: var(--stroke-rule) solid var(--concrete);
+}
+
+.rule-list > li:first-child {
+  border-block-start: var(--stroke-rule) solid var(--concrete);
 }
 
 /* Sections */

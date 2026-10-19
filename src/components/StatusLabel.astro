@@ -1,0 +1,15 @@
+---
+// Status as text with a decorative 8 px square (03 section 5, project rows).
+// The word carries the meaning; the square is aria-hidden.
+interface Props {
+  status: 'in-progress' | 'paused' | 'prototype' | 'placed';
+  label: string;
+}
+
+const { status, label } = Astro.props;
+---
+
+<span class="status">
+  <span class="status-square" data-status={status} aria-hidden="true"></span>
+  {label}
+</span>

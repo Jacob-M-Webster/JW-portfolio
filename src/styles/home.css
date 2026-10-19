@@ -1,0 +1,172 @@
+/*
+  Home page sections. Tokens only (check:tokens).
+  Spec: docs/03-design-system.md section 5, docs/04-site-flow.md section 4.
+*/
+
+/* The sticky viewport spans every row: hero, now, projects, experience,
+   skills and honors. */
+.home-grid {
+  --home-rows: 5;
+}
+
+.home-grid h2 + * {
+  margin-block-start: var(--space-5);
+}
+
+/* Now */
+
+.now-item + .now-item {
+  margin-block-start: var(--space-4);
+}
+
+.lead-phrase {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+}
+
+/* Projects: ruled rows, the title link stretched over the row */
+
+.project-row {
+  position: relative;
+  padding-block: var(--space-6);
+}
+
+.project-row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+}
+
+.project-row h3 a {
+  text-decoration-line: none;
+}
+
+.project-row h3 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* The ring goes around the whole row; the title keeps its highlighter. */
+.project-row:has(a:focus-visible) {
+  outline: var(--stroke-focus) solid var(--asphalt);
+  outline-offset: var(--focus-offset);
+}
+
+.project-row a:focus-visible {
+  outline-color: transparent;
+}
+
+.project-row p {
+  margin-block-start: var(--space-2);
+}
+
+.project-row .small {
+  color: var(--asphalt-soft);
+}
+
+/* Experience: dates left, role right */
+
+.timeline-entry {
+  display: grid;
+  gap: var(--space-1) var(--space-5);
+  padding-block: var(--space-5);
+}
+
+.timeline-dates {
+  color: var(--asphalt-soft);
+  font-weight: var(--weight-ui);
+}
+
+.timeline-employer {
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+}
+
+.timeline-body ul {
+  margin-block-start: var(--space-3);
+  padding-inline-start: var(--space-5);
+}
+
+.timeline-body li + li {
+  margin-block-start: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .timeline-entry {
+    grid-template-columns: 9rem minmax(0, 1fr);
+  }
+}
+
+/* Skills and honors */
+
+.skills-honors {
+  display: grid;
+  gap: var(--space-8);
+}
+
+.skills > div + div {
+  margin-block-start: var(--space-4);
+}
+
+.skills dt {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-ui);
+}
+
+.skills dd {
+  margin-inline-start: 0;
+}
+
+.honors li + li {
+  margin-block-start: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .skills-honors {
+    grid-template-columns: 3fr 2fr;
+    gap: var(--space-7);
+  }
+}
+
+@media (min-width: 1024px) {
+  .skills-honors {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+/* Lane line: static dashed track in the left gutter, desktop only */
+
+.lane-line {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .lane-line {
+    display: block;
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: calc((100% - min(100%, var(--page-max))) / 2 + var(--gutter) / 2);
+    width: var(--stroke-strong);
+    pointer-events: none;
+  }
+
+  .lane-line svg {
+    height: 100%;
+  }
+
+  .lane-line line {
+    stroke: var(--concrete);
+    stroke-width: var(--stroke-strong);
+    stroke-dasharray: 12 10; /* 04 section 5: dash 12 px, gap 10 px */
+  }
+}
+
+@media print {
+  .lane-line {
+    display: none;
+  }
+}

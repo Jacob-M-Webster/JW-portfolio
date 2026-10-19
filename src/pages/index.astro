@@ -1,30 +1,122 @@
 ---
+import '../styles/home.css';
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ActionLink from '../components/ActionLink.astro';
 import ViewportFrame from '../components/ViewportFrame.astro';
-import { getSite } from '../lib/content';
+import ProjectRow from '../components/ProjectRow.astro';
+import LaneLine from '../components/LaneLine.astro';
+import Todo from '../components/Todo.astro';
+import { getOrdered, getProjects, getSite } from '../lib/content';
 
 const site = await getSite();
+const projects = await getProjects();
+const roles = await getOrdered('experience');
+const education = (await getEntry('education', 'education'))?.data;
+const skills = await getOrdered('skills');
+const honors = await getOrdered('honors');
 ---
 
-<BaseLayout title="Jacob Webster: perception and autonomy software">
+<BaseLayout title={site.title}>
   <div class="page home-grid">
     <section class="section hero" aria-labelledby="hero-title">
-      <h1 id="hero-title">I build perception and autonomy software.</h1>
-      <p>
-        I'm a computer science senior at the University of South Carolina, graduating in May 2027. I
-        enjoy building software for machines that move. I'm looking for new grad software
-        engineering roles in autonomy and infrastructure.
-      </p>
+      <h1 id="hero-title">{site.hero.heading}</h1>
+      <p>{site.hero.lead}</p>
       <div class="actions">
         <ActionLink href={site.resume} variant="primary">
-          Download resume (PDF)
+          {site.hero.resumeAction}
         </ActionLink>
         <ActionLink href={`mailto:${site.email}`} variant="secondary">
-          Email me
+          {site.hero.emailAction}
         </ActionLink>
       </div>
     </section>
+
     <ViewportFrame />
+
+    <section class="section" id="now" aria-labelledby="now-title">
+      <h2 id="now-title">What I'm working on now</h2>
+      {site.now.map((item) => (
+        <p class="now-item">
+          <span class="lead-phrase">{item.lead}</span> {item.text}
+          {item.link && (
+            <>
+              {' '}
+              <a href={item.link.href}>{item.link.label}</a>
+            </>
+          )}
+        </p>
+      ))}
+    </section>
+
+    <section class="section" id="projects" aria-labelledby="projects-title">
+      <h2 id="projects-title">Projects</h2>
+      <ul class="rule-list" role="list">
+        {projects.map((project) => (
+          <ProjectRow project={project} />
+        ))}
+      </ul>
+    </section>
+
+    <section class="section" id="experience" aria-labelledby="experience-title">
+      <h2 id="experience-title">Experience</h2>
+      <ol class="rule-list" role="list">
+        {roles.map(({ data }) => (
+          <li class="timeline-entry">
+            <p class="small tabular timeline-dates">{data.dates}</p>
+            <div class="timeline-body">
+              <h3>{data.role}</h3>
+              <p class="timeline-employer">
+                {data.employer}, {data.location}
+              </p>
+              <ul>
+                {data.bullets.map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+              <Todo text={data.todo} />
+            </div>
+          </li>
+        ))}
+      </ol>
+      {education && (
+        <div class="timeline-entry education">
+          <p class="small tabular timeline-dates">{education.dates}</p>
+          <div class="timeline-body">
+            <h3>Education</h3>
+            <p>
+              {education.school}. {education.degree}.{education.gpa && ` ${education.gpa}.`}
+            </p>
+            <Todo text={education.todo} />
+          </div>
+        </div>
+      )}
+    </section>
+
+    <div class="section skills-honors">
+      <section id="skills" aria-labelledby="skills-title">
+        <h2 id="skills-title">Skills</h2>
+        <dl class="skills">
+          {skills.map(({ data }) => (
+            <div>
+              <dt>{data.label}</dt>
+              <dd>{data.items.join(', ')}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+      <section id="honors" aria-labelledby="honors-title">
+        <h2 id="honors-title">Honors</h2>
+        <ul class="honors" role="list">
+          {honors.map(({ data }) => (
+            <li>
+              {data.text}
+              <Todo text={data.todo} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
   </div>
+  <LaneLine />
 </BaseLayout>

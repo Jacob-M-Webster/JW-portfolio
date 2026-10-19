@@ -1,0 +1,11 @@
+---
+// A visible TODO(jake) line from content/. Loud on purpose: production
+// builds fail while any remains (check:content in strict mode).
+interface Props {
+  text?: string;
+}
+
+const { text } = Astro.props;
+---
+
+{text && <p class="small todo">{text}</p>}

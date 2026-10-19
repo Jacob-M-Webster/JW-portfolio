@@ -1,0 +1,24 @@
+---
+// One ruled row in the home Projects list (03 section 5). The title link
+// stretches over the row; the status word sits beside it.
+import type { CollectionEntry } from 'astro:content';
+import StatusLabel from './StatusLabel.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, oneLine, status, rowStatusLabel, stack } = project.data;
+---
+
+<li class="project-row">
+  <div class="project-row-head">
+    <h3>
+      <a href={`/projects/${project.id}`}>{title}</a>
+    </h3>
+    <StatusLabel status={status} label={rowStatusLabel} />
+  </div>
+  <p>{oneLine}</p>
+  <p class="small">{stack.join(', ')}</p>
+</li>

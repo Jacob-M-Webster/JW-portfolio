@@ -4,12 +4,27 @@ import { defineCollection } from 'astro:content';
 import { file, glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+/**
+ * Loads a JSON array and records each entry's position as `order`, because
+ * getCollection returns entries sorted by id, not in file order.
+ */
+const list = (path: string) =>
+  file(path, {
+    parser: (text) =>
+      (JSON.parse(text) as Record<string, unknown>[]).map((entry, order) => ({ ...entry, order })),
+  });
+
+const order = z.number().int();
+
 /** Loads a flat JSON object as a single entry with the given id. */
 const single = (path: string, id: string) =>
   file(path, { parser: (text) => [{ id, ...JSON.parse(text) }] });
 
 // An open question for Jake, shown on the page until answered.
-const todo = z.string().regex(/^TODO\(jake\): /).optional();
+const todo = z
+  .string()
+  .regex(/^TODO\(jake\): /)
+  .optional();
 
 const site = defineCollection({
   loader: single('content/site.json', 'site'),
@@ -41,7 +56,7 @@ const site = defineCollection({
 });
 
 const experience = defineCollection({
-  loader: file('content/experience.json'),
+  loader: list('content/experience.json'),
   schema: z.object({
     role: z.string(),
     employer: z.string(),
@@ -49,6 +64,7 @@ const experience = defineCollection({
     dates: z.string(),
     bullets: z.array(z.string()).min(1),
     todo,
+    order,
   }),
 });
 
@@ -64,13 +80,13 @@ const education = defineCollection({
 });
 
 const skills = defineCollection({
-  loader: file('content/skills.json'),
-  schema: z.object({ label: z.string(), items: z.array(z.string()).min(1) }),
+  loader: list('content/skills.json'),
+  schema: z.object({ label: z.string(), items: z.array(z.string()).min(1), order }),
 });
 
 const honors = defineCollection({
-  loader: file('content/honors.json'),
-  schema: z.object({ text: z.string(), todo }),
+  loader: list('content/honors.json'),
+  schema: z.object({ text: z.string(), todo, order }),
 });
 
 const projects = defineCollection({

@@ -86,7 +86,7 @@ DOM order (matters for keyboard and screen readers): header, main content in rea
 - **Purpose:** put the three projects in front of the reader with their honest status.
 - **Content:** three ruled rows (`02`, section C).
 - **Behavior (desktop):** as each row crosses the middle of the viewport, the scene shows the matching state (Spot: quadruped, WayFinder: car, Baton: quiet scatter). Hover or focus on a row requests its state. Scroll and hover never fight: scroll sets the base state; hover applies for as long as the pointer is on the row and then releases.
-- **Behavior (mobile and tablet):** each row shows a small static poster to its right (desktop-hidden) or above (mobile) only if it adds clarity; otherwise omit. No scroll-linked changes.
+- **Behavior (mobile and tablet):** each row shows a small static poster to its right (desktop-hidden) or above (mobile) only if it adds clarity; otherwise omit. No scroll-linked changes. Until Stage 3's real posters exist, rows show none.
 - **Acceptance:** keyboard users can tab to each row and activate it; focus ring visible; status word present as text.
 
 ### 4.5 Experience
@@ -99,7 +99,7 @@ DOM order (matters for keyboard and screen readers): header, main content in rea
 ### 4.6 Skills and honors
 - **Purpose:** keyword coverage for people and parsers, without a logo wall.
 - **Content:** skills definition list; honors list (`02`).
-- **Layout:** two columns on desktop, stacked on mobile. No icons.
+- **Layout:** two columns from 768 to 1023 px, where the content runs full width; stacked on mobile and inside the 536 px desktop content column, where two columns would be about 250 px each. No icons.
 - **Acceptance:** every tool listed appears on the resume.
 
 ### 4.7 Footer

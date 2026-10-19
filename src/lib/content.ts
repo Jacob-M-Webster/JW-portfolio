@@ -7,10 +7,14 @@ export async function getSite() {
   return entry.data;
 }
 
-/** Projects in display order (frontmatter `order`). */
-export async function getProjects() {
-  return (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+/** Entries of a collection in display order (`order`: frontmatter or file position). */
+export async function getOrdered<C extends 'projects' | 'experience' | 'skills' | 'honors'>(
+  collection: C,
+) {
+  return (await getCollection(collection)).sort((a, b) => a.data.order - b.data.order);
 }
+
+export const getProjects = () => getOrdered('projects');
 
 /** The five body sections every project page has, in order (02 section D). */
 export const PROJECT_SECTIONS = [
