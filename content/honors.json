@@ -1,0 +1,15 @@
+[
+  {
+    "id": "palmetto-fellows",
+    "text": "Palmetto Fellows Scholarship (South Carolina merit-based scholarship)"
+  },
+  {
+    "id": "deans-scholar",
+    "text": "Dean's Scholar, 5 semesters",
+    "todo": "TODO(jake): confirm the semester count against the transcript (the resume says 5)."
+  },
+  {
+    "id": "hackathons",
+    "text": "Hackathons: CUhackit 2025 (Best Web Development), NASA Space Apps (Most Inspirational), PalmettoHacks (2nd overall)"
+  }
+]

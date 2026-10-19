@@ -5,7 +5,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ActionLink from '../components/ActionLink.astro';
 import ViewportFrame from '../components/ViewportFrame.astro';
-import { site } from '../site';
+import { getSite } from '../lib/content';
+
+const site = await getSite();
 
 const colors = [
   ['fog', 'Page background'],

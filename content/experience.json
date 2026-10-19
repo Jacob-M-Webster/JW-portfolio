@@ -1,0 +1,37 @@
+[
+  {
+    "id": "michelin-part-time",
+    "role": "Software Engineer (part-time)",
+    "employer": "Michelin",
+    "location": "Greenville, SC",
+    "dates": "Sep 2026 to present",
+    "bullets": [
+      "Updating technical documentation for the team's applications.",
+      "Setting up testing and code-quality tooling, including Renovate dependency updates and SonarQube static analysis."
+    ],
+    "todo": "TODO(jake): confirm what Michelin allows to be listed publicly."
+  },
+  {
+    "id": "michelin-intern",
+    "role": "Software Engineering Intern",
+    "employer": "Michelin",
+    "location": "Greenville, SC",
+    "dates": "May to Aug 2026",
+    "bullets": [
+      "Developed automated frontend tests with Playwright for the inventory management application, cutting minor release testing from 150 minutes to 3.5.",
+      "Reduced the steps to transmit parcel data by 75% using Kafka and Java microservices."
+    ]
+  },
+  {
+    "id": "c4is-fellow",
+    "role": "Software Engineering Fellow",
+    "employer": "USC Center for Industry Solutions",
+    "location": "Columbia, SC",
+    "dates": "Aug 2025 to present",
+    "bullets": [
+      "Building the Spot voice-following system described above.",
+      "Led a team of three building Caelus, a ROS2 drone perception prototype that accumulates 2D LiDAR scans into a 3D voxel point cloud at 10 cm resolution. The project is paused.",
+      "Set the team's Git workflow and code review standards."
+    ]
+  }
+]

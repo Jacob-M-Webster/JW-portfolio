@@ -1,0 +1,39 @@
+[
+  {
+    "id": "languages",
+    "label": "Languages",
+    "items": ["Python", "C++", "Java", "C", "JavaScript and TypeScript", "SQL"]
+  },
+  {
+    "id": "robotics-ml",
+    "label": "Robotics and machine learning",
+    "items": [
+      "ROS2",
+      "LiDAR point clouds",
+      "LightGBM",
+      "PyTorch",
+      "TensorFlow",
+      "YOLO",
+      "vision-language models"
+    ]
+  },
+  {
+    "id": "backend-systems",
+    "label": "Backend and systems",
+    "items": [
+      "Linux",
+      "Git",
+      "Kafka",
+      "Spring Boot",
+      "REST APIs",
+      "FastAPI",
+      "WebSockets",
+      "SQLite"
+    ]
+  },
+  {
+    "id": "web-testing",
+    "label": "Web and testing",
+    "items": ["React", "Node.js", "Tailwind CSS", "Playwright"]
+  }
+]

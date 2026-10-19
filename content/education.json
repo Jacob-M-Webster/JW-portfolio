@@ -1,0 +1,7 @@
+{
+  "school": "University of South Carolina",
+  "degree": "B.S. Computer Science",
+  "dates": "Aug 2024 to May 2027",
+  "gpa": "GPA 3.6",
+  "todo": "TODO(jake): confirm showing GPA 3.6 here (the default: shown once, in this block)."
+}

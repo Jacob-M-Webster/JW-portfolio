@@ -104,7 +104,7 @@ Row copy (title, one line, status, stack):
 
 | Project | One line | Status | Stack |
 |---|---|---|---|
-| Spot voice-following | A voice-commanded person-following system for a Boston Dynamics Spot, in progress. | In progress | Python, LocateAnything-3B, YOLO11n |
+| Spot voice-following | A voice-commanded person-following system for a Boston Dynamics Spot, in progress. | In progress | Python, faster-whisper, NVIDIA LocateAnything-3B, YOLO11n |
 | WayFinder | Infers a traffic light's state from how nearby cars behave, for when the signal fails. | Hackathon prototype, ShellHacks X | Python, LightGBM, Pandas |
 | Baton | A shared, replayable session where a team watches and steers one AI coding agent. | 2nd overall, PalmettoHacks | Python, FastAPI, React, WebSockets, SQLite |
 
@@ -270,32 +270,42 @@ passionate, driven, leverage, leveraging, cutting-edge, state-of-the-art, seamle
 
 ## G. Content files (structure for the build)
 
-Content lives outside components so Jake can edit it without touching layout:
+Content lives outside components so Jake can edit it without touching layout. Each file is an Astro content collection with a Zod schema in `src/content.config.ts`; a missing or malformed field fails the build.
 
 ```
 content/
-  site.json              # name, descriptor, links, status line
-  experience.json        # roles with dates and bullets
-  skills.json            # grouped lists
-  honors.json
+  site.json              # name, links, resume path, page title, hero, the two "now" items, footer line
+  experience.json        # roles: id, role, employer, location, dates, bullets, optional todo
+  education.json         # school, degree, dates, gpa, optional todo
+  skills.json            # groups: id, label, items
+  honors.json            # items: id, text, optional todo
   projects/
-    spot.md              # frontmatter: title, summary, status, role, when, stack, links; body sections D1
+    spot.md              # frontmatter below; body is the five sections of D, as ## headings, in order
     wayfinder.md
     baton.md
 ```
 
-Frontmatter schema for a project (validated at build; missing required fields fail the build):
+Frontmatter schema for a project:
 
 ```yaml
 title: string
-summary: string          # one sentence, no more than 160 characters
+summary: string          # the page lede; no more than 170 characters (jake-answers.md B's Spot summary is two sentences, 168)
+oneLine: string          # the home row line and the meta description; no more than 150 characters
 status: string           # one of: in-progress | paused | prototype | placed
-statusLabel: string      # what the reader sees, e.g. "In progress"
-role: string             # one sentence, first person
+statusLabel: string      # what the facts block shows, e.g. "Hackathon prototype"
+rowStatusLabel: string   # what the home row shows, e.g. "Hackathon prototype, ShellHacks X"
+role: string             # first person
 when: string
-stack: [string]          # no more than 6
-links:
+stack: [string]          # no more than 6; used by both the facts block and the home row
+links:                   # may be empty
   - label: string        # names the destination
     href: url
+linksNote: string        # optional; shown when there are no links, e.g. "No public repo."
 order: number
+figure:
+  id: spot | wayfinder | baton
+  alt: string            # the figure's accessible name; names every planned (dashed) part in words
+  caption: string        # the legend, as a sentence
 ```
+
+The body must have exactly these `##` headings, in this order: The problem, What I built, How it works, Results, What isn't done. The project page fails the build otherwise. The figure goes at the end of "How it works"; the Links section and previous/next links come from frontmatter. A `TODO(jake): ...` line in any of these files is shown on the page and blocks a production build.

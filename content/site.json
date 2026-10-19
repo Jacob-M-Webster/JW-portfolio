@@ -1,0 +1,28 @@
+{
+  "name": "Jacob Webster",
+  "email": "jakewebster5619@gmail.com",
+  "linkedin": "https://www.linkedin.com/in/jacob-webster2",
+  "github": "https://github.com/Jacob-M-Webster",
+  "resume": "/jacob-webster-resume.pdf",
+  "title": "Jacob Webster: perception and autonomy software",
+  "hero": {
+    "heading": "I build perception and autonomy software.",
+    "lead": "I'm a computer science senior at the University of South Carolina, graduating in May 2027. I enjoy building software for machines that move. I'm looking for new grad software engineering roles in autonomy and infrastructure.",
+    "resumeAction": "Download resume (PDF)",
+    "emailAction": "Email me"
+  },
+  "now": [
+    {
+      "id": "spot",
+      "lead": "Spot voice-following.",
+      "text": "I'm building a system that lets a Boston Dynamics Spot find and follow a person described out loud. Speech to text, visual grounding, and person tracking each work on their own. Connecting them is next.",
+      "link": { "label": "Read the Spot write-up", "href": "/projects/spot" }
+    },
+    {
+      "id": "michelin",
+      "lead": "Michelin.",
+      "text": "I work part-time as a software engineer on testing and code-quality tooling."
+    }
+  ],
+  "footer": "Built by me."
+}

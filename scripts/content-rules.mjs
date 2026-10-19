@@ -157,11 +157,14 @@ export const ALLOWED_PHRASES = [
 export const PROJECT_KEYS = [
   'title',
   'summary',
+  'oneLine',
   'status',
   'statusLabel',
+  'rowStatusLabel',
   'role',
   'when',
   'stack',
   'links',
   'order',
+  'figure',
 ];
