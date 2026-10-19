@@ -55,3 +55,7 @@ Append one line per decision made during the build: `YYYY-MM-DD | stage | decisi
 |---|---|---|---|
 | 2026-10-19 | 1 | Added `--on-lane` (`#25282C`, both themes) as the ink paired with `--lane` | Dark `--asphalt` on `--lane` is 1.46:1; `--on-lane` gives 8.21:1 in both themes and equals `--asphalt` in light |
 | 2026-10-19 | 1 | Decorative graphics (rules, lane track and fill, status squares, frame borders) are exempt from 3:1 and listed with reasons; `--lane`/`--concrete` are restricted to those uses by `check:tokens` | Jake's call; `--concrete` and light `--lane` on `--fog` are below 3:1, and darkening them would push toward heavy hairlines |
+| 2026-10-19 | 1 | Node pinned to `24.x` (`engines.node` + `.nvmrc`) | Vercel docs list 24.x (default) and 22.x; `engines.node` overrides the dashboard; local dev is 24.12 |
+| 2026-10-19 | 1 | Astro pinned to `~7.3.8` instead of `~7.0.3` | `npm audit` flagged a critical Astro advisory fixed after 7.2.7; 7.3.8 is the latest patch on a six-week-old minor; 7.4.0 was 4 days old |
+| 2026-10-19 | 1 | Old home copy replaced in Stage 1 with the `02` §C hero only | The old copy contains forbidden claims ("real-time") that would fail `check:content` in the build; old images and logos still go in Stage 2 |
+| 2026-10-19 | 1 | The six "extraneous" WASM packages stay | They are optional platform fallbacks recorded in the lockfile, so `npm prune` keeps them; nothing ships from them |
