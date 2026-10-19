@@ -21,6 +21,8 @@ function devStyleguide() {
 
 // https://astro.build/config
 export default defineConfig({
+  // Canonical host (decision D11); used by the sitemap and robots.txt.
+  site: 'https://www.jakewebster.dev',
   // Keeps the dev overlay out of style-guide screenshots; dev only.
   devToolbar: { enabled: false },
   build: {

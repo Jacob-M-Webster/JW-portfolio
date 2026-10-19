@@ -347,10 +347,18 @@ main {
 }
 
 .viewport-panel {
+  overflow: hidden;
   height: 46svh;
   background: var(--viewport);
   border: var(--stroke-rule) solid var(--concrete);
   border-radius: var(--radius);
+}
+
+/* The poster covers the panel, centered on the subject (05 section 6.1). */
+.viewport-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (min-width: 768px) {
@@ -384,6 +392,21 @@ main {
     height: auto;
     aspect-ratio: 4 / 3;
   }
+}
+
+/* 404 */
+
+.not-found-links {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.not-found-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  font-family: var(--font-sans);
+  font-weight: var(--weight-ui);
 }
 
 /* High contrast and print */

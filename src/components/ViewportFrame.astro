@@ -1,8 +1,22 @@
 ---
-// The sensor viewport frame. The poster (Stage 2) and canvas (Stage 4) go
-// inside the panel; the caption goes below it once there is something to caption.
+// The sensor viewport frame. The poster is real markup so it shows with
+// JavaScript off; Stage 2 ships flat placeholders (empty SVGs at the
+// posters' sizes, so the panel's --viewport fill is the rectangle in both
+// themes) and Stage 3 swaps in the rendered posters. The caption arrives
+// with them, once it is true. The canvas (Stage 4) goes in the same panel.
 ---
 
 <figure class="viewport">
-  <div class="viewport-panel"></div>
+  <div class="viewport-panel">
+    <img
+      class="viewport-poster"
+      src="/posters/poster-car-1600.svg"
+      srcset="/posters/poster-car-800.svg 800w, /posters/poster-car-1600.svg 1600w"
+      sizes="(min-width: 1024px) 536px, 100vw"
+      width="1600"
+      height="1200"
+      alt=""
+      decoding="async"
+    />
+  </div>
 </figure>

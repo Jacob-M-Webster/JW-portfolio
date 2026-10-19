@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/Jacob_Webster_Resume.pdf",
+      "destination": "/jacob-webster-resume.pdf",
+      "permanent": true
+    }
+  ]
+}
