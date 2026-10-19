@@ -36,12 +36,28 @@ The scene mirrors where the reader is on the page: car in the hero, quadruped wh
 ### 2.3 Car sampling (`scripts/mesh_to_points.py`)
 
 1. **Inspect and report.** Load the mesh (trimesh or equivalent). Print every group or object with name, face count, bounding box. Save the report to `docs/asset-report.md` (names and numbers only; no mesh data).
-2. **Exclude non-body geometry.** Remove ground or shadow planes (for example the ambient-occlusion ground texture), cameras, lights, and any group Stage 3 identifies as interior. The exclusion list is written to the report and kept in the script.
+2. **Exclude non-body geometry.** Remove ground or shadow planes (for example the ambient-occlusion ground texture), cameras, lights, and any group Stage 3 identifies as interior. The exclusion list is written to the report and kept in the script. Stage 3 found the interior as mesh islands inside the body group (cabin shell, seats, dashboard, steering), so the script excludes islands by (triangle count, bbox min y) and fails if the expected count isn't found; see `docs/asset-report.md`.
 3. **Visibility filter (if interior points remain).** Cast rays from about 64 camera positions on a sphere around the model; keep only sample points visible from at least one exterior position. Record kept versus dropped.
 4. **Sample.** Area-weighted surface sampling, `N = 30,000` points, fixed random seed.
 5. **Normalize.** Center on X and Z, put the lowest point at `y = 0`, orient the car's forward direction along `+X`, scale uniformly so the shape fits a bounding sphere of radius 1.
 6. **Pair for morphing.** Sort both shapes' points in Morton (Z-order) order and pair them index by index, so nearby points in one shape morph to nearby points in the other. Then apply **one shared random permutation to both arrays**. This keeps the pairing and makes any prefix of the array an unbiased random subset of the shape (needed for mobile and for adaptive point counts).
 7. **Quantize and write.** `Int16` x, y, z. Each shape has its own `scale` (the car and quadruped use `1.0`, because they fit a radius-1 sphere; the rings use `3.0`, because the outer ring has radius 3). A coordinate is stored as `round(value / scale * 32767)`. Little-endian, interleaved.
+
+### 2.3.1 Running the pipeline
+
+Offline, by hand, in a venv outside the repo (Python 3.14, packages in `scripts/requirements.txt`; numpy only):
+
+```
+py -3.14 -m venv %USERPROFILE%\.venvs\jw-portfolio
+%USERPROFILE%\.venvs\jw-portfolio\Scripts\python -m pip install -r scripts/requirements.txt
+python scripts/mesh_to_points.py --inspect        # docs/asset-report.md (then npx prettier --write it)
+python scripts/mesh_to_points.py --preview DIR    # D10 and roof previews; DIR must be outside the repo
+python scripts/mesh_to_points.py                  # public/models/scene-points.bin and .json
+python scripts/render_poster.py                   # .posters-src/*.png (gitignored)
+node scripts/encode-posters.mjs                   # public/posters/*.avif and *.webp
+python -m unittest discover -s scripts/tests -v
+npm run check:assets
+```
 
 ### 2.4 Output format
 
@@ -109,7 +125,35 @@ Per vertex: `aCar` (vec3 from Int16, normalized), `aQuad` (vec3). The scatter po
 - `pos = mix(pFrom, pTo, t) + flow(seed, uT)`, where `flow` adds a small sine-based displacement that peaks at `t = 0.5` and is zero at both ends, so shapes dissolve organically and then settle exactly.
 - Idle scatter drift: `scatter.xz` rotates slowly with `uTime`; `scatter.y` bobs by under 0.02.
 - **Sweep:** `azimuth = atan(pos.z, pos.x)`; `trail = mod(uSweep - azimuth, 2π) / 2π`; `flash = exp(-trail * 6.0)`.
-- **Height color:** `h = clamp(pos.y / uHeightMax, 0, 1)`; color is a two-segment mix `ground to mid to top` from the ramp tokens.
+- **Height color:** `h = clamp(pos.y / uHeightMax, 0, 1)`; color is a two-segment mix `ground to mid to top` from the ramp tokens. `uHeightMax` is the current shape's own maximum height (car 0.707, quadruped 1.0, scatter its top), interpolated during a morph, so the car's roof and the quadruped's head both reach the top color.
+- **Scatter position:** from `gl_VertexID` with a 32-bit PCG hash. It must match `scripts/scene_common.py` (`pcg_hash`, `scatter_points`) exactly, because the scatter poster is drawn from the Python version:
+
+```glsl
+uint pcgHash(uint v) {                       // all arithmetic wraps modulo 2^32
+  uint state = v * 747796405u + 2891336453u;
+  uint word = ((state >> ((state >> 28u) + 4u)) ^ state) * 277803737u;
+  return (word >> 22u) ^ word;
+}
+float unit(uint h) { return float(h) * (1.0 / 4294967296.0); }   // [0, 1)
+
+uint h1 = pcgHash(uint(gl_VertexID));
+uint h2 = pcgHash(h1);
+uint h3 = pcgHash(h2);
+uint seedBits = pcgHash(h3);                  // the per-point seed
+float r = 1.3 * pow(unit(h1), 1.0 / 3.0);
+float a = 6.283185307179586 * unit(h2);
+float cosT = 2.0 * unit(h3) - 1.0;
+float sinT = sqrt(1.0 - cosT * cosT);
+vec3 scatter = vec3(r * sinT * cos(a), 0.635 + 0.45 * r * cosT, r * sinT * sin(a));
+```
+
+Test vectors (asserted in `scripts/tests/test_pipeline.py`; Stage 4 asserts the same in the browser):
+
+| Index | `pcgHash(index)` | Hex | `unit()` |
+|---|---|---|---|
+| 0 | 129708002 | `0x07BB2FE2` | 0.0301999976 |
+| 1 | 2831084092 | `0xA8BEEA3C` | 0.6591631314 |
+| 12345 | 4099845390 | `0xF45EAD0E` | 0.9545696410 |
 - `gl_PointSize = baseSize * (1.0 + flash * 0.6) * perspectiveScale`, clamped to the device's `ALIASED_POINT_SIZE_RANGE`.
 - Ambient dimming: `color = mix(color, uBg, uDim)` (instead of alpha), so there is no blending.
 
@@ -124,8 +168,8 @@ Per vertex: `aCar` (vec3 from Int16, normalized), `aQuad` (vec3). The scatter po
 
 ### 3.5 Camera
 
-- Perspective, field of view 35 degrees, looking at the shape's center.
-- Base view: yaw 28 degrees, pitch 14 degrees (a three-quarter view).
+- Perspective, vertical field of view 35 degrees, looking at `(0, 0.32, 0)` from a distance of 4.0 scene units (the car spans about 57 % of a 4:3 frame, so the 375 px `cover` crop keeps it whole). Same values as `scripts/scene_common.py`.
+- Base view: yaw 28 degrees, pitch 14 degrees (a three-quarter view). Yaw 0 looks at the car's side from +Z with the front (+X) to the right; positive yaw swings the camera toward the front.
 - Idle: yaw oscillates by plus or minus 3 degrees with a period of 18 seconds.
 - Pointer parallax (only on `(hover: hover) and (pointer: fine)`): up to plus or minus 4 degrees of yaw and 2 degrees of pitch, damped.
 - No user-controlled orbit, no zoom, no drag. The scene never captures wheel or touch events, so page scrolling is never blocked.
@@ -211,10 +255,11 @@ Otherwise: the poster stays (or returns), the point file is never requested if c
 
 ### 6.1 Poster generation (`scripts/render_poster.py`)
 
-Renders the same point data with the same camera, ramp colors, and ring points onto a `--viewport` background, so the poster matches the live scene. Outputs:
-- `poster-car` and `poster-quad` and `poster-scatter` at 1600 by 1200 (desktop) and 800 by 600 (mobile), as AVIF with WebP fallback, with explicit `width` and `height` on the `<img>`.
+Renders the same point data with the same camera, ramp colors, and ring points onto each theme's `--viewport` background, so the poster matches the live scene. It reads only `scene-points.bin`, never the purchased model. Outputs:
+- `poster-<car|quad|scatter>-<light|dark>-<800|1600|2000>` (800 by 600, 1600 by 1200, 2000 by 1500), as AVIF with WebP fallback, with explicit `width` and `height` on the `<img>`. The dark set is chosen with `<source media="(prefers-color-scheme: dark)">`. Opaque posters are about a quarter of the size of transparent ones. Points are round, depth-ordered, with a 1 px soft edge; no sweep flash (a frozen bright wedge would add colors the legend doesn't show). Rings use the theme's `--concrete`; scatter is dimmed by `mix(color, --viewport, 0.45)`.
+- PNG masters go to `.posters-src/` (gitignored); `scripts/encode-posters.mjs` encodes them with the sharp that Astro installs (AVIF 4:4:4 chroma, quality 62; WebP quality 80), because Astro's image service can't set 4:4:4 and 4:2:0 smears the colors of small dots.
 - Viewport sizing these must fill: on desktop the panel is 4:3, the full width of grid columns 7 to 12 (at most 536 by 402 CSS px; see `03` section 4.4), so the 1600 by 1200 poster fits without cropping and covers the largest panel at about 3x density. On tablet (50svh) and mobile (about 46svh) the panel isn't 4:3, so the poster is drawn with `object-fit: cover`, centered on the subject. The canvas uses the same box.
-- `og-home.png` at 1200 by 630: the car poster with the name `Jacob Webster` and the line `Perception and autonomy software` set in Overpass 700. This is the only place text is baked into an image; the alt text and meta tags carry the same words.
+- `og-home.png` at 1200 by 630 (deferred to Stage 5 with the other metadata): the car poster with the name `Jacob Webster` and the line `Perception and autonomy software` set in Overpass 700. This is the only place text is baked into an image; the alt text and meta tags carry the same words.
 - Deterministic, so re-running changes no bytes.
 
 ---
