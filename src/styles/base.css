@@ -291,6 +291,7 @@ a:focus-visible {
 
 main {
   flex: 1;
+  container-type: inline-size;
 }
 
 .site-footer .page {
@@ -396,6 +397,18 @@ main {
   .home-grid > .viewport .viewport-panel {
     height: auto;
     aspect-ratio: 4 / 3;
+  }
+}
+
+/* From 1280 the panel bleeds into the right margin, stopping one gutter
+   short of the window edge, and never grows taller than the screen. */
+@media (min-width: 1280px) {
+  .home-grid > .viewport {
+    justify-self: start;
+    width: min(
+      100% + var(--bleed),
+      (100svh - var(--header-h) - var(--space-7)) * 4 / 3
+    );
   }
 }
 

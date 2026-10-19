@@ -2,7 +2,7 @@
   Design tokens. This is the only file allowed to contain raw color values
   (enforced by check:tokens). Spec: docs/03-design-system.md section 3.
 
-  Breakpoints (mobile-first, min-width only): 480, 768, 1024, 1440 px.
+  Breakpoints (mobile-first, min-width only): 480, 768, 1024, 1280, 1440 px.
   Custom properties can't be used inside media queries, so check:tokens
   enforces this list instead.
 */
@@ -73,6 +73,9 @@
   --gutter: clamp(16px, 4vw, 48px);
   --measure: 38rem;
   --header-h: 64px;
+  /* The page's outer margin, read where it's used: main is the container,
+     so 100cqi excludes the scrollbar (03 section 4.4). */
+  --bleed: max(0px, (100cqi - var(--page-max)) / 2);
   --target-min: 44px;
 
   /* Components (03 section 5 names these sizes explicitly) */

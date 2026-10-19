@@ -171,11 +171,11 @@ On a phone the first viewport must already contain the name, the H1, the lead pa
 ### 4.4 Grid and measures
 
 - Max page width 1200 px, centered. Page gutters `clamp(16px, 4vw, 48px)`.
-- Desktop (1024 px and up): 12-column grid. Content spans columns 1 to 6; the viewport spans columns 7 to 12 (sticky, `top` equal to header height plus 24 px). The panel is 4:3 (the posters' aspect, so nothing is cropped), full column width: at most 536 by 402 at the 1200 px page maximum. There is no height cap, because the column can never make the panel taller than that.
+- Desktop (1024 px and up): 12-column grid. Content spans columns 1 to 6; the viewport spans columns 7 to 12 (sticky, `top` equal to header height plus 24 px). The panel is 4:3 (the posters' aspect, so nothing is cropped). From 1024 to 1279 px it is full column width, at most 536 by 402. From 1280 px it bleeds into the right margin (`--bleed`, the page's outer margin) and stops one gutter short of the window edge: 576 by 432 at 1280, 896 by 672 at 1920. Its width is capped at `(100svh - header - 48px) * 4/3`, so it never grows taller than the screen. The content column stays on the 1200 px grid.
 - Tablet (768 to 1023 px): single column; the viewport is inline in the hero at 50svh; no sticky behavior.
 - Prose width 38rem max. Never full-width prose.
 - Alignment: everything left-aligned. The footer and 404 are left-aligned too.
-- Breakpoints: 480, 768, 1024, 1440. Mobile-first CSS.
+- Breakpoints: 480, 768, 1024, 1280, 1440. Mobile-first CSS. (1280 exists only for the viewport bleed.)
 
 ### 4.5 Structural devices (each has a job)
 

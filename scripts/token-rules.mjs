@@ -8,7 +8,7 @@ export const TOKEN_FILE = 'src/styles/tokens.css';
 /** Files where the --lane/--concrete allowlist does not apply (never shipped). */
 export const DEV_ONLY = /^src\/dev\//;
 
-export const BREAKPOINTS = [480, 768, 1024, 1440];
+export const BREAKPOINTS = [480, 768, 1024, 1280, 1440];
 
 /** Custom properties allowed in margin, padding and gap. */
 export const SPACING_VARS = /^--(space-\d+|gutter|button-pad-inline)$/;
