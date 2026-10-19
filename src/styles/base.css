@@ -368,6 +368,15 @@ main {
   object-fit: cover;
 }
 
+/* Below the panel, so it stays readable in every scene state (03 section 5). */
+.viewport-caption {
+  margin-block-start: var(--space-2);
+}
+
+.site-footer-line {
+  margin-block-start: var(--space-4);
+}
+
 /* Height legend, inside the panel: three solid steps, ground to roof. The
    1 px outline gives the bar its 3:1 edge; the words carry the meaning. */
 .viewport-legend {

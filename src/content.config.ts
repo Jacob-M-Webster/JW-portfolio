@@ -52,6 +52,8 @@ const site = defineCollection({
       )
       .length(2),
     footer: z.string(),
+    footerIllustrations: z.string(),
+    sceneCaption: z.string(),
   }),
 });
 

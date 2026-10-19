@@ -17,7 +17,7 @@ const skills = await getOrdered('skills');
 const honors = await getOrdered('honors');
 ---
 
-<BaseLayout title={site.title}>
+<BaseLayout title={site.title} hasViewport>
   <div class="page home-grid">
     <section class="section hero" aria-labelledby="hero-title">
       <h1 id="hero-title">{site.hero.heading}</h1>

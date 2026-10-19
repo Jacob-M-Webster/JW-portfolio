@@ -24,5 +24,7 @@
       "text": "I work part-time as a software engineer on testing and code-quality tooling."
     }
   ],
-  "footer": "Built by me."
+  "footer": "Built by me.",
+  "footerIllustrations": "Illustrations of the car and robot are point clouds drawn for this page.",
+  "sceneCaption": "Illustration: a point cloud drawn for this page. Each dot is one return."
 }

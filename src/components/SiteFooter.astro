@@ -1,7 +1,15 @@
 ---
 import { getSite } from '../lib/content';
+import { POSTERS_READY, QUAD_VISIBLE } from '../lib/scene';
 
+interface Props {
+  /** The page shows the sensor viewport, so "drawn for this page" is true. */
+  hasViewport?: boolean;
+}
+
+const { hasViewport = false } = Astro.props;
 const site = await getSite();
+const showIllustrations = hasViewport && POSTERS_READY && QUAD_VISIBLE;
 ---
 
 <footer class="site-footer" id="contact">
@@ -24,5 +32,8 @@ const site = await getSite();
         <a href={site.resume}>Resume (PDF)</a>
       </li>
     </ul>
+    <p class="small site-footer-line">
+      {showIllustrations ? `${site.footer} ${site.footerIllustrations}` : site.footer}
+    </p>
   </div>
 </footer>
