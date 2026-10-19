@@ -110,7 +110,7 @@ Fallback stacks:
 ### 3.3 Spacing, radius, borders, shadow
 
 - Spacing scale, 4 px base: `4, 8, 12, 16, 24, 32, 48, 64, 96, 144`. No other values.
-- Section vertical padding: `96` on desktop, `64` on mobile. Between a heading and its content: `24`. Between rows: `32`.
+- Section vertical padding: `64` on desktop, `48` on mobile (the hero keeps its own top padding). Between a heading and its content: `24`. Between rows: `32`.
 - **One radius:** `--radius: 3px`, used only on buttons, the viewport panel, and figure frames. Everything else is square.
 - Borders: 1 px `--concrete` for rules; 2 px `--asphalt` for button strokes and the focus ring.
 - **No box shadows. No blurs. No glows.**

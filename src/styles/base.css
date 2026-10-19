@@ -320,7 +320,7 @@ main {
 /* Sections */
 
 .section {
-  padding-block: var(--space-8);
+  padding-block: var(--space-7);
 }
 
 .section > * + * {
@@ -333,7 +333,7 @@ main {
 
 @media (min-width: 1024px) {
   .section {
-    padding-block: var(--space-9);
+    padding-block: var(--space-8);
   }
 
   .hero {
