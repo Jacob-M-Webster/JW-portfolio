@@ -24,21 +24,19 @@ const showLegend = POSTERS_READY || import.meta.env.DEV;
       alt=""
       decoding="async"
     />
-    {
-      showLegend && (
-        <div class="viewport-legend small">
-          <p>Color shows height.</p>
-          <p class="viewport-legend-scale">
-            Low
-            <span class="viewport-legend-bar" aria-hidden="true">
-              <span />
-              <span />
-              <span />
-            </span>
-            High
-          </p>
-        </div>
-      )
-    }
+    {showLegend && (
+      <div class="viewport-legend small">
+        <p>Color shows height.</p>
+        <p class="viewport-legend-scale">
+          Low
+          <span class="viewport-legend-bar" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </span>
+          High
+        </p>
+      </div>
+    )}
   </div>
 </figure>

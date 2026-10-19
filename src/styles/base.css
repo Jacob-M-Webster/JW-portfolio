@@ -445,10 +445,7 @@ main {
 @media (min-width: 1280px) {
   .home-grid > .viewport {
     justify-self: start;
-    width: min(
-      100% + var(--bleed),
-      (100svh - var(--header-h) - var(--space-7)) * 4 / 3
-    );
+    width: min(100% + var(--bleed), (100svh - var(--header-h) - var(--space-7)) * 4 / 3);
   }
 }
 
