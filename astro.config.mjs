@@ -27,5 +27,7 @@ export default defineConfig({
     // One external stylesheet keeps the Stage 5 CSP to style-src 'self'.
     inlineStylesheets: 'never',
   },
+  // Keep straight apostrophes and quotes, as in the JSON copy and 02.
+  markdown: { smartypants: false },
   integrations: [devStyleguide()],
 });

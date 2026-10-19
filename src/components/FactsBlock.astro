@@ -1,0 +1,50 @@
+---
+// Project facts (03 section 5): Status, Role, When, Stack, Links.
+import type { CollectionEntry } from 'astro:content';
+import StatusLabel from './StatusLabel.astro';
+
+interface Props {
+  data: CollectionEntry<'projects'>['data'];
+}
+
+const { status, statusLabel, role, when, stack, links, linksNote } = Astro.props.data;
+---
+
+<dl class="facts">
+  <div>
+    <dt>Status</dt>
+    <dd>
+      <StatusLabel status={status} label={statusLabel} />
+    </dd>
+  </div>
+  <div>
+    <dt>Role</dt>
+    <dd>{role}</dd>
+  </div>
+  <div>
+    <dt>When</dt>
+    <dd>{when}</dd>
+  </div>
+  <div>
+    <dt>Stack</dt>
+    <dd>{stack.join(', ')}</dd>
+  </div>
+  <div>
+    <dt>Links</dt>
+    <dd>
+      {links.length ? (
+        <ul role="list">
+          {links.map((link) => (
+            <li>
+              <a href={link.href} rel="noopener">
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        linksNote
+      )}
+    </dd>
+  </div>
+</dl>

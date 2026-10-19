@@ -1,0 +1,134 @@
+---
+// Spot pipeline (docs/jake-answers.md section B): two solid chains that
+// converge on a dashed hand-off. Left: speech to the grounding model.
+// Right: Spot's camera feed to the person tracker. The camera feed also
+// feeds the grounding model.
+import Arrow from './Arrow.astro';
+import Box from './Box.astro';
+
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+// Dashed box labels are listed in src/lib/figures.ts (PLANNED.spot) so the
+// alt-text check can see them; keep the two in step.
+---
+
+<svg
+  class="diagram"
+  viewBox="0 0 360 536"
+  role="img"
+  aria-labelledby="spot-figure-title spot-figure-desc"
+>
+  <title id="spot-figure-title">{alt}</title>
+  <desc id="spot-figure-desc">
+    Built and working on their own: chain one goes spoken command, speech to text with
+    faster-whisper and Whisper base.en, the vision-language model LocateAnything-3B, then a bounding
+    box for the described person. Chain two goes Spot's camera feed, person detection and tracking
+    with YOLO11n, then tracked people with IDs. The camera feed also goes to the vision-language
+    model. Planned, drawn dashed: match the model's box to a tracked person, a navigation goal for
+    Spot, and follow the person.
+  </desc>
+
+  <Box x={8} y={8} w={164} h={44} title={['Spoken command']} />
+  <Box x={188} y={8} w={164} h={44} title={["Spot's camera feed"]} />
+  <Box x={8} y={76} w={164} h={52} title={['Speech to text']} sub={['faster-whisper, base.en']} />
+  <Box
+    x={8}
+    y={164}
+    w={164}
+    h={64}
+    title={['Vision-language', 'model']}
+    sub={['LocateAnything-3B']}
+  />
+  <Box
+    x={188}
+    y={164}
+    w={164}
+    h={64}
+    title={['Person detection', 'and tracking']}
+    sub={['YOLO11n']}
+  />
+  <Box x={8} y={252} w={164} h={52} title={['Bounding box for the', 'described person']} />
+  <Box x={188} y={252} w={164} h={52} title={['Tracked people', 'with IDs']} />
+
+  <Arrow
+    points={[
+      [90, 52],
+      [90, 76],
+    ]}
+  />
+  <Arrow
+    points={[
+      [90, 128],
+      [90, 164],
+    ]}
+  />
+  <Arrow
+    points={[
+      [90, 228],
+      [90, 252],
+    ]}
+  />
+  <Arrow
+    points={[
+      [290, 52],
+      [290, 164],
+    ]}
+  />
+  <Arrow
+    points={[
+      [210, 52],
+      [210, 146],
+      [140, 146],
+      [140, 164],
+    ]}
+  />
+  <Arrow
+    points={[
+      [290, 228],
+      [290, 252],
+    ]}
+  />
+
+  <Box
+    x={40}
+    y={340}
+    w={280}
+    h={52}
+    title={["Match the model's box", 'to a tracked person']}
+    planned
+  />
+  <Box x={40} y={416} w={280} h={44} title={['Navigation goal for Spot']} planned />
+  <Box x={40} y={484} w={280} h={44} title={['Follow the person']} planned />
+
+  <Arrow
+    points={[
+      [90, 304],
+      [90, 340],
+    ]}
+    planned
+  />
+  <Arrow
+    points={[
+      [270, 304],
+      [270, 340],
+    ]}
+    planned
+  />
+  <Arrow
+    points={[
+      [180, 392],
+      [180, 416],
+    ]}
+    planned
+  />
+  <Arrow
+    points={[
+      [180, 460],
+      [180, 484],
+    ]}
+    planned
+  />
+</svg>

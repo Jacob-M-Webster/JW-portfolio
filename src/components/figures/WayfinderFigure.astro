@@ -1,0 +1,71 @@
+---
+// WayFinder flow (02 section D2): scenario data, per-lane features, the
+// model, a predicted signal state with a confidence. Every part is built.
+import Arrow from './Arrow.astro';
+import Box from './Box.astro';
+
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+---
+
+<svg
+  class="diagram"
+  viewBox="0 0 360 296"
+  role="img"
+  aria-labelledby="wayfinder-figure-title wayfinder-figure-desc"
+>
+  <title id="wayfinder-figure-title">{alt}</title>
+  <desc id="wayfinder-figure-desc">
+    Four built steps, drawn solid: Waymo scenario data, 16,000 scenarios and more than 2 million
+    rows; per-lane features with ego-lane detection and leakage controls; the LightGBM classifier;
+    and the predicted signal state with a confidence. No planned parts.
+  </desc>
+
+  <Box
+    x={20}
+    y={8}
+    w={320}
+    h={52}
+    title={['Waymo scenario data']}
+    sub={['16,000 scenarios, more than 2 million rows']}
+  />
+  <Box
+    x={20}
+    y={84}
+    w={320}
+    h={52}
+    title={['Per-lane features']}
+    sub={['ego-lane detection, leakage controls']}
+  />
+  <Box x={20} y={160} w={320} h={44} title={['LightGBM classifier']} />
+  <Box
+    x={20}
+    y={228}
+    w={320}
+    h={60}
+    title={['Predicted signal state']}
+    sub={['with a confidence']}
+  />
+
+  <Arrow
+    points={[
+      [180, 60],
+      [180, 84],
+    ]}
+  />
+  <Arrow
+    points={[
+      [180, 136],
+      [180, 160],
+    ]}
+  />
+  <Arrow
+    points={[
+      [180, 204],
+      [180, 228],
+    ]}
+  />
+</svg>

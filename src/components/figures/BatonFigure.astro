@@ -1,0 +1,74 @@
+---
+// Baton (02 section D3): the append-only event log in the middle; the agent,
+// the browsers and replay around it. Every part is built.
+import Arrow from './Arrow.astro';
+import Box from './Box.astro';
+
+interface Props {
+  alt: string;
+}
+
+const { alt } = Astro.props;
+---
+
+<svg
+  class="diagram"
+  viewBox="0 0 360 300"
+  role="img"
+  aria-labelledby="baton-figure-title baton-figure-desc"
+>
+  <title id="baton-figure-title">{alt}</title>
+  <desc id="baton-figure-desc">
+    All built, drawn solid. The AI coding agent appends messages and tool calls to the append-only
+    event log, and its context is rebuilt from the log on each turn. Browsers append human actions
+    and subscribe to the log over WebSockets. Replay reads the log from any step. No planned parts.
+  </desc>
+
+  <Box x={60} y={8} w={240} h={44} title={['AI coding agent']} />
+  <Box
+    x={20}
+    y={124}
+    w={320}
+    h={52}
+    title={['Append-only event log']}
+    sub={['every entry has a sequence number']}
+  />
+  <Box x={8} y={240} w={164} h={52} title={['Browsers']} sub={['over WebSockets']} />
+  <Box x={188} y={240} w={164} h={52} title={['Replay']} sub={['from any step']} />
+
+  <Arrow
+    points={[
+      [150, 52],
+      [150, 124],
+    ]}
+    label="messages, tool calls"
+    labelSide="left"
+  />
+  <Arrow
+    points={[
+      [210, 124],
+      [210, 52],
+    ]}
+    label="context, each turn"
+  />
+  <Arrow
+    points={[
+      [40, 176],
+      [40, 240],
+    ]}
+    label="subscribe"
+  />
+  <Arrow
+    points={[
+      [130, 240],
+      [130, 176],
+    ]}
+    label="human actions"
+  />
+  <Arrow
+    points={[
+      [270, 176],
+      [270, 240],
+    ]}
+  />
+</svg>

@@ -1,0 +1,36 @@
+---
+// A connector in a project diagram: a polyline whose last segment is
+// vertical, ending in an arrowhead. Solid when built, dashed when planned.
+interface Props {
+  /** Points as [x, y] pairs; the last two must share x. */
+  points: [number, number][];
+  planned?: boolean;
+  /** Optional small label beside the last segment. */
+  label?: string;
+  labelSide?: 'left' | 'right';
+}
+
+const { points, planned = false, label, labelSide = 'right' } = Astro.props;
+const [ex, ey] = points.at(-1)!;
+const [, py] = points.at(-2)!;
+const dir = ey > py ? 1 : -1;
+const head = `M ${ex - 5} ${ey - dir * 8} L ${ex} ${ey} L ${ex + 5} ${ey - dir * 8} Z`;
+// Stop the line at the arrowhead's base so dashes don't poke through.
+const line = points.map(([x, y], i) => (i === points.length - 1 ? [x, y - dir * 8] : [x, y]));
+const midY = (py + ey) / 2 + 4;
+---
+
+<g class={planned ? 'planned' : 'built'}>
+  <polyline points={line.map((p) => p.join(',')).join(' ')}></polyline>
+  <path class="head" d={head}></path>
+  {label && (
+    <text
+      class="arrow-label"
+      x={labelSide === 'right' ? ex + 8 : ex - 8}
+      y={midY}
+      data-side={labelSide}
+    >
+      {label}
+    </text>
+  )}
+</g>

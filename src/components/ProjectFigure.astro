@@ -1,0 +1,29 @@
+---
+// A project's "How it works" figure: a framed inline SVG and its caption
+// (03 section 5, figures). Fails the build if the alt text doesn't name every
+// planned part, or doesn't say there are none.
+import type { CollectionEntry } from 'astro:content';
+import SpotFigure from './figures/SpotFigure.astro';
+import WayfinderFigure from './figures/WayfinderFigure.astro';
+import BatonFigure from './figures/BatonFigure.astro';
+import { missingPlanned, PLANNED } from '../lib/figures';
+
+interface Props {
+  figure: CollectionEntry<'projects'>['data']['figure'];
+}
+
+const { figure } = Astro.props;
+const missing = missingPlanned(figure.id, figure.alt);
+if (missing.length) {
+  throw new Error(`${figure.id} figure alt text must name: ${missing.join('; ')}`);
+}
+if (!PLANNED[figure.id].length && !/no planned parts/i.test(figure.alt)) {
+  throw new Error(`${figure.id} figure alt text must say "No planned parts"`);
+}
+const Figure = { spot: SpotFigure, wayfinder: WayfinderFigure, baton: BatonFigure }[figure.id];
+---
+
+<figure class="figure-frame">
+  <Figure alt={figure.alt} />
+  <figcaption class="small">{figure.caption}</figcaption>
+</figure>

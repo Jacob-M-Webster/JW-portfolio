@@ -1,0 +1,38 @@
+---
+// One labeled box in a project diagram. Built boxes are solid; planned
+// boxes are dashed (03 section 5, figures). Square corners: the one radius
+// is for buttons, the viewport and figure frames only.
+interface Props {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  /** Main label, one string per line. */
+  title: string[];
+  /** Secondary label lines, in --asphalt-soft. */
+  sub?: string[];
+  planned?: boolean;
+}
+
+const { x, y, w, h, title, sub = [], planned = false } = Astro.props;
+const TITLE_LH = 16;
+const SUB_LH = 14;
+const block = title.length * TITLE_LH + sub.length * SUB_LH;
+// Baseline of the first line, so the block sits centered in the box.
+const top = y + (h - block) / 2 + 12;
+const cx = x + w / 2;
+---
+
+<g class={planned ? 'planned' : 'built'}>
+  <rect x={x} y={y} width={w} height={h}></rect>
+  {title.map((line, i) => (
+    <text x={cx} y={top + i * TITLE_LH}>
+      {line}
+    </text>
+  ))}
+  {sub.map((line, i) => (
+    <text class="sub" x={cx} y={top + title.length * TITLE_LH + i * SUB_LH}>
+      {line}
+    </text>
+  ))}
+</g>

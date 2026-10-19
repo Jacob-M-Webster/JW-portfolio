@@ -1,0 +1,111 @@
+---
+// Project page template (04 section 6). The Markdown body must hold the five
+// sections of 02 section D as ## headings, in order; the build fails if not.
+import '../../styles/project.css';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FactsBlock from '../../components/FactsBlock.astro';
+import ProjectFigure from '../../components/ProjectFigure.astro';
+import { getProjects, PROJECT_SECTIONS } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, prev: projects[i - 1], next: projects[i + 1] },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  prev?: CollectionEntry<'projects'>;
+  next?: CollectionEntry<'projects'>;
+}
+
+const { project, prev, next } = Astro.props;
+const { data } = project;
+
+const html = project.rendered?.html ?? '';
+type Heading = { depth: number; text: string };
+const headings = ((project.rendered?.metadata?.headings ?? []) as Heading[])
+  .filter((h) => h.depth === 2)
+  .map((h) => h.text);
+if (headings.join('|') !== PROJECT_SECTIONS.join('|')) {
+  throw new Error(
+    `content/projects/${project.id}.md: ## headings must be exactly ${PROJECT_SECTIONS.join(', ')}; found ${headings.join(', ')}`,
+  );
+}
+// One chunk per section, each starting at its <h2>.
+const sections = html
+  .split(/(?=<h2[\s>])/)
+  .filter((chunk) => chunk.startsWith('<h2'))
+  .map((chunk) => ({ id: /<h2 id="([^"]+)"/.exec(chunk)?.[1], html: chunk }));
+const HOW_IT_WORKS = PROJECT_SECTIONS.indexOf('How it works');
+---
+
+<BaseLayout title={`${data.title}: Jacob Webster`} description={data.oneLine}>
+  <div class="page project">
+    <nav class="breadcrumb small" aria-label="Breadcrumb">
+      <ol role="list">
+        <li>
+          <a href="/">Home</a>
+        </li>
+        <li>
+          <span aria-hidden="true">/</span> <a href="/#projects">Projects</a>
+        </li>
+        <li>
+          <span aria-hidden="true">/</span> <span aria-current="page">{data.title}</span>
+        </li>
+      </ol>
+    </nav>
+
+    <h1>{data.title}</h1>
+    <p class="lede">{data.summary}</p>
+
+    <div class="project-body">
+      <FactsBlock data={data} />
+
+      <div class="project-prose">
+        {sections.map((section, i) => (
+          <section aria-labelledby={section.id}>
+            <Fragment set:html={section.html} />
+            {i === HOW_IT_WORKS && <ProjectFigure figure={data.figure} />}
+          </section>
+        ))}
+        <section aria-labelledby="links">
+          <h2 id="links">Links</h2>
+          {!data.links.length && data.linksNote && <p>{data.linksNote}</p>}
+          <ul role="list" class="project-links">
+            {data.links.map((link) => (
+              <li>
+                <a href={link.href} rel="noopener">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+            <li>
+              <a href="/#projects">Back to projects</a>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <nav class="pager" aria-label="More projects">
+      <ul role="list">
+        {prev && (
+          <li>
+            <span class="small">Previous project</span>
+            <a href={`/projects/${prev.id}`}>{prev.data.title}</a>
+          </li>
+        )}
+        {next && (
+          <li>
+            <span class="small">Next project</span>
+            <a href={`/projects/${next.id}`}>{next.data.title}</a>
+          </li>
+        )}
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>

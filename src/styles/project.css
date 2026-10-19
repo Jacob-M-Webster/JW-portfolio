@@ -1,0 +1,207 @@
+/*
+  Project pages and their figures. Tokens only (check:tokens).
+  Spec: docs/04-site-flow.md section 6, docs/03-design-system.md section 5.
+*/
+
+.project {
+  padding-block: var(--space-7) var(--space-8);
+}
+
+.project > * + * {
+  margin-block-start: var(--space-5);
+}
+
+.breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.breadcrumb a,
+.breadcrumb [aria-current] {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+}
+
+.lede {
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+}
+
+/* Prose column with the facts block beside it on desktop */
+
+.project-body {
+  display: grid;
+  gap: var(--space-7);
+  margin-block-start: var(--space-7);
+}
+
+.project-prose {
+  max-width: var(--measure);
+}
+
+.project-prose section + section {
+  margin-block-start: var(--space-8);
+}
+
+.project-prose h2 + *,
+.project-prose * + p,
+.project-prose * + ul {
+  margin-block-start: var(--space-4);
+}
+
+.project-prose ul:not([role='list']) {
+  padding-inline-start: var(--space-5);
+}
+
+.project-prose li + li {
+  margin-block-start: var(--space-2);
+}
+
+.project-links li + li {
+  margin-block-start: var(--space-1);
+}
+
+.project-links a,
+.pager a,
+.facts a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+}
+
+@media (min-width: 1024px) {
+  .project-body {
+    grid-template-columns: minmax(0, var(--measure)) minmax(0, 1fr);
+    column-gap: var(--space-8);
+  }
+
+  .project-body > .facts {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .project-body > .project-prose {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+
+/* Facts block: terms beside values from 480 px */
+
+.facts {
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  line-height: var(--leading-small);
+}
+
+.facts > div {
+  display: grid;
+  gap: var(--space-1) var(--space-4);
+  padding-block: var(--space-3);
+}
+
+.facts dt {
+  font-weight: var(--weight-ui);
+}
+
+.facts dd {
+  margin-inline-start: 0;
+}
+
+@media (min-width: 480px) {
+  .facts > div {
+    grid-template-columns: 5rem minmax(0, 1fr);
+  }
+}
+
+/* Figures: a framed inline SVG; built solid, planned dashed, both --asphalt */
+
+.figure-frame {
+  margin-block-start: var(--space-5);
+  padding: var(--space-5);
+  border: var(--stroke-rule) solid var(--concrete);
+  border-radius: var(--radius);
+}
+
+.figure-frame figcaption {
+  margin-block-start: var(--space-4);
+}
+
+.diagram {
+  width: 100%;
+  max-width: 30rem;
+  height: auto;
+  color: var(--asphalt);
+}
+
+.diagram rect,
+.diagram polyline {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--stroke-strong);
+}
+
+.diagram .planned rect,
+.diagram .planned polyline {
+  stroke-dasharray: 6 4;
+}
+
+.diagram .head {
+  fill: currentColor;
+}
+
+.diagram text {
+  fill: currentColor;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: var(--weight-ui);
+  text-anchor: middle;
+}
+
+.diagram .sub {
+  fill: var(--asphalt-soft);
+  font-size: 11.5px;
+  font-weight: var(--weight-regular);
+}
+
+.diagram .arrow-label {
+  fill: var(--asphalt-soft);
+  font-size: 11px;
+  font-weight: var(--weight-regular);
+}
+
+.diagram .arrow-label[data-side='right'] {
+  text-anchor: start;
+}
+
+.diagram .arrow-label[data-side='left'] {
+  text-anchor: end;
+}
+
+/* Previous and next project */
+
+.pager {
+  margin-block-start: var(--space-8);
+}
+
+.pager ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-7);
+}
+
+.pager li {
+  display: grid;
+}
+
+@media (forced-colors: active) {
+  .diagram {
+    color: CanvasText;
+  }
+
+  .figure-frame {
+    border-color: CanvasText;
+  }
+}
