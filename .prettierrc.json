@@ -2,5 +2,13 @@
   "plugins": ["prettier-plugin-astro"],
   "printWidth": 100,
   "singleQuote": true,
-  "overrides": [{ "files": "*.astro", "options": { "parser": "astro" } }]
+  "overrides": [
+    {
+      "files": "*.astro",
+      "options": {
+        "parser": "astro"
+      }
+    }
+  ],
+  "endOfLine": "auto"
 }

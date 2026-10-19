@@ -81,8 +81,10 @@ Two typefaces, clearly distinct, both open-licensed and self-hosted (verify each
 | Running prose | **Source Serif 4** (variable) | A readable text serif; the contrast with Overpass is deliberate. |
 
 Fallback stacks:
-- `Overpass, "Helvetica Neue", Arial, sans-serif`
-- `"Source Serif 4", Charter, "Iowan Old Style", Georgia, serif`
+- `Overpass, "Overpass fallback", "Helvetica Neue", Arial, sans-serif`
+- `"JW Serif", "JW Serif fallback", Charter, "Iowan Old Style", Georgia, serif`
+
+`JW Serif` is our Latin subset of Source Serif 4, renamed because its copyright notice reserves the name "Source" (OFL section 3). The `fallback` faces are metric-adjusted `local()` faces (from `scripts/fonts/build_fonts.py`) so the swap doesn't shift layout.
 
 **Scale** (fluid, `clamp`; sizes are starting values to tune against screenshots):
 

@@ -58,4 +58,12 @@ Append one line per decision made during the build: `YYYY-MM-DD | stage | decisi
 | 2026-10-19 | 1 | Node pinned to `24.x` (`engines.node` + `.nvmrc`) | Vercel docs list 24.x (default) and 22.x; `engines.node` overrides the dashboard; local dev is 24.12 |
 | 2026-10-19 | 1 | Astro pinned to `~7.3.8` instead of `~7.0.3` | `npm audit` flagged a critical Astro advisory fixed after 7.2.7; 7.3.8 is the latest patch on a six-week-old minor; 7.4.0 was 4 days old |
 | 2026-10-19 | 1 | Old home copy replaced in Stage 1 with the `02` §C hero only | The old copy contains forbidden claims ("real-time") that would fail `check:content` in the build; old images and logos still go in Stage 2 |
+| 2026-10-19 | 1 | Fonts from google/fonts: Overpass variable (wght 400 to 700) and Source Serif 4 as a static 400 instance at opsz 18; both Latin-subset WOFF2, 45.7 KB total | Prose uses only the regular weight (`font-synthesis: none`, no `em`/`strong`), so one static serif file is enough |
+| 2026-10-19 | 1 | The serif subset is renamed `JW Serif` (name table and CSS family) | Its copyright notice reserves the name "Source"; a subset is a Modified Version under OFL section 3 |
+| 2026-10-19 | 1 | `--button-pad-inline: 20px` kept as a component token, off the spacing scale | Section 5 specifies 20 px for buttons explicitly; the specific rule wins over the general scale |
+| 2026-10-19 | 1 | Header hides Projects and Experience below 768 px | "Mobile" in section 5 is read as below the tablet breakpoint |
+| 2026-10-19 | 1 | `build.inlineStylesheets: 'never'`; no inline `style` attributes (enforced by `check:tokens`) | Keeps the Stage 5 CSP at `style-src 'self'` with no hashes |
+| 2026-10-19 | 1 | The style guide exists only under `astro dev` (injected route); `src/dev/` is exempt from the `--lane`/`--concrete` allowlist | It shows every token as a swatch and never ships |
+| 2026-10-19 | 1 | `theme-color` meta deferred to Stage 5 | It needs hex outside the token file; it belongs with the metadata work |
+| 2026-10-19 | 1 | `scripts/` excluded from `astro check` until `@types/node` is approved | Type-checking Node scripts needs that package, which is not on the approved list |
 | 2026-10-19 | 1 | The six "extraneous" WASM packages stay | They are optional platform fallbacks recorded in the lockfile, so `npm prune` keeps them; nothing ships from them |
