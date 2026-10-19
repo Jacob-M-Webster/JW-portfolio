@@ -115,7 +115,7 @@ Evergreen browsers, latest two versions: Chrome, Edge, Firefox, Safari (macOS an
 
 | Script | What it fails on |
 |---|---|
-| `check:content` | Any `TODO(jake)` anywhere in `content/`, `src/`, or the build output; missing required frontmatter; a project page missing "What isn't done"; any claim string from the forbidden columns in `02` section B (a maintained list of regexes: `autonomously follows`, `deployed on Spot`, `SLAM`, `real-time`, `production-ready`, `I built Baton`, and so on) |
+| `check:content` | Always: missing required frontmatter; a project page missing "What isn't done"; any claim string from the forbidden columns in `02` section B (a maintained list of regexes: `autonomously follows`, `deployed on Spot`, `SLAM`, `real-time`, `production-ready`, `I built Baton`, and so on), and any banned word from `02` section F. In strict mode only (`--strict`, or `VERCEL_ENV=production`, which Vercel sets on production builds): any `TODO(jake)` anywhere in `content/`, `src/`, or the build output. Outside strict mode each `TODO(jake)` is listed as a warning. |
 | `check:assets` | See `05` section 9 |
 | `check:links` | Any internal link, anchor, or external link that does not resolve (external checks may be allowed to warn, not fail, for rate-limited hosts) |
 | `check:a11y` | Any axe violation on any route in either theme |
@@ -124,4 +124,4 @@ Evergreen browsers, latest two versions: Chrome, Edge, Firefox, Safari (macOS an
 | `check:size` | First-load transfer, JS, font, and scene budgets exceeded |
 | `check:all` | Runs every check above in order; non-zero exit on any failure |
 
-The production build (`npm run build`) runs `check:content`, `check:assets`, and `check:tokens` before it emits output.
+The production build (`npm run build`) runs `check:content`, `check:assets`, and `check:tokens` before it emits output. On Vercel production deploys `check:content` is strict, so a `TODO(jake)` blocks the release; local and preview builds pass with the TODOs listed as warnings. Run `npm run check:content -- --strict` to check release readiness locally.

@@ -1,15 +1,20 @@
 // @ts-check
-// check:content. Fails on any TODO(jake), forbidden claims, banned words,
-// and incomplete project files. With --dist it scans the build output too.
+// check:content. Always fails on forbidden claims, banned words and
+// incomplete project files. TODO(jake) fails only in strict mode (--strict, or
+// VERCEL_ENV=production on Vercel's production builds); otherwise it warns.
+// With --dist it scans the build output too.
 import { walk, read, lineOf, report } from './lib/files.mjs';
 import { FORBIDDEN, BANNED_WORDS, ALLOWED_PHRASES, PROJECT_KEYS } from './content-rules.mjs';
 
 /** @typedef {{ file: string, line: number, rule: string, text: string }} Finding */
 /** @type {Finding[]} */
 const errors = [];
+/** @type {Finding[]} */
+const warnings = [];
 
 const args = process.argv.slice(2);
 const dist = args.includes('--dist');
+const strict = args.includes('--strict') || process.env.VERCEL_ENV === 'production';
 const paths = args.filter((a) => !a.startsWith('--'));
 
 // TODO scan covers every text file; claim and word rules cover copy only
@@ -38,7 +43,10 @@ for (const file of files) {
   const add = (/** @type {number} */ i, /** @type {string} */ rule, /** @type {string} */ found) =>
     errors.push({ file, line: lineOf(text, i), rule, text: found });
 
-  for (const m of text.matchAll(/TODO\(jake\)[^\n]{0,80}/g)) add(m.index ?? 0, 'todo-jake', m[0]);
+  for (const m of text.matchAll(/TODO\(jake\)[^\n]{0,80}/g)) {
+    const finding = { file, line: lineOf(text, m.index ?? 0), rule: 'todo-jake', text: m[0] };
+    (strict ? errors : warnings).push(finding);
+  }
   if (!COPY.test(file)) continue;
 
   const copy = maskAllowed(text);
@@ -69,5 +77,10 @@ for (const file of files) {
   }
 }
 
-console.log(`check:content: scanned ${files.length} files${dist ? ' (including dist/)' : ''}`);
-process.exitCode = report('check:content', errors);
+const mode = strict
+  ? 'strict: TODO(jake) fails'
+  : 'TODO(jake) warns; --strict or VERCEL_ENV=production makes it fail';
+console.log(
+  `check:content: scanned ${files.length} files${dist ? ' (including dist/)' : ''} [${mode}]`,
+);
+process.exitCode = report('check:content', errors, warnings);
