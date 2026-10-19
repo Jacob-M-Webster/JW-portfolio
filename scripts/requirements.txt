@@ -1,0 +1,3 @@
+# Offline asset pipeline (docs/05 section 2). Install into a venv outside the repo:
+#   py -3.14 -m venv %USERPROFILE%\.venvs\jw-portfolio
+numpy==2.5.3

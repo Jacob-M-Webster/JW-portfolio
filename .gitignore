@@ -30,3 +30,6 @@ CLAUDE.md
 assets-private/
 # stage screenshots (local only)
 .screenshots/
+# poster PNG masters (regenerable: scripts/render_poster.py)
+.posters-src/
+__pycache__/

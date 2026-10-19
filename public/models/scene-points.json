@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "count": 30000,
+  "quant": 32767,
+  "shapes": [
+    {
+      "name": "car",
+      "offsetBytes": 0,
+      "points": 30000,
+      "scale": 1.0
+    },
+    {
+      "name": "quad",
+      "offsetBytes": 180000,
+      "points": 30000,
+      "scale": 1.0
+    },
+    {
+      "name": "rings",
+      "offsetBytes": 360000,
+      "points": 1200,
+      "scale": 3.0
+    }
+  ],
+  "sourceHash": "1aaa2ad271b6e6ff9e3ea962d4345505d2376596bdca45cd0d1b28bb7643c128",
+  "generated": "2026-10-19"
+}
